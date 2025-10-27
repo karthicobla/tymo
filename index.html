@@ -1,0 +1,1955 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark"> <!-- Default theme -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tymr</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- SortableJS library for drag-and-drop -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.2/Sortable.min.js" xintegrity="sha512-TelkP3PCMJv+viJSvKqrK9dMssE8V+M0fYj/9/pGz/xG8GfC/xX/2GfC/a3fYXzPgl7HAYvT/88z-2u/pYg/A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- Popper.js for positioning the onboarding tour steps -->
+    <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.min.js"></script>
+    <style>
+        :root { /* Default: Dark Theme */
+            --bg-main: #111827;
+            --bg-card: #1f2937;
+            --bg-modal: #1f2937; /* Use card bg for modal */
+            --bg-interactive: #374151;
+            --bg-interactive-deep: #111827;
+            --bg-interactive-hover: #4b5563;
+            --bg-accent: #2563eb;
+            --bg-accent-hover: #1d4ed8;
+            --text-primary: #f9fafb;
+            --text-secondary: #e5e7eb;
+            --text-color: #d1d5db;
+            --text-muted: #9ca3af;
+            --text-muted-light: #6b7280;
+            --text-on-accent: #ffffff;
+            --border-color: #374151;
+            --border-color-strong: #4b5563;
+            --accent-color: #3b82f6;
+            --accent-color-light: #60a5fa;
+            --color-success: #22c55e;
+            --color-danger: #ef4444;
+            --color-danger-hover: #dc2626;
+            --color-scheme: dark;
+            --body-bg-image: none;
+            --modal-backdrop-filter: none;
+            --card-backdrop-filter: none;
+        }
+
+        html[data-theme="light"] {
+            --bg-main: #f3f4f6;
+            --bg-card: #ffffff;
+            --bg-modal: #ffffff;
+            --bg-interactive: #e5e7eb;
+            --bg-interactive-deep: #f9fafb; /* Lighter column bg */
+            --bg-interactive-hover: #d1d5db;
+            --bg-accent: #2563eb;
+            --bg-accent-hover: #1d4ed8;
+            --text-primary: #111827;
+            --text-secondary: #1f2937;
+            --text-color: #374151;
+            --text-muted: #6b7280;
+            --text-muted-light: #9ca3af;
+            --text-on-accent: #ffffff;
+            --border-color: #e5e7eb;
+            --border-color-strong: #d1d5db;
+            --accent-color: #2563eb;
+            --accent-color-light: #3b82f6;
+            --color-success: #16a34a;
+            --color-danger: #dc2626;
+            --color-danger-hover: #b91c1c;
+            --color-scheme: light;
+            --body-bg-image: none;
+            --modal-backdrop-filter: none;
+            --card-backdrop-filter: none;
+        }
+
+        html[data-theme="forest"] {
+            --bg-main: #1a2e27;
+            --bg-card: #2a403a;
+            --bg-modal: #2a403a;
+            --bg-interactive: #3a594f;
+            --bg-interactive-deep: #1f3a31; /* Darker column bg */
+            --bg-interactive-hover: #4c7365;
+            --bg-accent: #34d399;
+            --bg-accent-hover: #10b981;
+            --text-primary: #f0fdf4;
+            --text-secondary: #d1fae5;
+            --text-color: #a7f3d0;
+            --text-muted: #6ee7b7;
+            --text-muted-light: #34d399;
+            --text-on-accent: #064e3b;
+            --border-color: #3a594f;
+            --border-color-strong: #4c7365;
+            --accent-color: #34d399;
+            --accent-color-light: #6ee7b7;
+            --color-success: #22c55e;
+            --color-danger: #ef4444;
+            --color-danger-hover: #dc2626;
+            --color-scheme: dark;
+            --body-bg-image: none;
+            --modal-backdrop-filter: none;
+            --card-backdrop-filter: none;
+        }
+
+        html[data-theme="slate"] {
+            --bg-main: #262626; /* neutral-800 */
+            --bg-card: #404040; /* neutral-700 */
+            --bg-modal: #404040;
+            --bg-interactive: #525252; /* neutral-600 */
+            --bg-interactive-deep: #171717; /* neutral-900 */
+            --bg-interactive-hover: #737373; /* neutral-500 */
+            --bg-accent: #a3a3a3; /* neutral-400 */
+            --bg-accent-hover: #d4d4d4; /* neutral-300 */
+            --text-primary: #f5f5f5; /* neutral-100 */
+            --text-secondary: #e5e5e5; /* neutral-200 */
+            --text-color: #d4d4d4; /* neutral-300 */
+            --text-muted: #a3a3a3; /* neutral-400 */
+            --text-muted-light: #737373; /* neutral-500 */
+            --text-on-accent: #171717; /* neutral-900 */
+            --border-color: #525252; /* neutral-600 */
+            --border-color-strong: #737373; /* neutral-500 */
+            --accent-color: #a3a3a3; /* neutral-400 */
+            --accent-color-light: #d4d4d4; /* neutral-300 */
+            --color-success: #22c55e;
+            --color-danger: #ef4444;
+            --color-danger-hover: #dc2626;
+            --color-scheme: dark;
+            --body-bg-image: none;
+            --modal-backdrop-filter: none;
+            --card-backdrop-filter: none;
+        }
+
+
+        body {
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.3s, color 0.3s, background-image 0.3s;
+            background-color: var(--bg-main);
+            color: var(--text-color);
+            background-image: var(--body-bg-image);
+            background-size: cover;
+            background-attachment: fixed;
+        }
+
+        /* --- Semantic Color Classes --- */
+        .body-bg { background-color: var(--bg-main); }
+        .text-color { color: var(--text-color); }
+        .text-primary { color: var(--text-primary); }
+        .text-secondary { color: var(--text-secondary); }
+        .text-muted { color: var(--text-muted); }
+        .text-muted-light { color: var(--text-muted-light); }
+        .text-on-accent { color: var(--text-on-accent); }
+        
+        .card-bg { 
+            background-color: var(--bg-card); 
+            backdrop-filter: var(--card-backdrop-filter);
+            -webkit-backdrop-filter: var(--card-backdrop-filter);
+            transition: background-color 0.3s;
+        }
+        .modal-bg { 
+            background-color: var(--bg-modal); 
+            backdrop-filter: var(--modal-backdrop-filter);
+            -webkit-backdrop-filter: var(--modal-backdrop-filter);
+            transition: background-color 0.3s;
+        }
+        .input-bg { background-color: var(--bg-interactive); color: var(--text-primary); }
+        .input-bg:focus {
+            --tw-ring-color: var(--accent-color);
+            border-color: var(--accent-color);
+        }
+        .select-bg {
+            background-color: var(--bg-interactive); 
+            color: var(--text-primary);
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%239ca3af' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.5rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+        }
+        .bg-interactive { background-color: var(--bg-interactive); }
+        .bg-interactive-deep { background-color: var(--bg-interactive-deep); }
+        .column-bg { background-color: var(--bg-interactive-deep); }
+
+        .border-color { border-color: var(--border-color); }
+        .border-color-strong { border-color: var(--border-color-strong); }
+
+        .btn {
+            transition: background-color 0.2s, color 0.2s;
+        }
+        .btn-primary {
+            background-color: var(--bg-accent);
+            color: var(--text-on-accent);
+        }
+        .btn-primary:hover {
+            background-color: var(--bg-accent-hover);
+        }
+        .btn-secondary {
+            background-color: var(--bg-interactive);
+            color: var(--text-secondary);
+        }
+        .btn-secondary:hover {
+            background-color: var(--bg-interactive-hover);
+        }
+        .btn-danger-text {
+            color: var(--color-danger);
+        }
+        .btn-danger-text:hover {
+            color: var(--color-danger-hover);
+        }
+        .btn-danger-solid {
+            background-color: var(--color-danger);
+            color: var(--text-on-accent);
+        }
+        .btn-danger-solid:hover {
+            background-color: var(--color-danger-hover);
+        }
+        .btn-neutral {
+            background-color: var(--bg-interactive);
+            color: var(--text-color);
+        }
+        .btn-neutral:hover {
+            background-color: var(--bg-interactive-hover);
+        }
+        .text-accent-light { color: var(--accent-color-light); }
+        .text-accent { color: var(--accent-color); }
+        .hover-text-accent:hover { color: var(--accent-color); }
+        .text-success { color: var(--color-success); }
+        .text-danger { color: var(--color-danger); }
+        .hover-text-success:hover { color: var(--color-success); }
+        .hover-text-accent-light:hover { color: var(--accent-color-light); }
+        .hover-text-danger:hover { color: var(--color-danger); }
+        
+        input[type="datetime-local"] {
+            color-scheme: var(--color-scheme);
+        }
+
+        /* Modify color input style */
+        input[type="color"] {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 2.5rem; /* 40px */
+            padding: 0.25rem; /* p-1 */
+            border-width: 1px;
+            border-color: var(--border-color-strong);
+            background-color: var(--bg-interactive);
+            border-radius: 0.5rem; /* rounded-lg */
+            cursor: pointer;
+        }
+        input[type="color"]::-webkit-color-swatch-wrapper {
+            padding: 0;
+            border-radius: 0.375rem; /* rounded-md */
+        }
+        input[type="color"]::-webkit-color-swatch {
+            border: none;
+            border-radius: 0.375rem; /* rounded-md */
+        }
+        input[type="color"]::-moz-color-swatch {
+            border: none;
+            border-radius: 0.375rem; /* rounded-md */
+        }
+        
+        .theme-btn {
+            transition: all 0.2s;
+            color: var(--text-muted); /* Default icon color */
+        }
+        .theme-btn:hover {
+            color: var(--text-primary); /* Hover icon color */
+            background-color: var(--bg-interactive-hover);
+        }
+        .theme-btn.active-theme {
+            background-color: var(--accent-color);
+            color: var(--text-on-accent);
+            box-shadow: 0 0 0 2px var(--accent-color);
+        }
+
+        /* --- Scrollbar --- */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px; /* For horizontal scrollbar */
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-interactive-deep);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--text-muted-light);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-muted);
+        }
+        .modal {
+            display: none;
+        }
+        .modal.flex {
+            display: flex;
+        }
+
+        /* --- Toast Animations --- */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .animate-fadeIn {
+            animation: fadeIn 0.3s ease-out forwards;
+        }
+        
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+        }
+        .animate-fadeOut {
+            animation: fadeOut 0.5s ease-in forwards;
+        }
+
+        /* --- SortableJS Styles --- */
+        .group-container {
+            width: 100%; /* Ensure groups stack vertically */
+        }
+        .card-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            gap: 0.75rem; /* 12px */
+            min-height: 50px; /* Drop area for empty groups */
+        }
+        .group-header {
+            cursor: grab;
+            user-select: none;
+        }
+        .group-header:active {
+            cursor: grabbing;
+        }
+        /* Ghost class for dragged item */
+        .sortable-ghost {
+            opacity: 0.4;
+            background: var(--bg-interactive);
+        }
+        .sortable-drag {
+            opacity: 0.95;
+            transform: rotate(2deg);
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3), 0 4px 6px -2px rgba(0,0,0,0.15);
+        }
+
+        /* --- NEW: Onboarding Styles --- */
+        .onboarding-highlight {
+            position: relative;
+            z-index: 195 !important; /* Above overlay, below step */
+            transition: all 0.3s ease;
+            box-shadow: 0 0 0 4px var(--accent-color), 0 0 20px 10px var(--accent-color);
+            border-radius: 8px; /* Match element rounding */
+        }
+        /* Make sure pseudo-elements don't block the highlight */
+        .onboarding-highlight::before,
+        .onboarding-highlight::after {
+            z-index: -1;
+        }
+
+        #onboardingArrow,
+        #onboardingArrow::before {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: var(--bg-modal);
+        }
+        #onboardingArrow {
+            visibility: hidden;
+        }
+        #onboardingArrow::before {
+            visibility: visible;
+            content: '';
+            transform: rotate(45deg);
+        }
+        
+        /* Popper placement styling */
+        #onboardingStep[data-popper-placement^='top'] > #onboardingArrow {
+            bottom: -4px;
+        }
+        #onboardingStep[data-popper-placement^='bottom'] > #onboardingArrow {
+            top: -4px;
+        }
+        #onboardingStep[data-popper-placement^='left'] > #onboardingArrow {
+            right: -4px;
+        }
+        #onboardingStep[data-popper-placement^='right'] > #onboardingArrow {
+            left: -4px;
+        }
+        /* --- END: Onboarding Styles --- */
+    </style>
+</head>
+<body class="antialiased body-bg text-color">
+
+    <div id="app" class="min-h-screen p-4 sm:p-6 lg:p-8">
+        <!-- Header -->
+        <header class="mb-6 flex items-center justify-between">
+            <h1 class="text-6xl font-bold text-primary">tymr</h1>
+            
+            <div id="themeSwitcher" class="flex items-center gap-1 bg-interactive-deep p-1 rounded-lg">
+                <button class="theme-btn p-1 rounded-md" data-theme="dark" title="Dark Theme">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                </button>
+                <button class="theme-btn p-1 rounded-md" data-theme="light" title="Light Theme">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                </button>
+                <button class="theme-btn p-1 rounded-md" data-theme="forest" title="Forest Theme">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 10v.2A3 3 0 0 1 8.9 16v0H5v0a3 3 0 0 1-1-5.8V10a3 3 0 0 1 6 0Z"/><path d="M7 16v6"/><path d="M13 19v3"/><path d="M12 19h8.3a1 1 0 0 0 .7-1.7L18 14h.3a1 1 0 0 0 .7-1.7L16 9h.2a1 1 0 0 0 .7-1.7L13 3l-1.4 1.5"/></svg>
+                </button>
+                <button class="theme-btn p-1 rounded-md" data-theme="slate" title="Slate Theme">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><line x1="3" x2="21" y1="9" y2="9"/><line x1="3" x2="21" y1="15" y2="15"/><line x1="9" x2="9" y1="3" y2="21"/><line x1="15" x2="15" y1="3" y2="21"/></svg>
+                </button>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <button id="addDateBtn" class="btn btn-primary font-medium py-2 px-4 rounded-lg text-sm flex items-center gap-1.5">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+                        <path d="M10.75 4.75a.75.75 0 0 0-1.5 0v4.5h-4.5a.75.75 0 0 0 0 1.5h4.5v4.5a.75.75 0 0 0 1.5 0v-4.5h4.5a.75.75 0 0 0 0-1.5h-4.5v-4.5Z" />
+                    </svg>
+                    Add Date
+                </button>
+                <button id="settingsBtn" class="btn btn-secondary font-medium p-2 rounded-lg text-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
+                        <path d="M12 20a8 8 0 1 0 0-16 8 8 0 0 0 0 16Z"/>
+                        <path d="M12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"/>
+                        <path d="M12 2v2"/>
+                        <path d="M12 20v2"/>
+                        <path d="m4.93 4.93 1.41 1.41"/>
+                        <path d="m17.66 17.66 1.41 1.41"/>
+                        <path d="M2 12h2"/>
+                        <path d="M20 12h2"/>
+                        <path d="m6.34 17.66-1.41 1.41"/>
+                        <path d="m19.07 4.93-1.41 1.41"/>
+                    </svg>
+                </button>
+                <!-- NEW: Help/Onboarding Button -->
+                <button id="helpBtn" class="btn btn-secondary font-medium p-2 rounded-lg text-sm" title="Show Help">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- Countdown Container -->
+        <!-- UPDATED: This container now holds groups, which in turn hold cards -->
+        <div id="countdownContainer" class="flex flex-col gap-3">
+            <!-- Widgets and groups will be dynamically inserted here -->
+        </div>
+    </div>
+
+    <!-- Add/Edit Date Modal -->
+    <div id="dateModal" class="modal fixed inset-0 z-50 items-center justify-center bg-black bg-opacity-75 p-4">
+        <div class="modal-bg rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col">
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between p-4 border-b border-color">
+                <h2 id="modalTitle" class="text-lg font-semibold text-primary">Add New Date</h2>
+                <button id="closeModalBtn" class="text-muted hover:text-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+                        <path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="p-6 overflow-y-auto space-y-6">
+                <input type="hidden" id="dateId">
+
+                <!-- Date Title -->
+                <div>
+                    <label for="dateTitle" class="block text-sm font-medium text-color mb-1.5">Date Title</label>
+                    <input type="text" id="dateTitle" class="input-bg w-full border border-color-strong rounded-lg px-3 py-2.5 text-sm focus:ring-2 outline-none" placeholder="e.g., Launch Project Orion">
+                </div>
+
+                <!-- Notes / Description -->
+                <div>
+                    <label for="dateNotes" class="block text-sm font-medium text-color mb-1.5">Notes / Description</label>
+                    <textarea id="dateNotes" rows="3" class="input-bg w-full border border-color-strong rounded-lg px-3 py-2.5 text-sm focus:ring-2 outline-none" placeholder="Add more details about this goal..."></textarea>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Target Date -->
+                    <div>
+                        <label for="dateTarget" class="block text-sm font-medium text-color mb-1.5">Target Date & Time</label>
+                        <input type="datetime-local" id="dateTarget" class="input-bg w-full border border-color-strong rounded-lg px-3 py-2.5 text-sm focus:ring-2 outline-none">
+                    </div>
+
+                    <!-- Category -->
+                    <div>
+                        <label for="goalCategory" class="block text-sm font-medium text-color mb-1.5">Category</label>
+                        <input type="text" id="dateCategory" class="input-bg w-full border border-color-strong rounded-lg px-3 py-2.5 text-sm focus:ring-2 outline-none" placeholder="e.g., Personal, Work" list="categorySuggestions">
+                        <datalist id="categorySuggestions">
+                            <!-- Dynamically populated. Add common suggestions. -->
+                            <option value="Personal"></option>
+                            <option value="Work"></option>
+                            <option value="Birthday"></option> <!-- ADDED -->
+                            <option value="Health"></option>
+                            <option value="Finance"></option>
+                            <option value="Learn"></option>
+                            <option value="Travel"></option>
+                            <option value="Home"></option>
+                        </datalist>
+                    </div>
+                    
+                    <!-- Icon Name -->
+                    <div>
+                        <label for="dateIconName" class="block text-sm font-medium text-color mb-1.5">Icon Name (from lucide.dev)</label>
+                        <input type="text" id="dateIconName" class="input-bg w-full border border-color-strong rounded-lg px-3 py-2.5 text-sm focus:ring-2 outline-none" placeholder="e.g., rocket, award" list="iconSuggestions">
+                        <datalist id="iconSuggestions">
+                            <!-- Common icon suggestions (truncated for brevity) -->
+                            <option value="rocket"></option>
+                            <option value="award"></option>
+                            <option value="book-open"></option>
+                            <option value="briefcase"></option>
+                            <option value="calendar"></option>
+                            <option value="cake"></option> <!-- ADDED -->
+                            <option value="heart"></option>
+                            <option value="home"></option>
+                            <option value="flag"></option>
+                            <option value="graduation-cap"></option>
+                            <option value="dollar-sign"></option>
+                            <option value="globe-2"></option>
+                            <option value="user"></option>
+                            <option value="star"></option>
+                            <option value="target"></option>
+                            <option value="trending-up"></option>
+                        </datalist>
+                    </div>
+
+                    <!-- Group -->
+                    <div>
+                        <label for="dateGroup" class="block text-sm font-medium text-color mb-1.5">Group</label>
+                        <input type="text" id="dateGroup" class="input-bg w-full border border-color-strong rounded-lg px-3 py-2.5 text-sm focus:ring-2 outline-none" placeholder="e.g., Q4 Projects" list="groupSuggestions">
+                        <datalist id="groupSuggestions">
+                            <!-- Dynamically populated -->
+                        </datalist>
+                    </div>
+
+                    <!-- UPDATED: Category Color -->
+                    <div>
+                        <label for="dateCategoryColor" class="block text-sm font-medium text-color mb-1.5">Icon & Category Color</label>
+                        <input type="color" id="dateCategoryColor" value="#374151"> <!-- Default value -->
+                    </div>
+                </div>
+
+                <!-- Milestones (Subtasks) -->
+                <div id="milestoneSection"> <!-- ADDED ID -->
+                    <h3 class="text-sm font-medium text-color mb-2">Key Results (Milestones)</h3>
+                    <div id="milestonesContainer" class="space-y-2">
+                        <!-- Milestones will be dynamically inserted here -->
+                    </div>
+                    <!-- UPDATED: Milestone add section -->
+                    <div class="flex items-center gap-2 mt-2">
+                        <input type="text" id="newMilestoneInput" class="input-bg flex-1 border border-color-strong rounded-lg px-3 py-2.5 text-sm focus:ring-2 outline-none" placeholder="Add a new milestone...">
+                        <button id="addMilestoneBtn" type="button" class="btn btn-secondary p-2.5 rounded-lg text-accent-light hover:text-accent">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+                                <path d="M10.75 4.75a.75.75 0 0 0-1.5 0v4.5h-4.5a.75.75 0 0 0 0 1.5h4.5v4.5a.75.75 0 0 0 1.5 0v-4.5h4.5a.75.75 0 0 0 0-1.5h-4.5v-4.5Z" />
+                            </svg>
+                        </button>
+                    </div>
+                    <!-- END UPDATED: Milestone add section -->
+                </div>
+
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="flex items-center justify-between p-4 bg-interactive-deep bg-opacity-50 border-t border-color rounded-b-xl">
+                <button id="deleteDateBtn" type="button" class="btn-danger-text font-medium text-sm px-3 py-2 rounded-lg">Delete Date</button>
+                <div>
+                    <button id="cancelModalBtn" type="button" class="btn btn-neutral font-medium rounded-lg text-sm px-5 py-2.5 mr-2">Cancel</button>
+                    <button id="saveDateBtn" type="button" class="btn btn-primary font-medium rounded-lg text-sm px-5 py-2.5">Save Date</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="modal fixed inset-0 z-50 items-center justify-center bg-black bg-opacity-75 p-4">
+        <div class="modal-bg rounded-xl shadow-2xl w-full max-w-md">
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between p-4 border-b border-color">
+                <h2 class="text-lg font-semibold text-primary">Settings</h2>
+                <button id="closeSettingsBtn" class="text-muted hover:text-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+                        <path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" />
+                    </svg>
+                </button>
+            </div>
+            <!-- Modal Body -->
+            <div class="p-6 space-y-4">
+                <p class="text-sm text-muted">Export all your dates to a JSON file as a backup, or import them on another device.</p>
+                <button id="exportDataBtn" class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2.5 px-4 rounded-lg text-sm flex items-center justify-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+                        <path d="M10.75 2.75a.75.75 0 0 0-1.5 0v8.614L6.295 8.23a.75.75 0 0 0-1.09 1.03l4.25 4.5a.75.75 0 0 0 1.09 0l4.25-4.5a.75.75 0 0 0-1.09-1.03l-2.955 3.134V2.75Z" />
+                        <path d="M3.5 12.75a.75.75 0 0 0-1.5 0v2.5A2.75 2.75 0 0 0 4.75 18h10.5A2.75 2.75 0 0 0 18 15.25v-2.5a.75.75 0 0 0-1.5 0v2.5c0 .69-.56 1.25-1.25 1.25H4.75c-.69 0-1.25-.56-1.25-1.25v-2.5Z" />
+                    </svg>
+                    Export Dates (.json)
+                </button>
+                <div>
+                    <label for="importFile" class="btn btn-primary w-full font-medium py-2.5 px-4 rounded-lg text-sm flex items-center justify-center gap-2 cursor-pointer">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+                            <path d="M10.75 17.25a.75.75 0 0 0 1.5 0V8.614l2.955 3.134a.75.75 0 1 0 1.09-1.03l-4.25-4.5a.75.75 0 0 0-1.09 0l-4.25 4.5a.75.75 0 1 0 1.09 1.03l2.955-3.134v8.636Z" />
+                            <path d="M3.5 12.75a.75.75 0 0 0-1.5 0v2.5A2.75 2.75 0 0 0 4.75 18h10.5A2.75 2.75 0 0 0 18 15.25v-2.5a.75.75 0 0 0-1.5 0v2.5c0 .69-.56 1.25-1.25 1.25H4.75c-.69 0-1.25-.56-1.25-1.25v-2.5Z" />
+                        </svg>
+                        Import Dates (.json)
+                    </label>
+                    <input type="file" id="importFile" class="hidden" accept=".json">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Confirmation Modal -->
+    <div id="confirmModal" class="modal fixed inset-0 z-[100] items-center justify-center bg-black bg-opacity-75 p-4">
+        <div class="modal-bg rounded-xl shadow-2xl w-full max-w-sm">
+            <div class="p-6">
+                <h3 id="confirmTitle" class="text-lg font-semibold text-primary">Are you sure?</h3>
+                <p id="confirmMessage" class="mt-2 text-sm text-muted">This action cannot be undone.</p>
+            </div>
+            <div class="flex justify-end gap-3 p-4 bg-interactive-deep bg-opacity-50 rounded-b-xl border-t border-color">
+                <button id="confirmCancel" class="btn btn-neutral font-medium rounded-lg text-sm px-4 py-2">Cancel</button>
+                <button id="confirmDelete" class="btn btn-danger-solid font-medium rounded-lg text-sm px-4 py-2">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toastContainer" class="fixed bottom-4 right-4 z-[200] w-full max-w-xs space-y-3">
+        <!-- Toasts will be dynamically inserted here -->
+    </div>
+
+    <!-- NEW: Onboarding Tour -->
+    <div id="onboardingOverlay" class="modal fixed inset-0 z-[190] bg-black bg-opacity-75"></div>
+    <div id="onboardingStep" class="modal absolute z-[200] modal-bg rounded-lg shadow-xl w-full max-w-xs p-4" data-step-index="0">
+        <p id="onboardingText" class="text-sm text-color mb-4">Welcome to Tymr!</p>
+        <div class="flex items-center justify-between">
+            <button id="onboardingSkip" class="text-sm text-muted hover:text-primary px-3 py-1.5 rounded-lg">Skip</button>
+            <div class="flex gap-3">
+                <button id="onboardingPrev" class="btn btn-neutral text-sm px-3 py-1.5">Prev</button>
+                <button id="onboardingNext" class="btn btn-primary text-sm px-3 py-1.5">Next</button>
+            </div>
+        </div>
+        <!-- Arrow element for pointing -->
+        <div id="onboardingArrow" data-popper-arrow></div>
+    </div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const app = {
+                // UI Elements
+                countdownContainer: document.getElementById('countdownContainer'),
+                addDateBtn: document.getElementById('addDateBtn'),
+                settingsBtn: document.getElementById('settingsBtn'),
+                themeSwitcher: document.getElementById('themeSwitcher'),
+                helpBtn: document.getElementById('helpBtn'), // NEW
+
+                // Goal Modal
+                dateModal: document.getElementById('dateModal'),
+                modalTitle: document.getElementById('modalTitle'),
+                closeModalBtn: document.getElementById('closeModalBtn'),
+                cancelModalBtn: document.getElementById('cancelModalBtn'),
+                saveDateBtn: document.getElementById('saveDateBtn'),
+                deleteDateBtn: document.getElementById('deleteDateBtn'),
+                dateId: document.getElementById('dateId'),
+                dateTitle: document.getElementById('dateTitle'),
+                dateNotes: document.getElementById('dateNotes'),
+                dateTarget: document.getElementById('dateTarget'),
+                // goalPriority: (REMOVED)
+                dateCategory: document.getElementById('dateCategory'),
+                dateCategoryColor: document.getElementById('dateCategoryColor'), // NEW
+                dateIconName: document.getElementById('dateIconName'),
+                dateGroup: document.getElementById('dateGroup'),
+                categorySuggestions: document.getElementById('categorySuggestions'),
+                groupSuggestions: document.getElementById('groupSuggestions'),
+
+                // Milestones
+                milestonesContainer: document.getElementById('milestonesContainer'),
+                newMilestoneInput: document.getElementById('newMilestoneInput'),
+                addMilestoneBtn: document.getElementById('addMilestoneBtn'),
+                milestoneSection: document.getElementById('milestoneSection'), // NEW
+
+                // Settings Modal
+                settingsModal: document.getElementById('settingsModal'),
+                closeSettingsBtn: document.getElementById('closeSettingsBtn'),
+                exportDataBtn: document.getElementById('exportDataBtn'),
+                importFile: document.getElementById('importFile'),
+
+                // Confirm Modal
+                confirmModal: document.getElementById('confirmModal'),
+                confirmTitle: document.getElementById('confirmTitle'),
+                confirmMessage: document.getElementById('confirmMessage'),
+                confirmCancel: document.getElementById('confirmCancel'),
+                confirmDelete: document.getElementById('confirmDelete'),
+                
+                // Toast
+                toastContainer: document.getElementById('toastContainer'),
+
+                // NEW: Onboarding
+                onboardingOverlay: document.getElementById('onboardingOverlay'),
+                onboardingStep: document.getElementById('onboardingStep'),
+                onboardingText: document.getElementById('onboardingText'),
+                onboardingSkip: document.getElementById('onboardingSkip'),
+                onboardingPrev: document.getElementById('onboardingPrev'),
+                onboardingNext: document.getElementById('onboardingNext'),
+                onboardingArrow: document.getElementById('onboardingArrow'),
+
+                // App State
+                dates: [],
+                groupOrder: [], // NEW: To store the order of groups
+                timers: [],
+                currentMilestones: [],
+                _confirmCallback: null,
+                sortableGroups: null, // NEW: Sortable instance for groups
+                sortableCards: [], // NEW: Array of Sortable instances for cards
+                
+                // NEW: Onboarding State
+                tourSteps: [],
+                currentTourStep: 0,
+                popperInstance: null,
+
+                init() {
+                    this.loadTheme();
+                    this.loadDates();
+                    this.renderAllDates();
+                    this.updateDatalists();
+                    // this.startTimers(); // Moved to renderAllDates
+                    this.attachEventListeners();
+                    this.initThemes();
+                    this.initTourSteps(); // NEW
+                    this.startTour(); // NEW
+                },
+
+                attachEventListeners() {
+                    this.addDateBtn.addEventListener('click', () => this.openModal());
+                    this.settingsBtn.addEventListener('click', () => this.openSettings());
+                    this.helpBtn.addEventListener('click', () => this.startTour(true)); // NEW: true forces restart
+                    
+                    // Goal Modal
+                    this.closeModalBtn.addEventListener('click', () => this.closeModal());
+                    this.cancelModalBtn.addEventListener('click', () => this.closeModal());
+                    this.saveDateBtn.addEventListener('click', () => this.saveDate());
+                    this.deleteDateBtn.addEventListener('click', () => this.handleDeleteDate());
+                    // NEW: Listen for category changes to update the modal UI
+                    this.dateCategory.addEventListener('input', () => this.updateModalForCategory());
+
+                    // Milestones
+                    this.addMilestoneBtn.addEventListener('click', () => this.addMilestone());
+                    this.newMilestoneInput.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter') {
+                            e.preventDefault();
+                            this.addMilestone();
+                        }
+                    });
+                    this.milestonesContainer.addEventListener('click', (e) => {
+                        if (e.target.closest('.delete-milestone')) {
+                            const id = e.target.closest('.milestone-item').dataset.id;
+                            this.deleteMilestone(id);
+                        } else if (e.target.closest('.milestone-checkbox')) {
+                            const id = e.target.closest('.milestone-item').dataset.id;
+                            this.toggleMilestone(id);
+                        }
+                    });
+                    
+                    // Settings Modal
+                    this.closeSettingsBtn.addEventListener('click', () => this.closeSettings());
+                    this.exportDataBtn.addEventListener('click', () => this.exportData());
+                    this.importFile.addEventListener('change', (e) => this.importData(e));
+
+                    // Confirm Modal
+                    this.confirmCancel.addEventListener('click', () => this.closeConfirm());
+                    this.confirmDelete.addEventListener('click', () => this.runConfirm());
+
+                    // Card actions (event delegation on the container)
+                    this.countdownContainer.addEventListener('click', (e) => {
+                        const card = e.target.closest('[data-id]');
+                        if (!card) return;
+                        
+                        const id = card.dataset.id;
+
+                        if (e.target.closest('.edit-card')) {
+                            this.openModal(id);
+                        } else if (e.target.closest('.delete-card')) {
+                            this.handleDeleteCard(id);
+                        } else if (e.target.closest('.complete-card')) {
+                            this.toggleComplete(id);
+                        }
+                    });
+
+                    // NEW: Onboarding
+                    this.onboardingSkip.addEventListener('click', () => this.endTour());
+                    this.onboardingNext.addEventListener('click', () => this.nextTourStep());
+                    this.onboardingPrev.addEventListener('click', () => this.prevTourStep());
+                },
+
+                initThemes() {
+                    this.themeSwitcher.addEventListener('click', (e) => {
+                        const themeBtn = e.target.closest('.theme-btn');
+                        if (themeBtn) {
+                            this.setTheme(themeBtn.dataset.theme);
+                        }
+                    });
+                },
+
+                loadTheme() {
+                    const savedTheme = localStorage.getItem('tymrTheme') || 'dark';
+                    this.setTheme(savedTheme);
+                },
+
+                setTheme(themeName) {
+                    document.documentElement.dataset.theme = themeName;
+                    localStorage.setItem('tymrTheme', themeName);
+
+                    // Update active button state
+                    this.themeSwitcher.querySelectorAll('.theme-btn').forEach(btn => {
+                        btn.classList.toggle('active-theme', btn.dataset.theme === themeName);
+                    });
+                },
+                
+                loadDates() {
+                    const datesData = localStorage.getItem('countdownDates');
+                    this.dates = datesData ? JSON.parse(datesData) : [];
+                    const orderData = localStorage.getItem('tymrGroupOrder');
+                    this.groupOrder = orderData ? JSON.parse(orderData) : [];
+                },
+
+                // NEW: Just saves goal data
+                saveDatesData() {
+                    localStorage.setItem('countdownDates', JSON.stringify(this.dates));
+                },
+
+                // NEW: Just saves group order
+                saveGroupOrderData() {
+                    localStorage.setItem('tymrGroupOrder', JSON.stringify(this.groupOrder));
+                },
+
+                // UPDATED: Renamed from saveGoals, now calls saveDatesData and re-renders
+                saveAndRender() {
+                    this.saveDatesData();
+                    this.renderAllDates();
+                    this.updateDatalists();
+                },
+
+                openModal(id = null) {
+                    this.resetModal();
+                    if (id) {
+                        const date = this.dates.find(g => g.id === id);
+                        if (date) {
+                            this.modalTitle.textContent = 'Edit Date';
+                            this.dateId.value = date.id;
+                            this.dateTitle.value = date.title;
+                            this.dateNotes.value = date.notes || '';
+                            this.dateTarget.value = date.date ? date.date.substring(0, 16) : '';
+                            // this.goalPriority.value = goal.priority || 'Medium'; // REMOVED
+                            this.dateCategory.value = date.category || '';
+                            this.dateCategoryColor.value = date.categoryColor || '#374151'; // NEW
+                            this.dateIconName.value = date.iconName || '';
+                            this.dateGroup.value = date.group || '';
+                            this.currentMilestones = JSON.parse(JSON.stringify(date.milestones || []));
+                            this.deleteDateBtn.style.display = 'block';
+                        }
+                    } else {
+                        this.modalTitle.textContent = 'Add New Date';
+                        this.deleteDateBtn.style.display = 'none';
+                    }
+                    this.renderMilestones();
+                    this.updateModalForCategory(); // NEW: Update UI based on category
+                    this.dateModal.classList.add('flex');
+                },
+
+                closeModal() {
+                    this.dateModal.classList.remove('flex');
+                    this.resetModal();
+                },
+
+                resetModal() {
+                    this.modalTitle.textContent = 'Add New Date';
+                    this.dateId.value = '';
+                    this.dateTitle.value = '';
+                    this.dateNotes.value = '';
+                    this.dateTarget.value = '';
+                    // this.goalPriority.value = 'Medium'; // REMOVED
+                    this.dateCategory.value = '';
+                    this.dateCategoryColor.value = '#374151'; // NEW
+                    this.dateIconName.value = '';
+                    this.dateGroup.value = '';
+                    this.currentMilestones = [];
+                    this.milestonesContainer.innerHTML = '';
+                    this.newMilestoneInput.value = '';
+                },
+
+                // NEW: Show/hide date/datetime input based on category
+                updateModalForCategory() {
+                    const categoryLabel = document.querySelector('label[for="dateTarget"]');
+                    const isBirthday = this.dateCategory.value.trim().toLowerCase() === 'birthday';
+                    
+                    // NEW: Find the milestone section title
+                    const milestoneTitle = this.milestoneSection.querySelector('h3'); // Target the h3
+
+                    // NEW: Show milestone section for all, but change title
+                    this.milestoneSection.style.display = 'block'; // Always show
+                    if (isBirthday) {
+                        if (milestoneTitle) milestoneTitle.textContent = 'Checklist'; // Change title
+                    } else {
+                        if (milestoneTitle) milestoneTitle.textContent = 'Key Results (Milestones)'; // Reset title
+                    }
+
+                    // REMOVED logic that hid the milestone section
+                    /*
+                    if (isBirthday) {
+                        this.milestoneSection.style.display = 'none';
+                    } else {
+                        this.milestoneSection.style.display = 'block';
+                    }
+                    */
+
+                    if (isBirthday) {
+                        categoryLabel.textContent = 'Birthday (Date of Birth)';
+                        this.dateTarget.type = 'date';
+                        // If it was a datetime, strip the time part
+                        if (this.dateTarget.value.includes('T')) {
+                            this.dateTarget.value = this.dateTarget.value.split('T')[0];
+                        }
+                    } else {
+                        categoryLabel.textContent = 'Target Date & Time';
+                        this.dateTarget.type = 'datetime-local';
+                        // If it was just a date, add a default time
+                        if (this.dateTarget.value && !this.dateTarget.value.includes('T')) {
+                            this.dateTarget.value = `${this.dateTarget.value}T12:00`;
+                        }
+                    }
+                },
+
+                saveDate() {
+                    const id = this.dateId.value;
+                    const title = this.dateTitle.value.trim();
+                    const target = this.dateTarget.value;
+
+                    if (!title || !target) {
+                        this.showToast('Please fill in both Date Title and Target Date.', 'error');
+                        return;
+                    }
+
+                    const dateData = {
+                        title: title,
+                        notes: this.dateNotes.value.trim(),
+                        date: target,
+                        // priority: this.goalPriority.value, // REMOVED
+                        category: this.dateCategory.value.trim(),
+                        categoryColor: this.dateCategoryColor.value, // NEW
+                        iconName: this.dateIconName.value.trim(),
+                        group: this.dateGroup.value.trim() || 'General',
+                        milestones: this.currentMilestones,
+                        status: this.dates.find(g => g.id === id)?.status || 'Pending'
+                    };
+
+                    if (id) {
+                        const index = this.dates.findIndex(g => g.id === id);
+                        if (index !== -1) {
+                            this.dates[index] = { ...this.dates[index], ...dateData };
+                        }
+                    } else {
+                        this.dates.push({
+                            ...dateData,
+                            id: `goal_${Date.now()}`
+                        });
+                    }
+
+                    this.saveAndRender(); // UPDATED
+                    this.closeModal();
+                },
+                
+                handleDeleteDate() {
+                    const id = this.dateId.value;
+                    if (!id) return;
+                    
+                    this.showConfirm(
+                        'Delete Date?',
+                        'Are you sure you want to delete this date? This action cannot be undone.',
+                        () => {
+                            this.dates = this.dates.filter(g => g.id !== id);
+                            this.saveAndRender(); // UPDATED
+                            this.closeModal();
+                        }
+                    );
+                },
+
+                handleDeleteCard(id) {
+                    if (!id) return;
+                    
+                    this.showConfirm(
+                        'Delete Date?',
+                        'Are you sure you want to delete this date? This action cannot be undone.',
+                        () => {
+                            this.dates = this.dates.filter(g => g.id !== id);
+                            this.saveAndRender(); // UPDATED
+                        }
+                    );
+                },
+
+                toggleComplete(id) {
+                    const date = this.dates.find(g => g.id === id);
+                    if (date) {
+                        date.status = date.status === 'Completed' ? 'Pending' : 'Completed';
+                        this.saveAndRender(); // UPDATED
+                    }
+                },
+
+                renderMilestones() {
+                    this.milestonesContainer.innerHTML = '';
+                    if (this.currentMilestones.length === 0) {
+                        this.milestonesContainer.innerHTML = '<p class="text-xs text-muted italic">No milestones added yet.</p>';
+                        return;
+                    }
+                    this.currentMilestones.forEach(milestone => {
+                        this.milestonesContainer.appendChild(this.createMilestoneElement(milestone));
+                    });
+                },
+                
+                createMilestoneElement(milestone) {
+                    const div = document.createElement('div');
+                    div.className = 'milestone-item flex items-center justify-between bg-interactive p-2 rounded-md';
+                    div.dataset.id = milestone.id;
+                    
+                    const checked = milestone.completed ? 'checked' : '';
+                    const textClass = milestone.completed ? 'line-through text-muted-light' : 'text-secondary';
+
+                    // UPDATED: Delete button icon
+                    div.innerHTML = `
+                        <div class="flex items-center gap-2">
+                            <input type="checkbox" ${checked} class="milestone-checkbox form-checkbox h-4 w-4 bg-interactive border-color-strong text-accent-light rounded focus:ring-accent-light focus:ring-offset-gray-800">
+                            <span class="text-sm ${textClass}">${this.escapeHTML(milestone.text)}</span>
+                        </div>
+                        <button type="button" class="delete-milestone text-muted-light hover-text-danger p-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+                                <path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" />
+                            </svg>
+                        </button>
+                    `;
+                    return div;
+                },
+
+                addMilestone() {
+                    const text = this.newMilestoneInput.value.trim();
+                    if (text) {
+                        this.currentMilestones.push({
+                            id: `ms_${Date.now()}`,
+                            text: text,
+                            completed: false
+                        });
+                        this.newMilestoneInput.value = '';
+                        this.renderMilestones();
+                    }
+                },
+
+                deleteMilestone(id) {
+                    this.currentMilestones = this.currentMilestones.filter(ms => ms.id !== id);
+                    this.renderMilestones();
+                },
+                
+                toggleMilestone(id) {
+                    const milestone = this.currentMilestones.find(ms => ms.id === id); // Corrected find
+                    if (milestone) {
+                        milestone.completed = !milestone.completed;
+                        this.renderMilestones(); // Re-render to apply line-through
+                    }
+                },
+
+                openSettings() {
+                    this.settingsModal.classList.add('flex');
+                },
+
+                closeSettings() {
+                    this.settingsModal.classList.remove('flex');
+                },
+                
+                exportData() {
+                    if (this.dates.length === 0) {
+                        this.showToast('No dates to export.', 'error');
+                        return;
+                    }
+                    const dataStr = JSON.stringify(this.dates, null, 2);
+                    const dataBlob = new Blob([dataStr], { type: 'application/json' });
+                    const url = URL.createObjectURL(dataBlob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `tymr_dates_${new Date().toISOString().split('T')[0]}.json`;
+                    document.body.appendChild(a);
+                    a.click();
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                    this.closeSettings();
+                    this.showToast('Dates exported successfully.', 'success');
+                },
+                
+                importData(event) {
+                    const file = event.target.files[0];
+                    if (!file) return;
+
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        try {
+                            const importedDates = JSON.parse(e.target.result);
+                            if (Array.isArray(importedDates) && importedDates.every(g => g.id && g.title && g.date)) {
+                                this.showConfirm(
+                                    'Import Dates?',
+                                    'This will overwrite all current dates. Are you sure you want to proceed?',
+                                    () => {
+                                        this.dates = importedDates;
+                                        this.groupOrder = []; // Reset group order, will be regenerated
+                                        this.saveAndRender(); // UPDATED
+                                        this.closeSettings();
+                                        event.target.value = null; // Reset file input
+                                        this.showToast('Dates imported successfully.', 'success');
+                                    }
+                                );
+                            } else {
+                                this.showToast('Invalid file format. Could not import.', 'error');
+                            }
+                        } catch (err) {
+                            console.error('Error importing data:', err);
+                            this.showToast('Failed to read or parse file.', 'error');
+                        } // <-- FIX: Added closing brace for catch
+                    }; // <-- FIX: Added closing brace and semicolon for reader.onload
+                    reader.readAsText(file); // <-- FIX: Added this line to trigger the file read
+                },
+
+                // --- NEW: Onboarding Tour Methods ---
+
+                initTourSteps() {
+                    this.tourSteps = [
+                        {
+                            selector: 'h1',
+                            text: "Welcome to Tymr! This is your personal countdown dashboard.",
+                            placement: 'bottom-start'
+                        },
+                        {
+                            selector: '#themeSwitcher',
+                            text: "Choose your favorite look. The theme is saved automatically.",
+                            placement: 'bottom'
+                        },
+                        {
+                            selector: '#addDateBtn',
+                            text: "Click here to add your first countdown. You can add goals, birthdays, and more.",
+                            placement: 'bottom-end'
+                        },
+                        {
+                            selector: '#settingsBtn',
+                            text: "Here you can export a backup of your dates or import them on another device.",
+                            placement: 'bottom-end'
+                        },
+                        {
+                            selector: '#helpBtn',
+                            text: "You can restart this guide anytime by clicking this help icon.",
+                            placement: 'bottom-end'
+                        }
+                        /* MOVED: The step below was removed as requested to end the tour at the help icon.
+                        {
+                            // This step is dynamic. It will try to find a card, then a group, then the empty state.
+                            selector: '[data-id]', // Try to find a card first
+                            text: "Your countdowns will appear here as cards. You can drag and drop them to re-order.",
+                            placement: 'bottom',
+                            fallbackSelector: '.group-header', // If no card, find a group header
+                            fallbackText: "Your cards are organized into groups. You can drag cards between groups, or drag the group headers to re-order entire sections.",
+                            fallbackPlacement: 'bottom',
+                            finalFallbackSelector: '#countdownContainer', // If nothing, point to the container
+                            finalFallbackText: "This is where your countdowns and groups will appear once you add them.",
+                            finalFallbackPlacement: 'right'
+                        }
+                        */
+                    ];
+                },
+
+                startTour(force = false) {
+                    const hasSeenTour = localStorage.getItem('tymrTourSeen');
+                    if (hasSeenTour && !force) {
+                        this.endTour(); // Ensure it's hidden
+                        return;
+                    }
+                    this.showTourStep(0);
+                },
+
+                endTour() {
+                    if (this.popperInstance) this.popperInstance.destroy();
+                    document.querySelectorAll('.onboarding-highlight').forEach(el => el.classList.remove('onboarding-highlight'));
+                    
+                    this.onboardingStep.classList.remove('flex');
+                    this.onboardingOverlay.classList.remove('flex');
+                    localStorage.setItem('tymrTourSeen', 'true');
+                },
+
+                showTourStep(index) {
+                    // Clean up previous step
+                    if (this.popperInstance) this.popperInstance.destroy();
+                    document.querySelectorAll('.onboarding-highlight').forEach(el => el.classList.remove('onboarding-highlight'));
+
+                    if (index >= this.tourSteps.length) {
+                        this.endTour();
+                        return;
+                    }
+
+                    this.currentTourStep = index;
+                    let step = this.tourSteps[index];
+                    
+                    let targetElement = document.querySelector(step.selector);
+                    let text = step.text;
+                    let placement = step.placement;
+
+                    // --- Handle Fallbacks ---
+                    if (!targetElement && step.fallbackSelector) {
+                        targetElement = document.querySelector(step.fallbackSelector);
+                        if (targetElement) {
+                            text = step.fallbackText || text;
+                            placement = step.fallbackPlacement || placement;
+                        }
+                    }
+                    if (!targetElement && step.finalFallbackSelector) {
+                        targetElement = document.querySelector(step.finalFallbackSelector);
+                        if (targetElement) {
+                            text = step.finalFallbackText || text;
+                            placement = step.finalFallbackPlacement || placement;
+                        }
+                    }
+                    // --- End Fallbacks ---
+                    
+                    this.onboardingText.textContent = text;
+                    this.onboardingStep.classList.add('flex');
+                    this.onboardingOverlay.classList.add('flex');
+
+                    if (targetElement) {
+                        targetElement.classList.add('onboarding-highlight');
+                        targetElement.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+
+                        this.popperInstance = Popper.createPopper(targetElement, this.onboardingStep, {
+                            placement: placement,
+                            modifiers: [
+                                { name: 'offset', options: { offset: [0, 12] } }, // Add some space
+                                { name: 'arrow', options: { element: this.onboardingArrow } }
+                            ]
+                        });
+                    } else {
+                        // No target found, just center the modal
+                        this.onboardingStep.style.top = '50%';
+                        this.onboardingStep.style.left = '50%';
+                        this.onboardingStep.style.transform = 'translate(-50%, -50%)';
+                    }
+
+                    // Update buttons
+                    this.onboardingPrev.style.display = (index === 0) ? 'none' : 'block';
+                    this.onboardingNext.textContent = (index === this.tourSteps.length - 1) ? 'Done' : 'Next';
+                },
+
+                nextTourStep() {
+                    this.showTourStep(this.currentTourStep + 1);
+                },
+
+                prevTourStep() {
+                    this.showTourStep(this.currentTourStep - 1);
+                },
+
+                // --- END: Onboarding Tour Methods ---
+
+
+                showConfirm(title, message, callback) {
+                    this.confirmTitle.textContent = title;
+                    this.confirmMessage.textContent = message;
+                    this._confirmCallback = callback;
+                    this.confirmModal.classList.add('flex');
+                },
+
+                closeConfirm() {
+                    this.confirmModal.classList.remove('flex');
+                    this._confirmCallback = null;
+                },
+
+                runConfirm() {
+                    if (this._confirmCallback) {
+                        this._confirmCallback();
+                    }
+                    this.closeConfirm();
+                },
+
+                showToast(message, type = 'error') {
+                    const toast = document.createElement('div');
+                    let icon = '';
+                    let classes = '';
+
+                    if (type === 'error') {
+                        classes = 'bg-red-600 text-white';
+                        icon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+                                  <path fill-rule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm-1-5.03a1 1 0 0 1 2 0v.015a1 1 0 0 1-2 0V12.97Zm1-6.015a1 1 0 0 1 1 1v3.015a1 1 0 0 1-2 0V7.97a1 1 0 0 1 1-1Z" clip-rule="evenodd" />
+                                </svg>`;
+                    } else { // 'success' or default
+                        classes = 'bg-green-600 text-white';
+                        icon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+                                  <path fill-rule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm3.857-9.809a.75.75 0 0 0-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 1 0-1.06 1.061l2.5 2.5a.75.75 0 0 0 1.137-.089l4-5.5Z" clip-rule="evenodd" />
+                                </svg>`;
+                    }
+
+                    toast.className = `flex items-center gap-3 w-full p-4 rounded-lg shadow-lg ${classes}`;
+                    toast.classList.add('animate-fadeIn');
+                    toast.innerHTML = `
+                        <div class="shrink-0">${icon}</div>
+                        <div class="text-sm font-medium">${this.escapeHTML(message)}</div>
+                    `;
+                    
+                    this.toastContainer.appendChild(toast);
+
+                    setTimeout(() => {
+                        toast.classList.add('animate-fadeOut');
+                        setTimeout(() => toast.remove(), 500);
+                    }, 3000);
+                },
+
+                // UPDATED: Major rewrite for new grouped structure and SortableJS
+                renderAllDates() {
+                    // Stop all existing timers
+                    this.timers.forEach(timer => clearInterval(timer));
+                    this.timers = [];
+                    
+                    // Destroy old Sortable instances
+                    if (this.sortableGroups) this.sortableGroups.destroy();
+                    this.sortableCards.forEach(s => s.destroy());
+                    this.sortableCards = [];
+                    
+                    this.countdownContainer.innerHTML = '';
+
+                    if (this.dates.length === 0) {
+                        this.countdownContainer.innerHTML = `
+                            <div class="text-center text-muted mt-12 w-full">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-16 h-16 mx-auto mb-4">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5m-9-6h.008v.008H12v-.008ZM12 15h.008v.008H12v-.008Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75v-.008Zm0 2.25h.008v.008H9.75v-.008Zm-2.25 0h.008v.008H7.5v-.008Zm0-2.25h.008v.008H7.5v-.008Zm6.75-2.25h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008v-.008Zm2.25-2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Z" />
+                                </svg>
+                                <h3 class="text-xl font-semibold text-primary">No Dates Yet</h3>
+                                <p class="text-muted">Click "Add Date" to get started.</p>
+                            </div>
+                        `;
+                        return;
+                    }
+
+                    // 1. Group goals
+                    const groupedDates = this.dates.reduce((acc, date) => {
+                        const groupName = date.group || 'General';
+                        if (!acc[groupName]) {
+                            acc[groupName] = [];
+                        }
+                        acc[groupName].push(date);
+                        return acc;
+                    }, {});
+
+                    // 2. Sort goals within each group by date
+                    for (const groupName in groupedDates) {
+                        groupedDates[groupName].sort((a, b) => new Date(a.date) - new Date(b.date));
+                    }
+
+                    // 3. Determine group order
+                    const allGroupNames = Object.keys(groupedDates);
+                    // Filter out any ordered groups that no longer exist
+                    let sortedGroupNames = this.groupOrder.filter(name => allGroupNames.includes(name));
+                    // Add any new groups (not in the saved order) to the end
+                    allGroupNames.forEach(name => {
+                        if (!sortedGroupNames.includes(name)) {
+                            sortedGroupNames.push(name);
+                        }
+                    });
+                    // Ensure 'General' is last if it's new, but respect saved order otherwise
+                    if (!this.groupOrder.includes('General') && sortedGroupNames.includes('General')) {
+                        sortedGroupNames = sortedGroupNames.filter(name => name !== 'General');
+                        sortedGroupNames.push('General');
+                    }
+                    // Save the cleaned/updated group order
+                    this.groupOrder = sortedGroupNames;
+                    this.saveGroupOrderData();
+
+
+                    // 4. Render DOM
+                    for (const groupName of sortedGroupNames) {
+                        const groupContainer = document.createElement('div');
+                        groupContainer.className = 'group-container w-full';
+                        groupContainer.dataset.groupName = groupName;
+
+                        const groupHeader = document.createElement('h2');
+                        groupHeader.className = 'group-header text-xl font-semibold text-primary w-full mb-3 mt-5 border-b border-color pb-2 flex items-center gap-2';
+                        groupHeader.innerHTML = `
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="w-4 h-4 text-muted shrink-0" viewBox="0 0 16 16">
+                                <path d="M7 2a1 1 0 1 1-2 0 1 1 0 0 1 2 0m3 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0M7 5a1 1 0 1 1-2 0 1 1 0 0 1 2 0m3 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0M7 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0m3 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0m-3 3a1 1 0 1 1-2 0 1 1 0 0 1 2 0m3 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0m-3 3a1 1 0 1 1-2 0 1 1 0 0 1 2 0m3 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+                            </svg>
+                            ${this.escapeHTML(groupName)}
+                        `;
+                        
+                        const cardList = document.createElement('div');
+                        cardList.className = 'card-list';
+
+                        for (const date of groupedDates[groupName]) {
+                            const card = this.createDateCard(date);
+                            cardList.appendChild(card);
+                        }
+                        
+                        groupContainer.appendChild(groupHeader);
+                        groupContainer.appendChild(cardList);
+                        this.countdownContainer.appendChild(groupContainer);
+                    }
+                    
+                    this.initSortable(); // NEW
+                    this.startTimers(); // MOVED
+                },
+
+                // NEW: Initialize all SortableJS instances
+                initSortable() {
+                    // 1. Sort Groups
+                    this.sortableGroups = new Sortable(this.countdownContainer, {
+                        animation: 150,
+                        handle: '.group-header', // Drag only by the header
+                        ghostClass: 'sortable-ghost',
+                        dragClass: 'sortable-drag',
+                        onEnd: (evt) => this.handleGroupDrop(evt)
+                    });
+
+                    // 2. Sort Cards
+                    const cardLists = this.countdownContainer.querySelectorAll('.card-list');
+                    cardLists.forEach(list => {
+                        const sortableList = new Sortable(list, {
+                            animation: 150,
+                            group: 'goals', // Allows dragging between lists
+                            ghostClass: 'sortable-ghost',
+                            dragClass: 'sortable-drag',
+                            onEnd: (evt) => this.handleCardDrop(evt)
+                        });
+                        this.sortableCards.push(sortableList);
+                    });
+                },
+
+                // NEW: Handle card drop event
+                handleCardDrop(evt) {
+                    const dateId = evt.item.dataset.id;
+                    const newGroupEl = evt.to.closest('.group-container');
+                    if (!newGroupEl) return; // Should not happen
+
+                    const newGroupName = newGroupEl.dataset.groupName;
+                    
+                    const date = this.dates.find(g => g.id === dateId);
+                    if (date && date.group !== newGroupName) {
+                        date.group = newGroupName;
+                        this.saveDatesData(); // Save data, but do not re-render
+                    }
+                },
+
+                // NEW: Handle group drop event
+                handleGroupDrop(evt) {
+                    const newOrder = Array.from(this.countdownContainer.children)
+                        .map(el => el.dataset.groupName)
+                        .filter(Boolean); // Filter out any undefined
+                    
+                    this.groupOrder = newOrder;
+                    this.saveGroupOrderData(); // Save new order, do not re-render
+                },
+
+                // UPDATED: Added color parameter
+                getIconSVG(iconName, category, color = 'currentColor') {
+                    const name = String(iconName).trim().toLowerCase() || String(category).trim().toLowerCase();
+                    // UPDATED: Removed text-muted and stroke="currentColor" from commonProps
+                    const commonProps = `xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5 shrink-0"`;
+
+                    // UPDATED: Added stroke="${color}" to every svg tag
+                    switch (name) {
+                        case 'rocket': return `<svg ${commonProps} stroke="${color}"><path d="M4.5 16.5c-1.5 1.5-3 1.5-4.5 0s-1.5-3 0-4.5L13.5 4.5c1.5-1.5 3-1.5 4.5 0s1.5 3 0 4.5L6.5 21.5c-1.5 1.5-3 1.5-4.5 0s-1.5-3 0-4.5L13.5 10.5"/></svg>`;
+                        case 'award': return `<svg ${commonProps} stroke="${color}"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>`;
+                        case 'book-open': return `<svg ${commonProps} stroke="${color}"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>`;
+                        case 'work':
+                        case 'briefcase':
+                            return `<svg ${commonProps} stroke="${color}"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>`;
+                        case 'personal':
+                        case 'user':
+                            return `<svg ${commonProps} stroke="${color}"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`;
+                        case 'health':
+                        case 'heart':
+                            return `<svg ${commonProps} stroke="${color}"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>`;
+                        case 'learn':
+                        case 'graduation-cap':
+                             return `<svg ${commonProps} stroke="${color}"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 1.66 4 3 6 3s6-1.34 6-3v-5"/></svg>`;
+                        case 'finance':
+                        case 'dollar-sign':
+                            return `<svg ${commonProps} stroke="${color}"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>`;
+                        case 'travel':
+                        case 'globe-2':
+                            return `<svg ${commonProps} stroke="${color}"><path d="M15 21v-4a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v4"/><path d="M12 21a9 9 0 1 0-9-9c0 1.48.38 2.87.98 4"/><path d="M12 12a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>`;
+                        // NEW: Birthday/Cake icon
+                        case 'birthday':
+                        case 'cake':
+                            return `<svg ${commonProps} stroke="${color}"><path d="M20 21v-8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8"/><path d="M4 16s.5-1 2-1 2.5 2 4 2 2.5-2 4-2 2.5 2 4 2 2-1 2-1"/><path d="M2 21h20"/><path d="M7 8v3"/><path d="M12 8v3"/><path d="M17 8v3"/><path d="M7 4h.01"/><path d="M12 4h.01"/><path d="M17 4h.01"/></svg>`;
+                        case 'home':
+                            return `<svg ${commonProps} stroke="${color}"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`;
+                        case 'flag':
+                        default:
+                            return `<svg ${commonProps} stroke="${color}"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>`;
+                    }
+                },
+
+                // NEW: Calculates contrast for category tag
+                getContrastingTextColor(hex) {
+                    if (!hex) return 'var(--text-on-accent)'; // Default to light text
+                    
+                    // Sanitize hex
+                    hex = hex.replace('#', '');
+
+                    let r = 0, g = 0, b = 0;
+                    if (hex.length === 3) { // #RGB
+                        r = parseInt(hex[0] + hex[0], 16);
+                        g = parseInt(hex[1] + hex[1], 16);
+                        b = parseInt(hex[2] + hex[2], 16);
+                    } else if (hex.length === 6) { // #RRGGBB
+                        r = parseInt(hex.substring(0, 2), 16);
+                        g = parseInt(hex.substring(2, 4), 16);
+                        b = parseInt(hex.substring(4, 6), 16);
+                    } else {
+                        return 'var(--text-on-accent)'; // Fallback for invalid hex
+                    }
+
+                    // Calculate luminance (YIQ formula)
+                    const yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
+                    
+                    // Use theme variables for light/dark text
+                    // 128 is the midpoint. Dark backgrounds (yiq < 128) get light text.
+                    return (yiq < 128) ? 'var(--text-on-accent)' : 'var(--bg-main)';
+                },
+                
+                // NEW: Helper function to calculate next birthday
+                calculateNextBirthday(birthdateString) {
+                    try {
+                        const now = new Date();
+                        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate()); // 00:00 today
+                        const birthdate = new Date(birthdateString);
+                        
+                        // Handle invalid date string from input
+                        if (isNaN(birthdate.getTime())) throw new Error('Invalid date');
+
+                        const birthMonth = birthdate.getMonth();
+                        const birthDay = birthdate.getDate();
+                        const birthYear = birthdate.getFullYear();
+                        const currentYear = now.getFullYear();
+
+                        // Set birthday for this year
+                        let nextBirthdayDate = new Date(currentYear, birthMonth, birthDay); // 00:00 this year
+                        let nextAge = currentYear - birthYear;
+
+                        // If this year's birthday date is *before* today's date, set for next year
+                        if (nextBirthdayDate < today) {
+                            nextBirthdayDate.setFullYear(currentYear + 1);
+                            nextAge = nextBirthdayDate.getFullYear() - birthYear;
+                        }
+                        
+                        // Calculate current age
+                        let currentAge = now.getFullYear() - birthYear;
+                        if (now.getMonth() < birthMonth || (now.getMonth() === birthMonth && now.getDate() < birthDay)) {
+                            currentAge--; // Haven't had their birthday this year yet
+                        }
+
+                        // Calculate days remaining
+                        const timeDiff = nextBirthdayDate.getTime() - today.getTime(); // Diff from start of today
+                        const daysUntilBirthday = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+
+                        return { 
+                            nextBirthdayDate: nextBirthdayDate, 
+                            nextAge: nextAge, // The age they will be
+                            currentAge: currentAge, // The age they are now
+                            daysUntilBirthday: daysUntilBirthday // Days remaining
+                        };
+                    
+                    } catch (e) {
+                        console.error("Error calculating birthday:", e, birthdateString);
+                        // Return a fallback to prevent crashes
+                        return { nextBirthdayDate: new Date(), nextAge: 0, currentAge: 0, daysUntilBirthday: 0 };
+                    }
+                },
+
+                createDateCard(dateData) {
+                    // REVERTED: Card element uses class
+                    const card = document.createElement('div');
+                    card.className = 'card-bg p-2.5 rounded-lg shadow-lg flex flex-col space-y-2 w-40'; 
+                    card.dataset.id = dateData.id;
+                    // REVERTED: Removed inline styles for bg and CSS vars
+
+                    
+                    // --- NEW Birthday Logic ---
+                    let targetDate, formattedDate, timerDateString, nextAge = 0, currentAge = 0; // UPDATED
+                    let isBirthday = dateData.category.trim().toLowerCase() === 'birthday';
+                    
+                    if (isBirthday && dateData.date) {
+                        const bdayInfo = this.calculateNextBirthday(dateData.date);
+                        targetDate = bdayInfo.nextBirthdayDate;
+                        timerDateString = targetDate.toISOString();
+                        const originalBirthdate = new Date(dateData.date);
+                        formattedDate = originalBirthdate.toLocaleDateString(undefined, {
+                            month: 'short',
+                            day: 'numeric',
+                            year: 'numeric'
+                        });
+                        nextAge = bdayInfo.nextAge; // UPDATED
+                        currentAge = bdayInfo.currentAge; // UPDATED
+                    } else {
+                        isBirthday = false; // Ensure it's false if date is missing
+                        targetDate = new Date(dateData.date);
+                        timerDateString = dateData.date;
+                        formattedDate = targetDate.toLocaleDateString(undefined, {
+                            month: 'short',
+                            day: 'numeric',
+                            year: 'numeric'
+                        });
+                    }
+                    // --- END Birthday Logic ---
+                    
+                    const totalMilestones = dateData.milestones?.length || 0;
+                    const completedMilestones = dateData.milestones?.filter(m => m.completed).length || 0;
+                    
+                    const milestoneDots = (totalMilestones > 0 ?
+                        [...Array(totalMilestones)].map((_, i) => 
+                            `<div class="w-1.5 h-1.5 rounded-full ${i < completedMilestones ? 'bg-accent-light' : 'bg-interactive'}"></div>`
+                        ).join('') :
+                        '<div class="w-1.5 h-1.5 rounded-full opacity-0"></div>'
+                    );
+
+                    const isComplete = dateData.status === 'Completed';
+                    const completeClass = isComplete ? 'opacity-60' : '';
+                    const completeIconClass = isComplete ? 'text-success' : 'text-muted-light';
+
+                    // UPDATED: Get colors
+                    const categoryBGColor = this.escapeHTML(dateData.categoryColor || '#374151'); // hex for contrast calc
+                    const tagBGColor = this.escapeHTML(dateData.categoryColor || 'var(--bg-interactive)'); // css value for style
+                    const categoryTextColor = this.getContrastingTextColor(categoryBGColor);
+                    const iconColor = this.escapeHTML(dateData.categoryColor || 'var(--text-muted)');
+                    
+                    // UPDATED: Pass color to icon function
+                    // Use 'birthday' as iconName if category is birthday and no icon is set
+                    const iconName = isBirthday && !dateData.iconName ? 'birthday' : dateData.iconName;
+                    const iconSVG = this.getIconSVG(iconName, dateData.category, iconColor);
+
+                    // NEW: Conditionally render date or birthday message
+                    let dateOrBirthdayMessageHTML = '';
+                    if (isBirthday) {
+                        // Show the birthday message placeholder INSTEAD of the date
+                        dateOrBirthdayMessageHTML = `
+                            <div class="flex items-center gap-1.5 text-accent-light ${completeClass}">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5 shrink-0" stroke="currentColor">
+                                    <path d="M20 21v-8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8"/>
+                                    <path d="M4 16s.5-1 2-1 2.5 2 4 2 2.5-2 4-2 2.5 2 4 2 2-1 2-1"/>
+                                    <path d="M2 21h20"/>
+                                    <path d="M7 8v3"/><path d="M12 8v3"/><path d="M17 8v3"/>
+                                    <path d="M7 4h.01"/><path d="M12 4h.01"/><path d="M17 4h.01"/>
+                                </svg>
+                                <span class="text-xs font-medium" data-birthday-message></span> <!-- New placeholder location -->
+                            </div>
+                        `;
+                    } else {
+                        // Show the date as normal
+                        dateOrBirthdayMessageHTML = `
+                            <div class="flex items-center gap-1.5 text-muted ${completeClass}">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-3.5 h-3.5 shrink-0">
+                                    <path fill-rule="evenodd" d="M4 2a.75.75 0 0 1 .75.75V3h6.5V2.75a.75.75 0 0 1 1.5 0V3h.5A1.75 1.75 0 0 1 15 4.75v8.5A1.75 1.75 0 0 1 13.25 15H2.75A1.75 1.75 0 0 1 1 13.25v-8.5A1.75 1.75 0 0 1 2.75 3H3v-.25A.75.75 0 0 1 4 2ZM2.5 4.75v8.5c0 .138.112.25.25.25h10.5a.25.25 0 0 0 .25-.25v-8.5a.25.25 0 0 0-.25-.25H2.75a.25.25 0 0 0-.25.25Z" clip-rule="evenodd" />
+                                    <path d="M6.5 7.5a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3Zm-3 0a.5.5 0 0 0 0 1h.5a.5.5 0 0 0 0-1h-.5Zm6.5 2a.5.5 0 0 0 0 1h.5a.5.5 0 0 0 0-1h-.5Zm-3 0a.5.5 0 0 0 0 1h.5a.5.5 0 0 0 0-1h-.5Zm-3.5 0a.5.5 0 0 0 0 1h.5a.5.5 0 0 0 0-1h-.5Zm3.5 2a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3Zm-3 0a.5.5 0 0 0 0 1h.5a.5.5 0 0 0 0-1h-.5Z" />
+                                </svg>
+                                <span class="text-xs">${formattedDate}</span>
+                            </div>
+                        `;
+                    }
+                    
+                    // NEW: Milestone section HTML
+                    const milestoneHTML = isBirthday ? '' : `
+                        <div class="pt-0.5 ${completeClass}">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs text-muted">Milestones</span>
+                                <span class="text-xs font-medium text-color">${completedMilestones} / ${totalMilestones}</span>
+                            </div>
+                            <div class="flex items-center gap-1 mt-1.5 h-1.5">
+                                ${milestoneDots}
+                            </div>
+                        </div>
+                    `;
+
+                    card.innerHTML = `
+                        <div class="flex items-start justify-between gap-1.5 ${completeClass}">
+                            <div class="flex-col min-w-0"> <!-- Changed to flex-col -->
+                                <div class="flex items-center gap-1.5 min-w-0"> <!-- Original title row -->
+                                    ${iconSVG}
+                                    <h3 class="text-sm font-semibold text-primary truncate" title="${this.escapeHTML(dateData.title)}">${this.escapeHTML(dateData.title)}</h3>
+                                </div>
+                                <!-- DELETED: Birthday message placeholder was here -->
+                            </div>
+                            <div class="shrink-0 rounded-full ${isComplete ? 'bg-green-500' : 'border border-color-strong'} w-2.5 h-2.5 mt-0.5" title="Status: ${dateData.status}"></div>
+                        </div>
+
+                        <!-- DELETED: Placeholder for birthday message was here -->
+
+                        <!-- NEW: Show Date or Birthday "Turning X in" message -->
+                        ${dateOrBirthdayMessageHTML}
+                        
+                        <!-- NEW: Milestone section HTML -->
+                        <!-- UPDATED: Show checklist/milestones for birthdays as well -->
+                        <div class="pt-0.5 ${completeClass}">
+                            <div class="flex items-center justify-between">
+                                <!-- UPDATED: Show "Checklist" for birthday, "Milestones" otherwise -->
+                                <span class="text-xs text-muted">${isBirthday ? 'Checklist' : 'Milestones'}</span>
+                                <span class="text-xs font-medium text-color">${completedMilestones} / ${totalMilestones}</span>
+                            </div>
+                            <div class="flex items-center gap-1 mt-1.5 h-1.5">
+                                ${milestoneDots}
+                            </div>
+                        </div> <!-- UPDATED -->
+
+                        <!-- REVERTED: Timer elements use theme classes -->
+                        <!-- UPDATED: data-age renamed to data-next-age -->
+                        <!-- UPDATED: Added relative class -->
+                        <div class="relative flex justify-between gap-0.5 text-center ${completeClass}" data-date="${timerDateString}" data-id="${dateData.id}" data-time-container data-is-birthday="${isBirthday}" data-next-age="${nextAge}">
+                            <div class="bg-interactive py-1 px-1 rounded w-auto min-w-[1.75rem]" data-timer-segment>
+                                <span class="block text-sm font-bold text-primary" data-days>0</span>
+                                <span class="block text-[0.6rem] font-medium text-muted uppercase">Days</span>
+                            </div>
+                            <div class="bg-interactive py-1 px-1 rounded w-7" data-timer-segment>
+                                <span class="block text-sm font-bold text-primary" data-hours>0</span>
+                                <span class="block text-[0.6rem] font-medium text-muted uppercase">Hrs</span>
+                            </div>
+                            <div class="bg-interactive py-1 px-1 rounded w-7" data-timer-segment>
+                                <span class="block text-sm font-bold text-primary" data-minutes>0</span>
+                                <span class="block text-[0.6rem] font-medium text-muted uppercase">Min</span>
+                            </div>
+                            <div class="bg-interactive py-1 px-1 rounded w-7" data-timer-segment>
+                                <span class="block text-sm font-bold text-primary" data-seconds>0</span>
+                                <span class="block text-[0.6rem] font-medium text-muted uppercase">Sec</span>
+                            </div>
+                            
+                            <!-- UPDATED: This is now just for non-birthday alerts (and likely won't be used, but keep for safety) -->
+                            <span class="absolute inset-0 flex items-center justify-center text-xs font-medium text-accent-light p-1 hidden" data-milestone-alert></span>
+                        </div>
+                        
+                        <!-- This div is now for non-birthday alerts -->
+                        <div class="text-center" data-non-birthday-alert-container>
+                            <!-- Non-birthday alerts will go here -->
+                        </div>
+
+                        <!-- UPDATED: Bottom bar with priority dot REMOVED and category tag colored -->
+                        <div class="flex items-center justify-between pt-1 border-t border-color min-w-0">
+                            <div class="min-w-0"> 
+                                <span class="inline-flex items-center rounded-full px-2 py-0.5 text-[0.65rem] font-medium ${completeClass} truncate" 
+                                      style="background-color: ${tagBGColor}; color: ${categoryTextColor};" 
+                                      title="Category: ${this.escapeHTML(dateData.category)}">
+                                    ${this.escapeHTML(dateData.category) || 'Misc'}
+                                </span>
+                            </div>
+                            <div class="flex items-center gap-0.5 shrink-0">
+                                <button class="complete-card p-1 text-muted-light hover-text-success rounded ${completeIconClass}" title="Toggle Complete">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-3.5 h-3.5">
+                                        <path fill-rule="evenodd" d="M12.416 3.376a.75.75 0 0 1 .208 1.04l-5 7.5a.75.75 0 0 1-1.154.114l-3-3a.75.75 0 0 1 1.06-1.06l2.35 2.35 4.493-6.74a.75.75 0 0 1 1.04-.208Z" clip-rule="evenodd" />
+                                    </svg>
+                                </button>
+                                <button class="edit-card p-1 text-muted-light hover-text-accent-light rounded" title="Edit">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5">
+                                        <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/>
+                                        <path d="m15 5 4 4"/>
+                                    </svg>
+                                </button>
+                                <button class="delete-card p-1 text-muted-light hover-text-danger rounded" title="Delete">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5">
+                                        <path d="M3 6h18"/>
+                                        <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/>
+                                        <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>
+                                        <path d="M10 11v6"/>
+                                        <path d="M14 11v6"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    return card;
+                },
+
+                startTimers() {
+                    const timerElements = this.countdownContainer.querySelectorAll('[data-date]');
+                    timerElements.forEach(el => {
+                        const timerId = setInterval(() => {
+                            this.updateTimer(el);
+                        }, 1000);
+                        this.timers.push(timerId);
+                        this.updateTimer(el); // Initial call
+                    });
+                },
+
+                updateTimer(el) {
+                    const targetDate = new Date(el.dataset.date).getTime();
+                    const now = new Date().getTime();
+                    const distance = targetDate - now;
+
+                    // NEW: Get birthday data
+                    const isBirthday = el.dataset.isBirthday === 'true';
+                    const nextAge = el.dataset.nextAge; // UPDATED from data-age
+
+                    const daysEl = el.querySelector('[data-days]');
+                    const hoursEl = el.querySelector('[data-hours]');
+                    const minutesEl = el.querySelector('[data-minutes]');
+                    const secondsEl = el.querySelector('[data-seconds]');
+                    
+                    // UPDATED: Selectors
+                    // FIX: Use .card-bg to select the *parent* card, not the timer element itself.
+                    const birthdayMessageEl = el.closest('.card-bg[data-id]').querySelector('[data-birthday-message]'); // FIXED
+                    const alertEl = el.querySelector('[data-milestone-alert]'); // Overlay alert (for non-birthday)
+                    const nonBirthdayAlertContainer = el.closest('.card-bg[data-id]').querySelector('[data-non-birthday-alert-container]'); // FIXED
+                    const timeContainer = el;
+                    const timerSegments = el.querySelectorAll('[data-timer-segment]'); // NEW
+
+
+                    if (distance < 0) {
+                        const daysAgo = Math.floor(Math.abs(distance) / (1000 * 60 * 60 * 24));
+                        let pastMessage;
+                        
+                        // NEW: Birthday logic for past dates
+                        if (isBirthday) {
+                            const absDist = Math.abs(distance);
+                            if (absDist < (1000 * 60 * 60 * 24)) { // Birthday is *today*
+                                pastMessage = `Happy ${this.getOrdinal(nextAge)} Birthday!`; // UPDATED
+                            } else { // Birthday was yesterday or earlier
+                                pastMessage = `Birthday passed (Turned ${nextAge})`;
+                            }
+                        } else if (daysAgo === 0) {
+                            pastMessage = "Today!";
+                        } else if (daysAgo === 1) {
+                            pastMessage = "1 day ago";
+                        } else {
+                            pastMessage = `${daysAgo} days ago`;
+                        }
+                        
+                        if (timeContainer) {
+                            timeContainer.innerHTML = `<div class="text-xs text-center ${isBirthday && daysAgo === 0 ? 'font-bold text-accent-light' : 'text-muted'} py-1 px-1 w-full">${pastMessage}</div>`;
+                        }
+                        // Clear alerts
+                        if (birthdayMessageEl) birthdayMessageEl.innerHTML = ''; // NEW
+                        if (nonBirthdayAlertContainer) nonBirthdayAlertContainer.innerHTML = '';
+                        return;
+                    }
+
+                    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                    if (daysEl) daysEl.textContent = days;
+                    if (hoursEl) hoursEl.textContent = String(hours).padStart(2, '0');
+                    if (minutesEl) minutesEl.textContent = String(minutes).padStart(2, '0');
+                    if (secondsEl) secondsEl.textContent = String(seconds).padStart(2, '0');
+                    
+                    // UPDATED: Replaced single fragile 'if' with robust individual checks
+                    if (isBirthday) {
+                        // SHOW birthday message in its dedicated slot
+                        if (birthdayMessageEl) {
+                            // UPDATED: Changed text content as requested
+                            birthdayMessageEl.textContent = `Turning ${nextAge} in`;
+                        }
+                        
+                        // HIDE other alerts
+                        if (alertEl) alertEl.classList.add('hidden'); 
+                        if (nonBirthdayAlertContainer) nonBirthdayAlertContainer.innerHTML = ''; 
+
+                        // SHOW timer segments
+                        if (timerSegments) timerSegments.forEach(seg => seg.style.visibility = 'visible');
+                    } else {
+                        // HIDE birthday message
+                        if (birthdayMessageEl) birthdayMessageEl.textContent = '';
+                        
+                        // HIDE overlay
+                        if (alertEl) {
+                            alertEl.textContent = ''; 
+                            alertEl.classList.add('hidden'); 
+                        }
+
+                        // SHOW timer segments
+                        if (timerSegments) timerSegments.forEach(seg => seg.style.visibility = 'visible');
+
+                        // Put non-birthday alert in its own container
+                        if (nonBirthdayAlertContainer) {
+                            // UPDATED: Removed the milestone alert text as requested
+                            nonBirthdayAlertContainer.innerHTML = ''; // WAS: `<span class="text-xs font-medium text-accent-light">${this.getMilestoneAlert(distance, days)}</span>`;
+                        }
+                    }
+                },
+                
+                // NEW: Helper function for ordinals (1st, 2nd, 3rd)
+                getOrdinal(n) {
+                    if (n === null || n === undefined) return '';
+                    const s = ['th', 'st', 'nd', 'rd'];
+                    const v = n % 100;
+                    return n + (s[(v - 20) % 10] || s[v] || s[0]);
+                },
+
+                getMilestoneAlert(distance, days) {
+                    const totalYears = Math.floor(days / 365.25);
+                    const totalMonths = Math.floor(days / 30.44);
+
+                    if (days <= 6) {
+                        return "Less than a week left";
+                    } else if (days === 7) {
+                        return "1 week left!";
+                    } else if (days <= 13) {
+                        return "Less than 2 weeks left";
+                    } else if (days === 14) {
+                        return "2 weeks left!";
+                    } else if (days < 30) {
+                        return "Less than a month left";
+                    } else if (totalMonths < 12) {
+                        return totalMonths === 1 ? "1 month left" : `${totalMonths} months left`;
+                    } else if (totalYears < 2) {
+                        return "1 year left";
+                    } else {
+                        const remainingMonths = Math.floor((days % 365.25) / 30.44);
+                        if (remainingMonths > 0) {
+                            return `${totalYears} years & ${remainingMonths} ${remainingMonths === 1 ? 'month' : 'months'} left`;
+                        } else {
+                            return `${totalYears} years left`;
+                        }
+                    }
+                },
+
+                updateDatalists() {
+                    const categories = [...new Set(this.dates.map(g => g.category).filter(Boolean))];
+                    const groups = [...new Set(this.dates.map(g => g.group).filter(Boolean))];
+
+                    this.categorySuggestions.innerHTML = categories.map(c => `<option value="${this.escapeHTML(c)}"></option>`).join('');
+                    this.groupSuggestions.innerHTML = groups.map(g => `<option value="${this.escapeHTML(g)}"></option>`).join('');
+                },
+                
+                escapeHTML(str) {
+                    if (str === null || str === undefined) {
+                        return '';
+                    }
+                    return str.toString()
+                        .replace(/&/g, '&amp;')
+                        .replace(/</g, '&lt;')
+                        .replace(/>/g, '&gt;')
+                        .replace(/"/g, '&quot;')
+                        .replace(/'/g, '&#039;');
+                },
+
+                // --- End of App Object ---
+            }; // <-- End of app object
+
+            app.init(); // Initialize the app
+
+        }); // <-- End of DOMContentLoaded listener
+    </script>
+
+</body>
+</html>
