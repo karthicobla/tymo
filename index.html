@@ -350,7 +350,7 @@
             box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3), 0 4px 6px -2px rgba(0,0,0,0.15);
         }
 
-        /* --- NEW: Onboarding Styles --- */
+        /* --- Onboarding Styles --- */
         .onboarding-highlight {
             position: relative;
             z-index: 195 !important; /* Above overlay, below step */
@@ -394,6 +394,31 @@
             left: -4px;
         }
         /* --- END: Onboarding Styles --- */
+
+        /* --- NEW: Profile Popover Styles --- */
+        .popover {
+            display: none;
+            position: absolute;
+            z-index: 50;
+            top: 100%;
+            right: 0;
+            margin-top: 0.5rem; /* mt-2 */
+            width: 14rem; /* w-56 */
+            transform-origin: top right;
+            border-radius: 0.5rem; /* rounded-lg */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            border-width: 1px;
+        }
+        .popover.flex {
+            display: flex;
+            flex-direction: column;
+        }
+        .profile-list-item {
+            transition: background-color 0.15s ease-in-out;
+        }
+        .profile-list-item:hover {
+            background-color: var(--bg-interactive);
+        }
     </style>
 </head>
 <body class="antialiased body-bg text-color">
@@ -423,10 +448,35 @@
                     <i data-lucide="plus" class="w-5 h-5"></i>
                     Add Date
                 </button>
+                
+                <!-- NEW: Profile Switcher -->
+                <div id="profileContainer" class="relative">
+                    <button id="profileBtn" class="btn btn-secondary font-medium py-2 px-4 rounded-lg text-sm flex items-center gap-1.5 w-full">
+                        <i data-lucide="user" class="w-5 h-5"></i>
+                        <span id="currentProfileName" class="truncate max-w-[100px]">Profile</span>
+                        <i data-lucide="chevrons-up-down" class="w-4 h-4 text-muted-light"></i>
+                    </button>
+                    <!-- Profile Popover -->
+                    <div id="profilePopover" class="popover modal-bg border-color">
+                        <div class="p-2 border-b border-color">
+                            <span class="text-xs font-medium text-muted">PROFILES</span>
+                        </div>
+                        <div id="profileList" class="py-1 max-h-48 overflow-y-auto">
+                            <!-- Profile items injected by JS -->
+                        </div>
+                        <div class="p-2 border-t border-color space-y-2">
+                            <input type="text" id="newProfileName" class="input-bg w-full border border-color-strong rounded-lg px-3 py-2 text-sm focus:ring-2 outline-none" placeholder="Create new profile...">
+                            <button id="addProfileBtn" class="btn btn-primary w-full text-sm py-2">
+                                Add Profile
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- END: Profile Switcher -->
+
                 <button id="settingsBtn" class="btn btn-secondary font-medium p-2 rounded-lg text-sm">
                     <i data-lucide="settings" class="w-5 h-5"></i>
                 </button>
-                <!-- NEW: Help/Onboarding Button -->
                 <button id="helpBtn" class="btn btn-secondary font-medium p-2 rounded-lg text-sm" title="Show Help">
                     <i data-lucide="help-circle" class="w-5 h-5"></i>
                 </button>
@@ -434,7 +484,6 @@
         </header>
 
         <!-- Countdown Container -->
-        <!-- UPDATED: This container now holds groups, which in turn hold cards -->
         <div id="countdownContainer" class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-3">
             <!-- Widgets and groups will be dynamically inserted here -->
         </div>
@@ -482,8 +531,8 @@
                             <!-- Dynamically populated. Add common suggestions. -->
                             <option value="Personal"></option>
                             <option value="Work"></option>
-                            <option value="Birthday"></option> <!-- ADDED -->
-                            <option value="Anniversary"></option> <!-- ADDED -->
+                            <option value="Birthday"></option>
+                            <option value="Anniversary"></option>
                             <option value="Health"></option>
                             <option value="Finance"></option>
                             <option value="Learn"></option>
@@ -492,7 +541,7 @@
                         </datalist>
                     </div>
 
-                    <!-- NEW: Remembrance Checkbox -->
+                    <!-- Remembrance Checkbox -->
                     <div id="remembranceCheckboxContainer" class="hidden md:col-span-1 flex items-end pb-2.5">
                         <div class="flex items-center">
                             <input id="isRemembrance" type="checkbox" class="h-4 w-4 rounded border-color-strong bg-interactive text-accent-light focus:ring-accent-light">
@@ -500,7 +549,7 @@
                         </div>
                     </div>
         
-                    <!-- NEW: Date of Death -->
+                    <!-- Date of Death -->
                     <div id="dateOfDeathContainer" class="hidden md:col-span-1">
                         <label for="dateOfDeath" class="block text-sm font-medium text-color mb-1.5">Date of Passing</label>
                         <input type="date" id="dateOfDeath" class="input-bg w-full border border-color-strong rounded-lg px-3 py-2.5 text-sm focus:ring-2 outline-none">
@@ -517,9 +566,9 @@
                             <option value="book-open"></option>
                             <option value="briefcase"></option>
                             <option value="calendar"></option>
-                            <option value="cake"></option> <!-- ADDED -->
-                            <option value="gift"></option> <!-- ADDED -->
-                            <option value="calendar-heart"></option> <!-- ADDED -->
+                            <option value="cake"></option>
+                            <option value-"gift"></option>
+                            <option value="calendar-heart"></option>
                             <option value="heart"></option>
                             <option value="home"></option>
                             <option value="flag"></option>
@@ -542,7 +591,7 @@
                         </datalist>
                     </div>
 
-                    <!-- UPDATED: Category Color -->
+                    <!-- Category Color -->
                     <div>
                         <label for="dateCategoryColor" class="block text-sm font-medium text-color mb-1.5">Icon & Category Color</label>
                         <input type="color" id="dateCategoryColor" value="#374151"> <!-- Default value -->
@@ -550,11 +599,9 @@
                 </div>
 
                 <!-- Milestones (Subtasks) -->
-                <div id="milestoneSection"> <!-- ADDED ID -->
-                    <!-- UPDATED: Moved h3 and added checkbox -->
+                <div id="milestoneSection">
                     <div class="flex items-center justify-between mb-2">
                         <h3 class="text-sm font-medium text-color">Key Results (Milestones)</h3>
-                        <!-- NEW: Show Milestones Checkbox -->
                         <div class="flex items-center">
                             <input id="dateShowMilestones" type="checkbox" class="h-4 w-4 rounded border-color-strong bg-interactive text-accent-light focus:ring-accent-light">
                             <label for="dateShowMilestones" class="ml-2 block text-sm font-medium text-color">Show on Card</label>
@@ -563,14 +610,12 @@
                     <div id="milestonesContainer" class="space-y-2">
                         <!-- Milestones will be dynamically inserted here -->
                     </div>
-                    <!-- UPDATED: Milestone add section -->
                     <div class="flex items-center gap-2 mt-2">
                         <input type="text" id="newMilestoneInput" class="input-bg flex-1 border border-color-strong rounded-lg px-3 py-2.5 text-sm focus:ring-2 outline-none" placeholder="Add a new milestone...">
                         <button id="addMilestoneBtn" type="button" class="btn btn-secondary p-2.5 rounded-lg text-accent-light hover:text-accent">
                             <i data-lucide="plus" class="w-5 h-5"></i>
                         </button>
                     </div>
-                    <!-- END UPDATED: Milestone add section -->
                 </div>
 
             </div>
@@ -598,7 +643,7 @@
             </div>
             <!-- Modal Body -->
             <div class="p-6 space-y-4">
-                <!-- NEW: Column Count Setting -->
+                <!-- Column Count Setting -->
                 <div>
                     <label for="columnCountSelect" class="block text-sm font-medium text-color mb-1.5">Columns on Wide Screen</label>
                     <select id="columnCountSelect" class="select-bg w-full border border-color-strong rounded-lg px-3 py-2.5 text-sm focus:ring-2 outline-none">
@@ -608,16 +653,16 @@
                         <option value="4">4 Columns</option>
                     </select>
                 </div>
-                <!-- END: Column Count Setting -->
-                <p class="text-sm text-muted pt-2">Export all your dates to a JSON file as a backup, or import them on another device.</p>
+                <!-- Data Management -->
+                <p class="text-sm text-muted pt-2">Export your <strong class="text-secondary" id="exportProfileName">current profile's</strong> data as a backup, or import data into this profile.</p>
                 <button id="exportDataBtn" class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2.5 px-4 rounded-lg text-sm flex items-center justify-center gap-2">
                     <i data-lucide="download" class="w-5 h-5"></i>
-                    Export Dates (.json)
+                    Export Profile Data (.json)
                 </button>
                 <div>
                     <label for="importFile" class="btn btn-primary w-full font-medium py-2.5 px-4 rounded-lg text-sm flex items-center justify-center gap-2 cursor-pointer">
                         <i data-lucide="upload" class="w-5 h-5"></i>
-                        Import Dates (.json)
+                        Import Profile Data (.json)
                     </label>
                     <input type="file" id="importFile" class="hidden" accept=".json">
                 </div>
@@ -644,7 +689,7 @@
         <!-- Toasts will be dynamically inserted here -->
     </div>
 
-    <!-- NEW: Onboarding Tour -->
+    <!-- Onboarding Tour -->
     <div id="onboardingOverlay" class="modal fixed inset-0 z-[190] bg-black bg-opacity-75"></div>
     <div id="onboardingStep" class="modal absolute z-[200] modal-bg rounded-lg shadow-xl w-full max-w-xs p-4" data-step-index="0">
         <p id="onboardingText" class="text-sm text-color mb-4">Welcome to Tymr!</p>
@@ -668,7 +713,16 @@
                 addDateBtn: document.getElementById('addDateBtn'),
                 settingsBtn: document.getElementById('settingsBtn'),
                 themeSwitcher: document.getElementById('themeSwitcher'),
-                helpBtn: document.getElementById('helpBtn'), // NEW
+                helpBtn: document.getElementById('helpBtn'),
+
+                // NEW: Profile UI
+                profileContainer: document.getElementById('profileContainer'),
+                profileBtn: document.getElementById('profileBtn'),
+                currentProfileName: document.getElementById('currentProfileName'),
+                profilePopover: document.getElementById('profilePopover'),
+                profileList: document.getElementById('profileList'),
+                newProfileName: document.getElementById('newProfileName'),
+                addProfileBtn: document.getElementById('addProfileBtn'),
 
                 // Goal Modal
                 dateModal: document.getElementById('dateModal'),
@@ -681,15 +735,14 @@
                 dateTitle: document.getElementById('dateTitle'),
                 dateNotes: document.getElementById('dateNotes'),
                 dateTarget: document.getElementById('dateTarget'),
-                // goalPriority: (REMOVED)
                 dateCategory: document.getElementById('dateCategory'),
-                dateCategoryColor: document.getElementById('dateCategoryColor'), // NEW
+                dateCategoryColor: document.getElementById('dateCategoryColor'),
                 dateIconName: document.getElementById('dateIconName'),
                 dateGroup: document.getElementById('dateGroup'),
                 categorySuggestions: document.getElementById('categorySuggestions'),
                 groupSuggestions: document.getElementById('groupSuggestions'),
 
-                // NEW: Remembrance Fields
+                // Remembrance Fields
                 remembranceCheckboxContainer: document.getElementById('remembranceCheckboxContainer'),
                 isRemembrance: document.getElementById('isRemembrance'),
                 dateOfDeathContainer: document.getElementById('dateOfDeathContainer'),
@@ -699,15 +752,16 @@
                 milestonesContainer: document.getElementById('milestonesContainer'),
                 newMilestoneInput: document.getElementById('newMilestoneInput'),
                 addMilestoneBtn: document.getElementById('addMilestoneBtn'),
-                milestoneSection: document.getElementById('milestoneSection'), // NEW
-                dateShowMilestones: document.getElementById('dateShowMilestones'), // NEW
+                milestoneSection: document.getElementById('milestoneSection'),
+                dateShowMilestones: document.getElementById('dateShowMilestones'),
 
                 // Settings Modal
                 settingsModal: document.getElementById('settingsModal'),
                 closeSettingsBtn: document.getElementById('closeSettingsBtn'),
                 exportDataBtn: document.getElementById('exportDataBtn'),
                 importFile: document.getElementById('importFile'),
-                columnCountSelect: document.getElementById('columnCountSelect'), // NEW
+                columnCountSelect: document.getElementById('columnCountSelect'),
+                exportProfileName: document.getElementById('exportProfileName'), // NEW
 
                 // Confirm Modal
                 confirmModal: document.getElementById('confirmModal'),
@@ -719,7 +773,7 @@
                 // Toast
                 toastContainer: document.getElementById('toastContainer'),
 
-                // NEW: Onboarding
+                // Onboarding
                 onboardingOverlay: document.getElementById('onboardingOverlay'),
                 onboardingStep: document.getElementById('onboardingStep'),
                 onboardingText: document.getElementById('onboardingText'),
@@ -729,47 +783,91 @@
                 onboardingArrow: document.getElementById('onboardingArrow'),
 
                 // App State
-                dates: [],
-                groupOrder: [], // NEW: To store the order of groups
+                appState: {}, // NEW: Main state object
+                currentProfileId: null, // NEW
                 timers: [],
                 currentMilestones: [],
                 _confirmCallback: null,
-                sortableGroups: null, // NEW: Sortable instance for groups
-                sortableCards: [], // NEW: Array of Sortable instances for cards
-                columnCount: 2, // NEW: Default column count
+                sortableGroups: null,
+                sortableCards: [],
+                // columnCount: 2, // REMOVED: Now part of profile settings
 
-                // NEW: Onboarding State
+                // Onboarding State
                 tourSteps: [],
                 currentTourStep: 0,
                 popperInstance: null,
 
+                // --- NEW: App State Getters ---
+                // These functions get data for the *current* profile
+                getDates() {
+                    return this.appState.profileData[this.currentProfileId]?.dates || [];
+                },
+                getGroupOrder() {
+                    return this.appState.profileData[this.currentProfileId]?.groupOrder || [];
+                },
+                getSettings() {
+                    return this.appState.profileData[this.currentProfileId]?.settings || this.getDefaultSettings();
+                },
+                getCurrentProfile() {
+                    return this.appState.profiles[this.currentProfileId] || null;
+                },
+                getCurrentData() {
+                    return this.appState.profileData[this.currentProfileId] || null;
+                },
+                getDefaultSettings() {
+                    return {
+                        theme: 'dark',
+                        columnCount: 2,
+                        hasSeenTour: false
+                    };
+                },
+                // --- END: App State Getters ---
+
                 init() {
-                    this.loadTheme();
-                    this.loadDates();
-                    this.loadAndApplyColumnCount(); // NEW
-                    this.renderAllDates();
-                    this.updateDatalists();
-                    // this.startTimers(); // Moved to renderAllDates
+                    this.loadAppState(); // NEW: Single load function
+                    this.loadProfileData(this.currentProfileId); // NEW: Load data for the active profile
+                    
+                    // REMOVED: loadTheme, loadDates, loadAndApplyColumnCount
+                    
+                    // renderAllDates and updateDatalists are called inside loadProfileData
                     this.attachEventListeners();
                     this.initThemes();
-                    this.initTourSteps(); // NEW
-                    this.startTour(); // NEW
-                    lucide.createIcons(); // NEW: Initial icon render
+                    this.initTourSteps();
+                    this.startTour();
+                    lucide.createIcons();
                 },
 
                 attachEventListeners() {
                     this.addDateBtn.addEventListener('click', () => this.openModal());
                     this.settingsBtn.addEventListener('click', () => this.openSettings());
-                    this.helpBtn.addEventListener('click', () => this.startTour(true)); // NEW: true forces restart
+                    this.helpBtn.addEventListener('click', () => this.startTour(true));
                     
+                    // NEW: Profile Listeners
+                    this.profileBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        this.toggleProfilePopover();
+                    });
+                    this.addProfileBtn.addEventListener('click', () => this.addProfile());
+                    this.newProfileName.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter') {
+                            e.preventDefault();
+                            this.addProfile();
+                        }
+                    });
+                    // Close popover on outside click
+                    document.addEventListener('click', (e) => {
+                        if (!this.profileContainer.contains(e.target)) {
+                            this.profilePopover.classList.remove('flex');
+                        }
+                    });
+
                     // Goal Modal
                     this.closeModalBtn.addEventListener('click', () => this.closeModal());
                     this.cancelModalBtn.addEventListener('click', () => this.closeModal());
                     this.saveDateBtn.addEventListener('click', () => this.saveDate());
                     this.deleteDateBtn.addEventListener('click', () => this.handleDeleteDate());
-                    // NEW: Listen for category changes to update the modal UI
                     this.dateCategory.addEventListener('input', () => this.updateModalForCategory());
-                    this.isRemembrance.addEventListener('change', () => this.updateModalForCategory()); // NEW
+                    this.isRemembrance.addEventListener('change', () => this.updateModalForCategory());
 
                     // Milestones
                     this.addMilestoneBtn.addEventListener('click', () => this.addMilestone());
@@ -793,31 +891,23 @@
                     this.closeSettingsBtn.addEventListener('click', () => this.closeSettings());
                     this.exportDataBtn.addEventListener('click', () => this.exportData());
                     this.importFile.addEventListener('change', (e) => this.importData(e));
-                    this.columnCountSelect.addEventListener('change', (e) => this.setColumnCount(e.target.value)); // NEW
+                    this.columnCountSelect.addEventListener('change', (e) => this.setColumnCount(e.target.value));
 
                     // Confirm Modal
                     this.confirmCancel.addEventListener('click', () => this.closeConfirm());
                     this.confirmDelete.addEventListener('click', () => this.runConfirm());
 
-                    // Card actions (event delegation on the container)
+                    // Card actions
                     this.countdownContainer.addEventListener('click', (e) => {
                         const card = e.target.closest('[data-id]');
                         if (!card) return;
-                        
                         const id = card.dataset.id;
-
-                        if (e.target.closest('.edit-card')) {
-                            this.openModal(id);
-                        } else if (e.target.closest('.delete-card')) {
-                            this.handleDeleteCard(id);
-                        } else if (e.target.closest('.complete-card')) {
-                            this.toggleComplete(id);
-                        } else if (e.target.closest('.toggle-milestones')) { // NEW
-                            this.toggleMilestonesDisplay(id);
-                        }
+                        if (e.target.closest('.edit-card')) this.openModal(id);
+                        else if (e.target.closest('.delete-card')) this.handleDeleteCard(id);
+                        else if (e.target.closest('.complete-card')) this.toggleComplete(id);
                     });
 
-                    // NEW: Onboarding
+                    // Onboarding
                     this.onboardingSkip.addEventListener('click', () => this.endTour());
                     this.onboardingNext.addEventListener('click', () => this.nextTourStep());
                     this.onboardingPrev.addEventListener('click', () => this.prevTourStep());
@@ -832,41 +922,248 @@
                     });
                 },
 
+                // UPDATED: Now part of profile settings
                 loadTheme() {
-                    const savedTheme = localStorage.getItem('tymrTheme') || 'dark';
-                    this.setTheme(savedTheme);
+                    const theme = this.getSettings().theme;
+                    this.setTheme(theme, false); // false = don't save, just apply
                 },
 
-                setTheme(themeName) {
+                // UPDATED: Now saves to profile
+                setTheme(themeName, doSave = true) {
                     document.documentElement.dataset.theme = themeName;
-                    localStorage.setItem('tymrTheme', themeName);
+                    
+                    if (doSave) {
+                        this.getSettings().theme = themeName;
+                        this.saveAppState();
+                    }
 
-                    // Update active button state
                     this.themeSwitcher.querySelectorAll('.theme-btn').forEach(btn => {
                         btn.classList.toggle('active-theme', btn.dataset.theme === themeName);
                     });
                 },
                 
-                loadDates() {
-                    const datesData = localStorage.getItem('countdownDates');
-                    this.dates = datesData ? JSON.parse(datesData) : [];
-                    const orderData = localStorage.getItem('tymrGroupOrder');
-                    this.groupOrder = orderData ? JSON.parse(orderData) : [];
+                // REMOVED: loadDates()
+                // REMOVED: saveDatesData()
+                // REMOVED: saveGroupOrderData()
+
+                // --- NEW: Profile & State Management ---
+                loadAppState() {
+                    const appData = localStorage.getItem('tymrApp');
+                    if (appData) {
+                        this.appState = JSON.parse(appData);
+                        this.currentProfileId = this.appState.currentProfileId;
+                        // Migration check for older data
+                        if (!this.appState.profileData) {
+                            this.migrateOldData();
+                        }
+                    } else {
+                        // No data, create default
+                        this.createDefaultProfileData();
+                    }
+                    
+                    // Ensure a valid profile is always selected
+                    if (!this.currentProfileId || !this.appState.profiles[this.currentProfileId]) {
+                        this.currentProfileId = Object.keys(this.appState.profiles)[0];
+                        this.appState.currentProfileId = this.currentProfileId;
+                        this.saveAppState();
+                    }
+                },
+                
+                saveAppState() {
+                    localStorage.setItem('tymrApp', JSON.stringify(this.appState));
+                },
+                
+                createDefaultProfileData() {
+                    const defaultProfileId = `profile_${Date.now()}`;
+                    this.appState = {
+                        currentProfileId: defaultProfileId,
+                        profiles: {
+                            [defaultProfileId]: { id: defaultProfileId, name: 'Personal' }
+                        },
+                        profileData: {
+                            [defaultProfileId]: {
+                                dates: [],
+                                groupOrder: [],
+                                settings: this.getDefaultSettings()
+                            }
+                        }
+                    };
+                    this.currentProfileId = defaultProfileId;
+                    this.saveAppState();
+                },
+                
+                // NEW: Handle migrating data from the old format
+                migrateOldData() {
+                    console.log("Migrating old data...");
+                    const oldDates = JSON.parse(localStorage.getItem('countdownDates') || '[]');
+                    const oldGroupOrder = JSON.parse(localStorage.getItem('tymrGroupOrder') || '[]');
+                    const oldTheme = localStorage.getItem('tymrTheme') || 'dark';
+                    const oldColumnCount = parseInt(localStorage.getItem('tymrColumnCount') || '2', 10);
+                    const oldTourSeen = localStorage.getItem('tymrTourSeen') === 'true';
+
+                    const defaultProfileId = `profile_${Date.now()}`;
+                    this.appState = {
+                        currentProfileId: defaultProfileId,
+                        profiles: {
+                            [defaultProfileId]: { id: defaultProfileId, name: 'Personal (Migrated)' }
+                        },
+                        profileData: {
+                            [defaultProfileId]: {
+                                dates: oldDates,
+                                groupOrder: oldGroupOrder,
+                                settings: {
+                                    theme: oldTheme,
+                                    columnCount: oldColumnCount,
+                                    hasSeenTour: oldTourSeen
+                                }
+                            }
+                        }
+                    };
+                    this.currentProfileId = defaultProfileId;
+                    this.saveAppState();
+                    
+                    // Clean up old keys
+                    localStorage.removeItem('countdownDates');
+                    localStorage.removeItem('tymrGroupOrder');
+                    localStorage.removeItem('tymrTheme');
+                    localStorage.removeItem('tymrColumnCount');
+                    localStorage.removeItem('tymrTourSeen');
                 },
 
-                // NEW: Just saves goal data
-                saveDatesData() {
-                    localStorage.setItem('countdownDates', JSON.stringify(this.dates));
+                // NEW: This is the main "switcher" function
+                loadProfileData(profileId) {
+                    if (!this.appState.profiles[profileId]) {
+                        console.error("Profile not found:", profileId);
+                        return;
+                    }
+                    
+                    this.currentProfileId = profileId;
+                    this.appState.currentProfileId = profileId;
+                    this.saveAppState(); // Save the new active profile ID
+
+                    const profile = this.getCurrentProfile();
+                    const settings = this.getSettings();
+                    
+                    // 1. Update UI
+                    this.currentProfileName.textContent = profile.name;
+                    this.exportProfileName.textContent = profile.name; // Update settings modal text
+                    this.renderProfileList();
+                    
+                    // 2. Apply Settings
+                    this.setTheme(settings.theme, false); // Apply, don't re-save
+                    this.applyColumnClasses(settings.columnCount);
+                    this.columnCountSelect.value = settings.columnCount;
+                    
+                    // 3. Render Data
+                    this.renderAllDates(); // This now uses getDates() and getGroupOrder()
+                    this.updateDatalists();
                 },
 
-                // NEW: Just saves group order
-                saveGroupOrderData() {
-                    localStorage.setItem('tymrGroupOrder', JSON.stringify(this.groupOrder));
+                toggleProfilePopover() {
+                    this.profilePopover.classList.toggle('flex');
+                    if (this.profilePopover.classList.contains('flex')) {
+                        this.renderProfileList();
+                        lucide.createIcons();
+                    }
+                },
+                
+                renderProfileList() {
+                    this.profileList.innerHTML = '';
+                    const profiles = Object.values(this.appState.profiles);
+                    
+                    if (profiles.length === 0) {
+                         this.profileList.innerHTML = '<span class="px-3 py-2 text-sm text-muted">No profiles.</span>';
+                         return;
+                    }
+                    
+                    profiles.sort((a, b) => (a.name || '').localeCompare(b.name || '')).forEach(profile => {
+                        const isCurrent = profile.id === this.currentProfileId;
+                        const item = document.createElement('div');
+                        item.className = `profile-list-item flex items-center justify-between group ${isCurrent ? 'bg-interactive' : ''}`;
+                        
+                        const switchBtn = document.createElement('button');
+                        switchBtn.className = 'flex-1 flex items-center gap-2 text-left px-3 py-2 text-sm text-secondary';
+                        switchBtn.innerHTML = `
+                            ${isCurrent ? '<i data-lucide="check" class="w-4 h-4 text-accent"></i>' : '<span class="w-4 h-4"></span>'}
+                            <span class="truncate ${isCurrent ? 'font-semibold text-primary' : ''}">${this.escapeHTML(profile.name)}</span>
+                        `;
+                        switchBtn.onclick = () => {
+                            this.loadProfileData(profile.id);
+                            this.toggleProfilePopover();
+                        };
+                        
+                        const deleteBtn = document.createElement('button');
+                        deleteBtn.className = 'p-2 text-muted-light hover:text-danger opacity-0 group-hover:opacity-100 transition-opacity';
+                        deleteBtn.title = `Delete ${this.escapeHTML(profile.name)}`;
+                        deleteBtn.innerHTML = '<i data-lucide="trash-2" class="w-4 h-4"></i>';
+                        deleteBtn.onclick = (e) => {
+                            e.stopPropagation();
+                            this.handleDeleteProfile(profile.id);
+                        };
+
+                        item.appendChild(switchBtn);
+                        // Don't allow deleting the last profile
+                        if (profiles.length > 1) {
+                            item.appendChild(deleteBtn);
+                        }
+                        this.profileList.appendChild(item);
+                    });
+                },
+                
+                addProfile() {
+                    const name = this.newProfileName.value.trim();
+                    if (!name) {
+                        this.showToast("Please enter a profile name.", "error");
+                        return;
+                    }
+                    
+                    const newId = `profile_${Date.now()}`;
+                    this.appState.profiles[newId] = { id: newId, name: name };
+                    this.appState.profileData[newId] = {
+                        dates: [],
+                        groupOrder: [],
+                        settings: this.getDefaultSettings()
+                    };
+                    
+                    this.saveAppState();
+                    this.loadProfileData(newId); // Switch to the new profile
+                    this.newProfileName.value = '';
+                    this.toggleProfilePopover();
                 },
 
-                // UPDATED: Renamed from saveGoals, now calls saveDatesData and re-renders
+                handleDeleteProfile(profileId) {
+                    if (Object.keys(this.appState.profiles).length <= 1) {
+                        this.showToast("Cannot delete the last profile.", "error");
+                        return;
+                    }
+                    
+                    const profileName = this.appState.profiles[profileId].name;
+                    this.showConfirm(
+                        `Delete "${profileName}"?`,
+                        `Are you sure? All dates and settings for this profile will be permanently lost.`,
+                        () => {
+                            delete this.appState.profiles[profileId];
+                            delete this.appState.profileData[profileId];
+                            
+                            // If we deleted the active profile, switch to the first available one
+                            if (this.currentProfileId === profileId) {
+                                const newCurrentId = Object.keys(this.appState.profiles)[0];
+                                this.loadProfileData(newCurrentId);
+                            } else {
+                                this.renderProfileList(); // Just re-render the list
+                            }
+                            this.saveAppState();
+                            this.showToast(`Profile "${profileName}" deleted.`, 'success');
+                        }
+                    );
+                },
+                // --- END: Profile & State Management ---
+
+                // UPDATED: Now part of saveAndRender()
                 saveAndRender() {
-                    this.saveDatesData();
+                    // This function no longer saves directly,
+                    // it just triggers the render.
+                    // The actual save happens in saveDate(), setColumnCount(), etc.
                     this.renderAllDates();
                     this.updateDatalists();
                 },
@@ -874,22 +1171,20 @@
                 openModal(id = null) {
                     this.resetModal();
                     if (id) {
-                        const date = this.dates.find(g => g.id === id);
+                        const date = this.getDates().find(g => g.id === id); // UPDATED
                         if (date) {
                             this.modalTitle.textContent = 'Edit Date';
                             this.dateId.value = date.id;
                             this.dateTitle.value = date.title;
                             this.dateNotes.value = date.notes || '';
                             this.dateTarget.value = date.date ? date.date.substring(0, 16) : '';
-                            // this.goalPriority.value = goal.priority || 'Medium'; // REMOVED
                             this.dateCategory.value = date.category || '';
-                            this.dateCategoryColor.value = date.categoryColor || '#374151'; // NEW
+                            this.dateCategoryColor.value = date.categoryColor || '#374151';
                             this.dateIconName.value = date.iconName || '';
                             this.dateGroup.value = date.group || '';
                             this.currentMilestones = JSON.parse(JSON.stringify(date.milestones || []));
                             this.deleteDateBtn.style.display = 'block';
 
-                            // NEW: Populate remembrance and milestone display fields
                             this.isRemembrance.checked = date.isRemembrance || false;
                             this.dateOfDeath.value = date.dateOfDeath || '';
                             this.dateShowMilestones.checked = date.showMilestones ?? true;
@@ -899,9 +1194,9 @@
                         this.deleteDateBtn.style.display = 'none';
                     }
                     this.renderMilestones();
-                    this.updateModalForCategory(); // NEW: Update UI based on category
+                    this.updateModalForCategory();
                     this.dateModal.classList.add('flex');
-                    lucide.createIcons(); // NEW: Render icons in modal
+                    lucide.createIcons();
                 },
 
                 closeModal() {
@@ -915,48 +1210,37 @@
                     this.dateTitle.value = '';
                     this.dateNotes.value = '';
                     this.dateTarget.value = '';
-                    // this.goalPriority.value = 'Medium'; // REMOVED
                     this.dateCategory.value = '';
-                    this.dateCategoryColor.value = '#374151'; // NEW
+                    this.dateCategoryColor.value = '#374151';
                     this.dateIconName.value = '';
                     this.dateGroup.value = '';
                     this.currentMilestones = [];
                     this.milestonesContainer.innerHTML = '';
                     this.newMilestoneInput.value = '';
-                    this.dateShowMilestones.checked = true; // NEW
-                    // NEW: Reset remembrance fields
+                    this.dateShowMilestones.checked = true;
                     this.remembranceCheckboxContainer.classList.add('hidden');
                     this.isRemembrance.checked = false;
                     this.dateOfDeathContainer.classList.add('hidden');
                     this.dateOfDeath.value = '';
                 },
 
-                // NEW: Show/hide date/datetime input based on category
                 updateModalForCategory() {
                     const categoryLabel = document.querySelector('label[for="dateTarget"]');
-                    // NEW: Check for birthday or anniversary
                     const categoryLower = this.dateCategory.value.trim().toLowerCase();
                     const isBirthday = categoryLower === 'birthday';
                     const isAnniversary = categoryLower === 'anniversary';
                     const isSpecialDate = isBirthday || isAnniversary;
-                    const remembranceChecked = this.isRemembrance.checked; // NEW
+                    const remembranceChecked = this.isRemembrance.checked;
                     
-                    // NEW: Find the milestone section title
-                    const milestoneTitle = this.milestoneSection.querySelector('h3'); // Target the h3
+                    const milestoneTitle = this.milestoneSection.querySelector('h3');
 
-                    // NEW: Show milestone section for all, but change title
-                    this.milestoneSection.style.display = 'block'; // Always show
-                    if (isSpecialDate) { // UPDATED: Use isSpecialDate
-                        if (milestoneTitle) milestoneTitle.textContent = 'Checklist'; // Change title
+                    this.milestoneSection.style.display = 'block';
+                    if (isSpecialDate) {
+                        if (milestoneTitle) milestoneTitle.textContent = 'Checklist';
                     } else {
-                        if (milestoneTitle) milestoneTitle.textContent = 'Key Results (Milestones)'; // Reset title
+                        if (milestoneTitle) milestoneTitle.textContent = 'Key Results (Milestones)';
                     }
 
-                    // REMOVED logic that hid the milestone section
-                    /*
-                    */
-
-                    // NEW: Show/Hide Remembrance Fields
                     if (isBirthday) {
                         this.remembranceCheckboxContainer.classList.remove('hidden');
                     } else {
@@ -968,24 +1252,20 @@
                     } else {
                         this.dateOfDeathContainer.classList.add('hidden');
                     }
-                    // END NEW
 
-                    if (isSpecialDate) { // UPDATED: Use isSpecialDate
-                        // NEW: Set label based on type
+                    if (isSpecialDate) {
                         if (isBirthday) {
                             categoryLabel.textContent = 'Birthday (Date of Birth)';
                         } else if (isAnniversary) {
                             categoryLabel.textContent = 'Anniversary Date';
                         }
                         this.dateTarget.type = 'date';
-                        // If it was a datetime, strip the time part
                         if (this.dateTarget.value.includes('T')) {
                             this.dateTarget.value = this.dateTarget.value.split('T')[0];
                         }
                     } else {
                         categoryLabel.textContent = 'Target Date & Time';
                         this.dateTarget.type = 'datetime-local';
-                        // If it was just a date, add a default time
                         if (this.dateTarget.value && !this.dateTarget.value.includes('T')) {
                             this.dateTarget.value = `${this.dateTarget.value}T12:00`;
                         }
@@ -1001,41 +1281,43 @@
                         this.showToast('Please fill in both Date Title and Target Date.', 'error');
                         return;
                     }
-                    // NEW: Validation for remembrance
                     if (this.isRemembrance.checked && !this.dateOfDeath.value) {
                         this.showToast('Please add a Date of Passing for remembrance.', 'error');
                         return;
                     }
 
+                    const dates = this.getDates(); // UPDATED
+                    const existingDate = dates.find(g => g.id === id);
+
                     const dateData = {
                         title: title,
                         notes: this.dateNotes.value.trim(),
                         date: target,
-                        // priority: this.goalPriority.value, // REMOVED
                         category: this.dateCategory.value.trim(),
-                        categoryColor: this.dateCategoryColor.value, // NEW
+                        categoryColor: this.dateCategoryColor.value,
                         iconName: this.dateIconName.value.trim(),
                         group: this.dateGroup.value.trim() || 'General',
                         milestones: this.currentMilestones,
-                        status: this.dates.find(g => g.id === id)?.status || 'Pending',
-                        showMilestones: this.dateShowMilestones.checked, // UPDATED
-                        isRemembrance: this.isRemembrance.checked, // NEW
-                        dateOfDeath: this.isRemembrance.checked ? this.dateOfDeath.value : '', // NEW
+                        status: existingDate?.status || 'Pending',
+                        showMilestones: this.dateShowMilestones.checked,
+                        isRemembrance: this.isRemembrance.checked,
+                        dateOfDeath: this.isRemembrance.checked ? this.dateOfDeath.value : '',
                     };
 
                     if (id) {
-                        const index = this.dates.findIndex(g => g.id === id);
+                        const index = dates.findIndex(g => g.id === id);
                         if (index !== -1) {
-                            this.dates[index] = { ...this.dates[index], ...dateData };
+                            this.getDates()[index] = { ...dates[index], ...dateData }; // UPDATED
                         }
                     } else {
-                        this.dates.push({
+                        this.getDates().push({ // UPDATED
                             ...dateData,
                             id: `goal_${Date.now()}`
                         });
                     }
 
-                    this.saveAndRender(); // UPDATED
+                    this.saveAppState(); // NEW
+                    this.saveAndRender();
                     this.closeModal();
                 },
                 
@@ -1047,30 +1329,24 @@
                         'Delete Date?',
                         'Are you sure you want to delete this date? This action cannot be undone.',
                         () => {
-                            this.dates = this.dates.filter(g => g.id !== id);
-                            this.saveAndRender(); // UPDATED
+                            // UPDATED
+                            const dates = this.getDates();
+                            const newDates = dates.filter(g => g.id !== id);
+                            this.appState.profileData[this.currentProfileId].dates = newDates;
+                            
+                            this.saveAppState(); // NEW
+                            this.saveAndRender();
                             this.closeModal();
                         }
                     );
                 },
 
-                // DELETED: toggleMilestonesDisplay function
-                /*
-                // NEW: Toggle milestone/checklist visibility on the card
-                toggleMilestonesDisplay(id) {
-                    const date = this.dates.find(g => g.id === id);
-                    if (date) {
-                        date.showMilestones = !(date.showMilestones ?? true); // Toggle, defaulting to true
-                        this.saveAndRender();
-                    }
-                },
-                */
-
                 toggleComplete(id) {
-                    const date = this.dates.find(g => g.id === id);
+                    const date = this.getDates().find(g => g.id === id); // UPDATED
                     if (date) {
                         date.status = date.status === 'Completed' ? 'Pending' : 'Completed';
-                        this.saveAndRender(); // UPDATED
+                        this.saveAppState(); // NEW
+                        this.saveAndRender();
                     }
                 },
 
@@ -1083,6 +1359,7 @@
                     this.currentMilestones.forEach(milestone => {
                         this.milestonesContainer.appendChild(this.createMilestoneElement(milestone));
                     });
+                    lucide.createIcons(); // NEW: Render milestone icons
                 },
                 
                 createMilestoneElement(milestone) {
@@ -1093,7 +1370,6 @@
                     const checked = milestone.completed ? 'checked' : '';
                     const textClass = milestone.completed ? 'line-through text-muted-light' : 'text-secondary';
 
-                    // UPDATED: Delete button icon
                     div.innerHTML = `
                         <div class="flex items-center gap-2">
                             <input type="checkbox" ${checked} class="milestone-checkbox form-checkbox h-4 w-4 bg-interactive border-color-strong text-accent-light rounded focus:ring-accent-light focus:ring-offset-gray-800">
@@ -1104,10 +1380,6 @@
                         </button>
                     `;
                     return div;
-                    this.currentMilestones.forEach(milestone => {
-                        this.milestonesContainer.appendChild(this.createMilestoneElement(milestone));
-                    });
-                    lucide.createIcons(); // NEW: Render milestone icons
                 },
                 
                 addMilestone() {
@@ -1129,42 +1401,52 @@
                 },
                 
                 toggleMilestone(id) {
-                    const milestone = this.currentMilestones.find(ms => ms.id === id); // Corrected find
+                    const milestone = this.currentMilestones.find(ms => ms.id !== id);
                     if (milestone) {
                         milestone.completed = !milestone.completed;
-                        this.renderMilestones(); // Re-render to apply line-through
+                        this.renderMilestones();
                     }
                 },
 
                 openSettings() {
                     this.settingsModal.classList.add('flex');
-                    lucide.createIcons(); // NEW: Render icons in modal
+                    lucide.createIcons();
                 },
 
                 closeSettings() {
                     this.settingsModal.classList.remove('flex');
                 },
                 
+                // UPDATED: Exports current profile data
                 exportData() {
-                    if (this.dates.length === 0) {
-                        this.showToast('No dates to export.', 'error');
+                    const currentData = this.getCurrentData(); // NEW
+                    if (currentData.dates.length === 0) {
+                        this.showToast('No dates in this profile to export.', 'error');
                         return;
                     }
-                    const dataStr = JSON.stringify(this.dates, null, 2);
+                    // Export dates, groupOrder, and settings for this profile
+                    const dataToExport = {
+                        dates: currentData.dates,
+                        groupOrder: currentData.groupOrder,
+                        settings: currentData.settings
+                    };
+                    
+                    const dataStr = JSON.stringify(dataToExport, null, 2);
                     const dataBlob = new Blob([dataStr], { type: 'application/json' });
                     const url = URL.createObjectURL(dataBlob);
                     const a = document.createElement('a');
                     a.href = url;
-                    a.download = `tymr_dates_${new Date().toISOString().split('T')[0]}.json`;
+                    const profileName = this.getCurrentProfile().name.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+                    a.download = `tymr_${profileName}_${new Date().toISOString().split('T')[0]}.json`;
                     document.body.appendChild(a);
-                    a.click();
                     a.click();
                     document.body.removeChild(a);
                     URL.revokeObjectURL(url);
                     this.closeSettings();
-                    this.showToast('Dates exported successfully.', 'success');
+                    this.showToast('Profile data exported successfully.', 'success');
                 },
                 
+                // UPDATED: Imports into current profile
                 importData(event) {
                     const file = event.target.files[0];
                     if (!file) return;
@@ -1172,33 +1454,33 @@
                     const reader = new FileReader();
                     reader.onload = (e) => {
                         try {
-                            const importedDates = JSON.parse(e.target.result);
-                            if (Array.isArray(importedDates) && importedDates.every(g => g.id && g.title && g.date)) {
+                            const importedData = JSON.parse(e.target.result);
+                            // Check for the new structure
+                            if (Array.isArray(importedData.dates) && Array.isArray(importedData.groupOrder) && importedData.settings) {
                                 this.showConfirm(
-                                    'Import Dates?',
-                                    'This will overwrite all current dates. Are you sure you want to proceed?',
+                                    'Import Profile Data?',
+                                    `This will overwrite all dates, groups, and settings for the "${this.getCurrentProfile().name}" profile. Are you sure?`,
                                     () => {
-                                        this.dates = importedDates;
-                                        this.groupOrder = []; // Reset group order, will be regenerated
-                                        this.saveAndRender(); // UPDATED
+                                        this.appState.profileData[this.currentProfileId] = importedData;
+                                        this.saveAppState();
+                                        this.loadProfileData(this.currentProfileId); // Reload all data and settings
                                         this.closeSettings();
                                         event.target.value = null; // Reset file input
-                                        this.showToast('Dates imported successfully.', 'success');
+                                        this.showToast('Profile data imported successfully.', 'success');
                                     }
                                 );
                             } else {
-                                this.showToast('Invalid file format. Could not import.', 'error');
+                                this.showToast('Invalid file format. Expected profile data object.', 'error');
                             }
                         } catch (err) {
                             console.error('Error importing data:', err);
                             this.showToast('Failed to read or parse file.', 'error');
-                        } // <-- FIX: Added closing brace for catch
-                    }; // <-- FIX: Added closing brace and semicolon for reader.onload
-                    reader.readAsText(file); // <-- FIX: Added this line to trigger the file read
+                        }
+                    };
+                    reader.readAsText(file);
                 },
 
-                // --- NEW: Onboarding Tour Methods ---
-
+                // --- Onboarding Tour Methods ---
                 initTourSteps() {
                     this.tourSteps = [
                         {
@@ -1208,17 +1490,23 @@
                         },
                         {
                             selector: '#themeSwitcher',
-                            text: "Choose your favorite look. The theme is saved automatically.",
+                            text: "Choose your favorite look. The theme is saved to your current profile.",
                             placement: 'bottom'
                         },
                         {
                             selector: '#addDateBtn',
-                            text: "Click here to add your first countdown. You can add goals, birthdays, and more.",
+                            text: "Click here to add your first countdown for this profile.",
+                            placement: 'bottom-end'
+                        },
+                        // NEW: Profile button step
+                        {
+                            selector: '#profileBtn',
+                            text: "This is your new profile switcher! Create separate profiles for 'Work', 'Personal', etc.",
                             placement: 'bottom-end'
                         },
                         {
                             selector: '#settingsBtn',
-                            text: "Here you can export a backup of your dates or import them on another device.",
+                            text: "Here you can export a backup of your *current profile's* dates or import data into it.",
                             placement: 'bottom-end'
                         },
                         {
@@ -1226,43 +1514,32 @@
                             text: "You can restart this guide anytime by clicking this help icon.",
                             placement: 'bottom-end'
                         }
-                        /* MOVED: The step below was removed as requested to end the tour at the help icon.
-                        {
-                            // This step is dynamic. It will try to find a card, then a group, then the empty state.
-                            selector: '[data-id]', // Try to find a card first
-                            text: "Your countdowns will appear here as cards. You can drag and drop them to re-order.",
-                            placement: 'bottom',
-                            fallbackSelector: '.group-header', // If no card, find a group header
-                            fallbackText: "Your cards are organized into groups. You can drag cards between groups, or drag the group headers to re-order entire sections.",
-                            fallbackPlacement: 'bottom',
-                            finalFallbackSelector: '#countdownContainer', // If nothing, point to the container
-                            finalFallbackText: "This is where your countdowns and groups will appear once you add them.",
-                            finalFallbackPlacement: 'right'
-                        }
-                        */
                     ];
                 },
 
                 startTour(force = false) {
-                    const hasSeenTour = localStorage.getItem('tymrTourSeen');
+                    const hasSeenTour = this.getSettings().hasSeenTour; // UPDATED
                     if (hasSeenTour && !force) {
-                        this.endTour(); // Ensure it's hidden
+                        this.endTour(false); // false = don't save
                         return;
                     }
                     this.showTourStep(0);
                 },
 
-                endTour() {
+                endTour(doSave = true) {
                     if (this.popperInstance) this.popperInstance.destroy();
                     document.querySelectorAll('.onboarding-highlight').forEach(el => el.classList.remove('onboarding-highlight'));
                     
                     this.onboardingStep.classList.remove('flex');
                     this.onboardingOverlay.classList.remove('flex');
-                    localStorage.setItem('tymrTourSeen', 'true');
+                    
+                    if (doSave) {
+                        this.getSettings().hasSeenTour = true; // UPDATED
+                        this.saveAppState(); // NEW
+                    }
                 },
 
                 showTourStep(index) {
-                    // Clean up previous step
                     if (this.popperInstance) this.popperInstance.destroy();
                     document.querySelectorAll('.onboarding-highlight').forEach(el => el.classList.remove('onboarding-highlight'));
 
@@ -1273,12 +1550,10 @@
 
                     this.currentTourStep = index;
                     let step = this.tourSteps[index];
-                    
                     let targetElement = document.querySelector(step.selector);
                     let text = step.text;
                     let placement = step.placement;
 
-                    // --- Handle Fallbacks ---
                     if (!targetElement && step.fallbackSelector) {
                         targetElement = document.querySelector(step.fallbackSelector);
                         if (targetElement) {
@@ -1293,7 +1568,6 @@
                             placement = step.finalFallbackPlacement || placement;
                         }
                     }
-                    // --- End Fallbacks ---
                     
                     this.onboardingText.textContent = text;
                     this.onboardingStep.classList.add('flex');
@@ -1306,18 +1580,16 @@
                         this.popperInstance = Popper.createPopper(targetElement, this.onboardingStep, {
                             placement: placement,
                             modifiers: [
-                                { name: 'offset', options: { offset: [0, 12] } }, // Add some space
+                                { name: 'offset', options: { offset: [0, 12] } },
                                 { name: 'arrow', options: { element: this.onboardingArrow } }
                             ]
                         });
                     } else {
-                        // No target found, just center the modal
                         this.onboardingStep.style.top = '50%';
                         this.onboardingStep.style.left = '50%';
                         this.onboardingStep.style.transform = 'translate(-50%, -50%)';
                     }
 
-                    // Update buttons
                     this.onboardingPrev.style.display = (index === 0) ? 'none' : 'block';
                     this.onboardingNext.textContent = (index === this.tourSteps.length - 1) ? 'Done' : 'Next';
                 },
@@ -1329,15 +1601,14 @@
                 prevTourStep() {
                     this.showTourStep(this.currentTourStep - 1);
                 },
-
                 // --- END: Onboarding Tour Methods ---
-
 
                 showConfirm(title, message, callback) {
                     this.confirmTitle.textContent = title;
                     this.confirmMessage.textContent = message;
                     this._confirmCallback = callback;
                     this.confirmModal.classList.add('flex');
+                    lucide.createIcons();
                 },
 
                 closeConfirm() {
@@ -1360,7 +1631,7 @@
                     if (type === 'error') {
                         classes = 'bg-red-600 text-white';
                         icon = `<i data-lucide="alert-circle" class="w-5 h-5"></i>`;
-                    } else { // 'success' or default
+                    } else {
                         classes = 'bg-green-600 text-white';
                         icon = `<i data-lucide="check-circle" class="w-5 h-5"></i>`;
                     }
@@ -1373,7 +1644,7 @@
                     `;
                     
                     this.toastContainer.appendChild(toast);
-                    lucide.createIcons(); // NEW: Render toast icon
+                    lucide.createIcons();
 
                     setTimeout(() => {
                         toast.classList.add('animate-fadeOut');
@@ -1381,43 +1652,34 @@
                     }, 3000);
                 },
 
-                // --- NEW: Column Count Functions ---
+                // --- Column Count Functions ---
+                // UPDATED: No longer loads, just applies
                 loadAndApplyColumnCount() {
-                    const savedCount = localStorage.getItem('tymrColumnCount') || 2;
-                    this.columnCount = parseInt(savedCount, 10);
-                    this.columnCountSelect.value = this.columnCount;
-                    this.applyColumnClasses(this.columnCount);
+                    const columnCount = this.getSettings().columnCount; // UPDATED
+                    this.columnCountSelect.value = columnCount;
+                    this.applyColumnClasses(columnCount);
                 },
 
+                // UPDATED: Saves to profile
                 setColumnCount(count) {
-                    this.columnCount = parseInt(count, 10);
-                    localStorage.setItem('tymrColumnCount', this.columnCount);
-                    this.applyColumnClasses(this.columnCount);
-                    // Re-render to fix empty state colspan if visible
-                    if (this.dates.length === 0) {
+                    const columnCount = parseInt(count, 10); // UPDATED
+                    this.getSettings().columnCount = columnCount; // UPDATED
+                    this.saveAppState(); // NEW
+                    this.applyColumnClasses(columnCount);
+                    if (this.getDates().length === 0) { // UPDATED
                         this.renderAllDates();
                     }
                 },
 
                 applyColumnClasses(count) {
                     const container = this.countdownContainer;
-                    // Remove all possible column classes first
                     container.classList.remove('md:grid-cols-2', 'lg:grid-cols-3', 'xl:grid-cols-4');
 
-                    // Add classes based on selection
                     switch (count) {
-                        case 1: 
-                            // 'grid-cols-1' is already the base class
-                            break;
-                        case 2: 
-                            container.classList.add('md:grid-cols-2'); 
-                            break;
-                        case 3: 
-                            container.classList.add('md:grid-cols-2', 'lg:grid-cols-3'); 
-                            break;
-                        case 4: 
-                            container.classList.add('md:grid-cols-2', 'lg:grid-cols-3', 'xl:grid-cols-4'); 
-                            break;
+                        case 1: break;
+                        case 2: container.classList.add('md:grid-cols-2'); break;
+                        case 3: container.classList.add('md:grid-cols-2', 'lg:grid-cols-3'); break;
+                        case 4: container.classList.add('md:grid-cols-2', 'lg:grid-cols-3', 'xl:grid-cols-4'); break;
                     }
                 },
                 
@@ -1432,23 +1694,22 @@
                 },
                 // --- END: Column Count Functions ---
 
-
-                // UPDATED: Major rewrite for new grouped structure and SortableJS
                 renderAllDates() {
-                    // Stop all existing timers
                     this.timers.forEach(timer => clearInterval(timer));
                     this.timers = [];
                     
-                    // Destroy old Sortable instances
                     if (this.sortableGroups) this.sortableGroups.destroy();
                     this.sortableCards.forEach(s => s.destroy());
                     this.sortableCards = [];
                     
                     this.countdownContainer.innerHTML = '';
+                    
+                    const dates = this.getDates(); // UPDATED
+                    const groupOrder = this.getGroupOrder(); // UPDATED
+                    const columnCount = this.getSettings().columnCount; // UPDATED
 
-                    if (this.dates.length === 0) {
-                        // NEW: Get dynamic colspan classes for empty state
-                        const colspanClasses = this.getColumnColspanClasses(this.columnCount);
+                    if (dates.length === 0) {
+                        const colspanClasses = this.getColumnColspanClasses(columnCount); // UPDATED
                         this.countdownContainer.innerHTML = `
                             <div data-empty-state class="${colspanClasses} text-center text-muted mt-12 w-full">
                                 <i data-lucide="calendar-days" class="w-16 h-16 mx-auto mb-4" stroke-width="1.5"></i>
@@ -1456,45 +1717,36 @@
                                 <p class="text-muted">Click "Add Date" to get started.</p>
                             </div>
                         `;
+                        lucide.createIcons(); // Render empty state icon
                         return;
                     }
 
-                    // 1. Group goals
-                    const groupedDates = this.dates.reduce((acc, date) => {
+                    const groupedDates = dates.reduce((acc, date) => {
                         const groupName = date.group || 'General';
-                        if (!acc[groupName]) {
-                            acc[groupName] = [];
-                        }
+                        if (!acc[groupName]) acc[groupName] = [];
                         acc[groupName].push(date);
                         return acc;
                     }, {});
 
-                    // 2. Sort goals within each group by date
                     for (const groupName in groupedDates) {
                         groupedDates[groupName].sort((a, b) => new Date(a.date) - new Date(b.date));
                     }
 
-                    // 3. Determine group order
                     const allGroupNames = Object.keys(groupedDates);
-                    // Filter out any ordered groups that no longer exist
-                    let sortedGroupNames = this.groupOrder.filter(name => allGroupNames.includes(name));
-                    // Add any new groups (not in the saved order) to the end
+                    let sortedGroupNames = groupOrder.filter(name => allGroupNames.includes(name));
                     allGroupNames.forEach(name => {
-                        if (!sortedGroupNames.includes(name)) {
-                            sortedGroupNames.push(name);
-                        }
+                        if (!sortedGroupNames.includes(name)) sortedGroupNames.push(name);
                     });
-                    // Ensure 'General' is last if it's new, but respect saved order otherwise
-                    if (!this.groupOrder.includes('General') && sortedGroupNames.includes('General')) {
+                    if (!groupOrder.includes('General') && sortedGroupNames.includes('General')) {
                         sortedGroupNames = sortedGroupNames.filter(name => name !== 'General');
                         sortedGroupNames.push('General');
                     }
-                    // Save the cleaned/updated group order
-                    this.groupOrder = sortedGroupNames;
-                    this.saveGroupOrderData();
+                    
+                    // UPDATED: Save new group order to current profile
+                    this.appState.profileData[this.currentProfileId].groupOrder = sortedGroupNames;
+                    this.saveAppState();
 
 
-                    // 4. Render DOM
                     for (const groupName of sortedGroupNames) {
                         const groupContainer = document.createElement('div');
                         groupContainer.className = 'group-container w-full';
@@ -1520,28 +1772,25 @@
                         this.countdownContainer.appendChild(groupContainer);
                     }
                     
-                    this.initSortable(); // NEW
-                    this.startTimers(); // MOVED
-                    lucide.createIcons(); // NEW: Render all card icons
+                    this.initSortable();
+                    this.startTimers();
+                    lucide.createIcons();
                 },
 
-                // NEW: Initialize all SortableJS instances
                 initSortable() {
-                    // 1. Sort Groups
                     this.sortableGroups = new Sortable(this.countdownContainer, {
                         animation: 150,
-                        handle: '.group-header', // Drag only by the header
+                        handle: '.group-header',
                         ghostClass: 'sortable-ghost',
                         dragClass: 'sortable-drag',
                         onEnd: (evt) => this.handleGroupDrop(evt)
                     });
 
-                    // 2. Sort Cards
                     const cardLists = this.countdownContainer.querySelectorAll('.card-list');
                     cardLists.forEach(list => {
                         const sortableList = new Sortable(list, {
                             animation: 150,
-                            group: 'goals', // Allows dragging between lists
+                            group: 'goals',
                             ghostClass: 'sortable-ghost',
                             dragClass: 'sortable-drag',
                             onEnd: (evt) => this.handleCardDrop(evt)
@@ -1550,170 +1799,121 @@
                     });
                 },
 
-                // NEW: Handle card drop event
                 handleCardDrop(evt) {
                     const dateId = evt.item.dataset.id;
                     const newGroupEl = evt.to.closest('.group-container');
-                    if (!newGroupEl) return; // Should not happen
+                    if (!newGroupEl) return;
 
                     const newGroupName = newGroupEl.dataset.groupName;
                     
-                    const date = this.dates.find(g => g.id === dateId);
+                    const date = this.getDates().find(g => g.id === dateId); // UPDATED
                     if (date && date.group !== newGroupName) {
                         date.group = newGroupName;
-                        this.saveDatesData(); // Save data, but do not re-render
+                        this.saveAppState(); // UPDATED
                     }
                 },
 
-                // NEW: Handle group drop event
                 handleGroupDrop(evt) {
                     const newOrder = Array.from(this.countdownContainer.children)
                         .map(el => el.dataset.groupName)
-                        .filter(Boolean); // Filter out any undefined
+                        .filter(Boolean);
                     
-                    this.groupOrder = newOrder;
-                    this.saveGroupOrderData(); // Save new order, do not re-render
+                    this.appState.profileData[this.currentProfileId].groupOrder = newOrder; // UPDATED
+                    this.saveAppState(); // UPDATED
                 },
 
-                // DELETED: getIconSVG function
-                // (Removed lines 2011-2073)
-
-                // NEW: ADDED HELPER FUNCTION
                 calculateNextBirthday(dobString) {
                     try {
                         const now = new Date();
-                        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate()); // 00:00 today
+                        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
                         const birthDate = new Date(dobString);
-                        
-                        // Handle invalid date string from input
                         if (isNaN(birthDate.getTime())) throw new Error('Invalid date');
-
                         const birthMonth = birthDate.getMonth();
                         const birthDay = birthDate.getDate();
                         const birthYear = birthDate.getFullYear();
                         const currentYear = now.getFullYear();
-
-                        // Set birthday for this year
-                        let nextBirthdayDate = new Date(currentYear, birthMonth, birthDay); // 00:00 this year
+                        let nextBirthdayDate = new Date(currentYear, birthMonth, birthDay);
                         let nextAge = currentYear - birthYear;
                         let currentAge = nextAge;
-
-                        // If this year's birthday date is *before* today's date, set for next year
                         if (nextBirthdayDate < today) {
                             nextBirthdayDate.setFullYear(currentYear + 1);
                             nextAge = nextBirthdayDate.getFullYear() - birthYear;
                         } else {
-                            // If birthday is later this year, current age is one less
                             currentAge = nextAge - 1;
                         }
-                        
-                        // Handle case where birthday is today
                         if (nextBirthdayDate.getTime() === today.getTime()) {
                             currentAge = nextAge;
                         }
-
-                        return { 
-                            nextBirthdayDate: nextBirthdayDate, 
-                            nextAge: nextAge, // The age they will be turning
-                            currentAge: currentAge // The age they are right now
-                        };
-                    
+                        return { nextBirthdayDate, nextAge, currentAge };
                     } catch (e) {
                         console.error("Error calculating birthday:", e, dobString);
-                        // Return a fallback to prevent crashes
                         return { nextBirthdayDate: new Date(), nextAge: 0, currentAge: 0 };
                     }
                 },
 
-                // NEW: Helper function to calculate next anniversary
                 calculateNextAnniversary(anniversaryDateString) {
                     try {
                         const now = new Date();
-                        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate()); // 00:00 today
+                        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
                         const anniversaryDate = new Date(anniversaryDateString);
-                        
-                        // Handle invalid date string from input
                         if (isNaN(anniversaryDate.getTime())) throw new Error('Invalid date');
-
                         const annivMonth = anniversaryDate.getMonth();
                         const annivDay = anniversaryDate.getDate();
                         const annivYear = anniversaryDate.getFullYear();
                         const currentYear = now.getFullYear();
-
-                        // Set anniversary for this year
-                        let nextAnniversaryDate = new Date(currentYear, annivMonth, annivDay); // 00:00 this year
+                        let nextAnniversaryDate = new Date(currentYear, annivMonth, annivDay);
                         let nextAnniversaryNumber = currentYear - annivYear;
-
-                        // If this year's anniversary date is *before* today's date, set for next year
                         if (nextAnniversaryDate < today) {
                             nextAnniversaryDate.setFullYear(currentYear + 1);
                             nextAnniversaryNumber = nextAnniversaryDate.getFullYear() - annivYear;
                         }
-
-                        return { 
-                            nextAnniversaryDate: nextAnniversaryDate, 
-                            nextAnniversaryNumber: nextAnniversaryNumber // The number it will be (e.g., 5th)
-                        };
-                    
+                        return { nextAnniversaryDate, nextAnniversaryNumber };
                     } catch (e) {
                         console.error("Error calculating anniversary:", e, anniversaryDateString);
-                        // Return a fallback to prevent crashes
                         return { nextAnniversaryDate: new Date(), nextAnniversaryNumber: 0 };
                     }
                 },
 
-                // NEW: Helper function to calculate remembrance info
                 calculateRemembranceInfo(dobString, dodString) {
                     try {
                         const dob = new Date(dobString);
                         const dod = new Date(dodString);
                         if (isNaN(dob.getTime()) || isNaN(dod.getTime())) throw new Error('Invalid date');
-        
-                        // Calculate "Lived for"
                         let livedForYears = dod.getFullYear() - dob.getFullYear();
                         const m = dod.getMonth() - dob.getMonth();
                         if (m < 0 || (m === 0 && dod.getDate() < dob.getDate())) {
                             livedForYears--;
                         }
-        
-                        // Calculate next death anniversary
                         const now = new Date();
                         const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
                         const dodMonth = dod.getMonth();
                         const dodDay = dod.getDate();
                         const currentYear = now.getFullYear();
-                        const dodYear = dod.getFullYear(); // NEW
-        
+                        const dodYear = dod.getFullYear();
                         let nextDeathAnniversary = new Date(currentYear, dodMonth, dodDay);
                         if (nextDeathAnniversary < today) {
                             nextDeathAnniversary.setFullYear(currentYear + 1);
                         }
-                        
                         return {
                             livedForYears: livedForYears,
                             nextDeathAnniversary: nextDeathAnniversary,
-                            nextAnniversaryNumber: nextDeathAnniversary.getFullYear() - dodYear // NEW
+                            nextAnniversaryNumber: nextDeathAnniversary.getFullYear() - dodYear
                         };
-        
                     } catch (e) {
                         console.error("Error calculating remembrance:", e, dobString, dodString);
-                        return { livedForYears: 0, nextDeathAnniversary: new Date() };
+                        return { livedForYears: 0, nextDeathAnniversary: new Date(), nextAnniversaryNumber: 0 };
                     }
                 },
 
                 createDateCard(dateData) {
-                    // REVERTED: Card element uses class
                     const card = document.createElement('div');
                     card.className = 'card-bg p-2.5 rounded-lg shadow-lg flex flex-col space-y-2 w-40'; 
                     card.dataset.id = dateData.id;
-                    // REVERTED: Removed inline styles for bg and CSS vars
-
                     
-                    // --- NEW Birthday & Anniversary Logic ---
-                    let targetDate, formattedDate, timerDateString, nextAge = 0, currentAge = 0, nextAnniversaryNumber = 0, livedForYears = 0, nextDeathAnniversaryNumber = 0; // UPDATED
+                    let targetDate, formattedDate, timerDateString, nextAge = 0, currentAge = 0, nextAnniversaryNumber = 0, livedForYears = 0, nextDeathAnniversaryNumber = 0;
                     const categoryLower = dateData.category.trim().toLowerCase();
-                    const isRemembrance = dateData.isRemembrance && categoryLower === 'birthday'; // NEW
-                    let isBirthday = categoryLower === 'birthday' && !isRemembrance; // UPDATED
+                    const isRemembrance = dateData.isRemembrance && categoryLower === 'birthday';
+                    let isBirthday = categoryLower === 'birthday' && !isRemembrance;
                     let isAnniversary = categoryLower === 'anniversary';
                     
                     if (isBirthday && dateData.date) {
@@ -1721,49 +1921,31 @@
                         targetDate = bdayInfo.nextBirthdayDate;
                         timerDateString = targetDate.toISOString();
                         const originalBirthdate = new Date(dateData.date);
-                        formattedDate = originalBirthdate.toLocaleDateString(undefined, {
-                            month: 'short',
-                            day: 'numeric',
-                            year: 'numeric'
-                        });
-                        nextAge = bdayInfo.nextAge; // UPDATED
-                        currentAge = bdayInfo.currentAge; // UPDATED
-                    } else if (isAnniversary && dateData.date) { // NEW: Anniversary logic
+                        formattedDate = originalBirthdate.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+                        nextAge = bdayInfo.nextAge;
+                        currentAge = bdayInfo.currentAge;
+                    } else if (isAnniversary && dateData.date) {
                         const annivInfo = this.calculateNextAnniversary(dateData.date);
                         targetDate = annivInfo.nextAnniversaryDate;
                         timerDateString = targetDate.toISOString();
                         const originalAnnivDate = new Date(dateData.date);
-                        formattedDate = originalAnnivDate.toLocaleDateString(undefined, {
-                            month: 'short',
-                            day: 'numeric',
-                            year: 'numeric'
-                        });
+                        formattedDate = originalAnnivDate.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
                         nextAnniversaryNumber = annivInfo.nextAnniversaryNumber;
-                    } else if (isRemembrance && dateData.date && dateData.dateOfDeath) { // NEW
+                    } else if (isRemembrance && dateData.date && dateData.dateOfDeath) {
                         const remInfo = this.calculateRemembranceInfo(dateData.date, dateData.dateOfDeath);
                         targetDate = remInfo.nextDeathAnniversary;
                         timerDateString = targetDate.toISOString();
                         livedForYears = remInfo.livedForYears;
-                        nextDeathAnniversaryNumber = remInfo.nextAnniversaryNumber; // NEW
-                        // formattedDate for DOB
+                        nextDeathAnniversaryNumber = remInfo.nextAnniversaryNumber;
                         const originalBirthdate = new Date(dateData.date);
-                        formattedDate = originalBirthdate.toLocaleDateString(undefined, {
-                            month: 'short',
-                            day: 'numeric',
-                            year: 'numeric'
-                        });
+                        formattedDate = originalBirthdate.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
                     } else {
-                        isBirthday = false; // Ensure it's false if date is missing
-                        isAnniversary = false; // NEW
+                        isBirthday = false;
+                        isAnniversary = false;
                         targetDate = new Date(dateData.date);
                         timerDateString = dateData.date;
-                        formattedDate = targetDate.toLocaleDateString(undefined, {
-                            month: 'short',
-                            day: 'numeric',
-                            year: 'numeric'
-                        });
+                        formattedDate = targetDate.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
                     }
-                    // --- END Birthday Logic ---
                     
                     const totalMilestones = dateData.milestones?.length || 0;
                     const completedMilestones = dateData.milestones?.filter(m => m.completed).length || 0;
@@ -1779,13 +1961,11 @@
                     const completeClass = isComplete ? 'opacity-60' : '';
                     const completeIconClass = isComplete ? 'text-success' : 'text-muted-light';
 
-                    // UPDATED: Get colors
-                    const categoryBGColor = this.escapeHTML(dateData.categoryColor || '#374151'); // hex for contrast calc
-                    const tagBGColor = this.escapeHTML(dateData.categoryColor || 'var(--bg-interactive)'); // css value for style
+                    const categoryBGColor = this.escapeHTML(dateData.categoryColor || '#374151');
+                    const tagBGColor = this.escapeHTML(dateData.categoryColor || 'var(--bg-interactive)');
                     const categoryTextColor = this.getContrastingTextColor(categoryBGColor);
                     const iconColor = this.escapeHTML(dateData.categoryColor || 'var(--text-muted)');
                     
-                    // NEW: Set category display text
                     let categoryDisplay, categoryTitle;
                     if (isRemembrance) {
                         categoryDisplay = "Remembrance";
@@ -1795,50 +1975,35 @@
                         categoryTitle = `Category: ${this.escapeHTML(dateData.category) || 'Misc'}`;
                     }
 
-                    // UPDATED: Use Lucide data attributes instead of inline SVG
                     let lucideIconName = this.escapeHTML(dateData.iconName?.trim().toLowerCase());
                     if (!lucideIconName) {
-                        if (isRemembrance) { // NEW: Check this first
-                            lucideIconName = 'flower-2';
-                        } else if (isBirthday) {
-                            lucideIconName = 'cake';
-                        } else if (isAnniversary) {
-                            lucideIconName = 'gift';
-                        } else {
-                            // Fallback for general categories if no icon is specified
+                        if (isRemembrance) lucideIconName = 'flower-2';
+                        else if (isBirthday) lucideIconName = 'cake';
+                        else if (isAnniversary) lucideIconName = 'gift';
+                        else {
                             const categoryName = dateData.category.trim().toLowerCase();
-                            const categoryIconMap = {
-                                'work': 'briefcase',
-                                'personal': 'user',
-                                'health': 'heart',
-                                'learn': 'graduation-cap',
-                                'finance': 'dollar-sign',
-                                'travel': 'globe-2',
-                                'home': 'home'
-                            };
-                            lucideIconName = categoryIconMap[categoryName] || 'flag'; // Default to 'flag'
+                            const categoryIconMap = { 'work': 'briefcase', 'personal': 'user', 'health': 'heart', 'learn': 'graduation-cap', 'finance': 'dollar-sign', 'travel': 'globe-2', 'home': 'home' };
+                            lucideIconName = categoryIconMap[categoryName] || 'flag';
                         }
                     }
                     const iconSVG = `<i data-lucide="${lucideIconName}" class="w-3.5 h-3.5 shrink-0" style="stroke: ${iconColor};"></i>`;
 
-                    // NEW: Conditionally render date or birthday/anniversary message
                     let dateOrSpecialMessageHTML = '';
                     if (isBirthday) {
-                        // Show the birthday message placeholder INSTEAD of the date
                         dateOrSpecialMessageHTML = `
                             <div class="flex items-center gap-1.5 text-accent-light ${completeClass}">
                                 <i data-lucide="cake" class="w-3.5 h-3.5 shrink-0" stroke="currentColor"></i>
-                                <span class="text-xs font-medium" data-birthday-message></span> <!-- New placeholder location -->
+                                <span class="text-xs font-medium" data-birthday-message></span>
                             </div>
                         `;
-                    } else if (isAnniversary) { // NEW: Anniversary message
+                    } else if (isAnniversary) {
                         dateOrSpecialMessageHTML = `
                             <div class="flex items-center gap-1.5 text-accent-light ${completeClass}">
                                 <i data-lucide="gift" class="w-3.5 h-3.5 shrink-0" stroke="currentColor"></i>
-                                <span class="text-xs font-medium" data-anniversary-message></span> <!-- New placeholder location -->
+                                <span class="text-xs font-medium" data-anniversary-message></span>
                             </div>
                         `;
-                    } else if (isRemembrance) { // NEW
+                    } else if (isRemembrance) {
                         dateOrSpecialMessageHTML = `
                             <div class="flex items-center gap-1.5 text-muted ${completeClass}">
                                 <i data-lucide="user" class="w-3.5 h-3.5 shrink-0" stroke="currentColor"></i>
@@ -1850,7 +2015,6 @@
                             </div>
                         `;
                     } else {
-                        // Show the date as normal
                         dateOrSpecialMessageHTML = `
                             <div class="flex items-center gap-1.5 text-muted ${completeClass}">
                                 <i data-lucide="calendar" class="w-3.5 h-3.5 shrink-0" stroke="currentColor"></i>
@@ -1859,13 +2023,11 @@
                         `;
                     }
                     
-                    // NEW: Milestone section HTML
-                    const isSpecialDate = isBirthday || isAnniversary || isRemembrance; // NEW
-                    const showMilestones = dateData.showMilestones ?? true; // NEW: Check visibility
+                    const isSpecialDate = isBirthday || isAnniversary || isRemembrance;
+                    const showMilestones = dateData.showMilestones ?? true;
                     const milestoneSectionHTML = `
                         <div class="pt-0.5 ${completeClass}">
                             <div class="flex items-center justify-between">
-                                <!-- UPDATED: Show "Checklist" for special dates, "Milestones" otherwise -->
                                 <span class="text-xs text-muted">${isSpecialDate ? 'Checklist' : 'Milestones'}</span>
                                 <span class="text-xs font-medium text-color">${completedMilestones} / ${totalMilestones}</span>
                             </div>
@@ -1877,38 +2039,28 @@
 
                     card.innerHTML = `
                         <div class="flex items-start justify-between gap-1.5 ${completeClass}">
-                            <div class="flex-col min-w-0"> <!-- Changed to flex-col -->
-                                <div class="flex items-center gap-1.5 min-w-0"> <!-- Original title row -->
+                            <div class="flex-col min-w-0">
+                                <div class="flex items-center gap-1.5 min-w-0">
                                     ${iconSVG}
                                     <h3 class="text-sm font-semibold text-primary truncate" title="${this.escapeHTML(dateData.title)}">${this.escapeHTML(dateData.title)}</h3>
                                 </div>
-                                <!-- DELETED: Birthday message placeholder was here -->
                             </div>
-                            <!-- UPDATED: Conditionally hide status dot for special dates -->
                             ${!isSpecialDate ? `
                                 <div class="shrink-0 rounded-full ${isComplete ? 'bg-green-500' : 'border border-color-strong'} w-2.5 h-2.5 mt-0.5" title="Status: ${dateData.status}"></div>
                             ` : ''}
                         </div>
 
-                        <!-- DELETED: Placeholder for birthday message was here -->
-
-                        <!-- NEW: Show Date or Birthday "Turning X in" message -->
                         ${dateOrSpecialMessageHTML}
                         
-                        <!-- NEW: Milestone section HTML -->
-                        <!-- UPDATED: Conditionally render milestone section -->
                         ${showMilestones ? milestoneSectionHTML : ''}
 
-                        <!-- REVERTED: Timer elements use theme classes -->
-                        <!-- UPDATED: data-age renamed to data-next-age -->
-                        <!-- UPDATED: Added relative class -->
                         <div class="relative flex justify-between gap-0.5 text-center ${completeClass}" data-date="${timerDateString}" data-id="${dateData.id}" data-time-container 
                              data-is-birthday="${isBirthday}" 
                              data-is-anniversary="${isAnniversary}" 
                              data-is-remembrance="${isRemembrance}" 
                              data-next-age="${nextAge}" 
                              data-next-anniversary-number="${nextAnniversaryNumber}"
-                             data-next-death-anniversary-number="${nextDeathAnniversaryNumber}"> <!-- NEW -->
+                             data-next-death-anniversary-number="${nextDeathAnniversaryNumber}">
                             <div class="bg-interactive py-1 px-1 rounded w-auto min-w-[1.75rem]" data-timer-segment>
                                 <span class="block text-sm font-bold text-primary" data-days>0</span>
                                 <span class="block text-[0.6rem] font-medium text-muted uppercase">Days</span>
@@ -1926,32 +2078,20 @@
                                 <span class="block text-[0.6rem] font-medium text-muted uppercase">Sec</span>
                             </div>
                             
-                            <!-- UPDATED: This is now just for non-birthday alerts (and likely won't be used, but keep for safety) -->
                             <span class="absolute inset-0 flex items-center justify-center text-xs font-medium text-accent-light p-1 hidden" data-milestone-alert></span>
                         </div>
                         
-                        <!-- This div is now for non-birthday alerts -->
-                        <div class="text-center" data-non-birthday-alert-container>
-                            <!-- Non-birthday alerts will go here -->
-                        </div>
+                        <div class="text-center" data-non-birthday-alert-container></div>
 
-                        <!-- UPDATED: Bottom bar with priority dot REMOVED and category tag colored -->
                         <div class="flex items-center justify-between pt-1 border-t border-color min-w-0">
                             <div class="min-w-0"> 
                                 <span class="inline-flex items-center rounded-full px-2 py-0.5 text-[0.65rem] font-medium ${completeClass} truncate" 
                                       style="background-color: ${tagBGColor}; color: ${categoryTextColor};" 
-                                      title="${categoryTitle}"> <!-- UPDATED -->
-                                    ${categoryDisplay} <!-- UPDATED -->
+                                      title="${categoryTitle}">
+                                    ${categoryDisplay}
                                 </span>
                             </div>
                             <div class="flex items-center gap-0.5 shrink-0">
-                                <!-- DELETED: Toggle Milestones Button -->
-                                <!--
-                                <button class="toggle-milestones p-1 text-muted-light hover-text-accent-light rounded" title="Toggle Milestones/Checklist">
-                                    <i data-lucide="${showMilestones ? 'list-x' : 'list'}" class="w-3.5 h-3.5"></i>
-                                </button>
-                                -->
-                                <!-- UPDATED: Conditionally hide complete button for special dates -->
                                 ${!isSpecialDate ? `
                                     <button class="complete-card p-1 text-muted-light hover-text-success rounded ${completeIconClass}" title="Toggle Complete">
                                         <i data-lucide="check" class="w-3.5 h-3.5"></i>
@@ -1976,7 +2116,7 @@
                             this.updateTimer(el);
                         }, 1000);
                         this.timers.push(timerId);
-                        this.updateTimer(el); // Initial call
+                        this.updateTimer(el);
                     });
                 },
 
@@ -1985,56 +2125,43 @@
                     const now = new Date().getTime();
                     const distance = targetDate - now;
 
-                    // NEW: Get birthday & anniversary data
                     const isBirthday = el.dataset.isBirthday === 'true';
                     const isAnniversary = el.dataset.isAnniversary === 'true';
-                    const isRemembrance = el.dataset.isRemembrance === 'true'; // NEW
-                    const nextAge = el.dataset.nextAge; // UPDATED from data-age
+                    const isRemembrance = el.dataset.isRemembrance === 'true';
+                    const nextAge = el.dataset.nextAge;
                     const nextAnniversaryNumber = el.dataset.nextAnniversaryNumber;
-                    const nextDeathAnniversaryNumber = el.dataset.nextDeathAnniversaryNumber; // NEW
+                    const nextDeathAnniversaryNumber = el.dataset.nextDeathAnniversaryNumber;
 
                     const daysEl = el.querySelector('[data-days]');
                     const hoursEl = el.querySelector('[data-hours]');
                     const minutesEl = el.querySelector('[data-minutes]');
                     const secondsEl = el.querySelector('[data-seconds]');
                     
-                    // UPDATED: Selectors
-                    // FIX: Use .card-bg to select the *parent* card, not the timer element itself.
-                    const birthdayMessageEl = el.closest('.card-bg[data-id]').querySelector('[data-birthday-message]'); // FIXED
-                    const anniversaryMessageEl = el.closest('.card-bg[data-id]').querySelector('[data-anniversary-message]'); // NEW
-                    const remembranceAnniversaryMessageEl = el.closest('.card-bg[data-id]').querySelector('[data-remembrance-anniversary-message]'); // NEW
-                    const alertEl = el.querySelector('[data-milestone-alert]'); // Overlay alert (for non-birthday)
-                    const nonBirthdayAlertContainer = el.closest('.card-bg[data-id]').querySelector('[data-non-birthday-alert-container]'); // FIXED
+                    const card = el.closest('.card-bg[data-id]');
+                    if (!card) return; // Stop if card is gone
+
+                    const birthdayMessageEl = card.querySelector('[data-birthday-message]');
+                    const anniversaryMessageEl = card.querySelector('[data-anniversary-message]');
+                    const remembranceAnniversaryMessageEl = card.querySelector('[data-remembrance-anniversary-message]');
+                    const alertEl = el.querySelector('[data-milestone-alert]');
+                    const nonBirthdayAlertContainer = card.querySelector('[data-non-birthday-alert-container]');
                     const timeContainer = el;
-                    const timerSegments = el.querySelectorAll('[data-timer-segment]'); // NEW
+                    const timerSegments = el.querySelectorAll('[data-timer-segment]');
 
 
                     if (distance < 0) {
                         const daysAgo = Math.floor(Math.abs(distance) / (1000 * 60 * 60 * 24));
                         let pastMessage;
                         
-                        // NEW: Birthday & Anniversary logic for past dates
+                        const absDist = Math.abs(distance);
+                        const isToday = absDist < (1000 * 60 * 60 * 24);
+
                         if (isBirthday) {
-                            const absDist = Math.abs(distance);
-                            if (absDist < (1000 * 60 * 60 * 24)) { // Birthday is *today*
-                                pastMessage = `Happy ${this.getOrdinal(nextAge)} Birthday!`; // UPDATED
-                            } else { // Birthday was yesterday or earlier
-                                pastMessage = `Birthday passed (Turned ${nextAge})`;
-                            }
-                        } else if (isAnniversary) { // NEW
-                            const absDist = Math.abs(distance);
-                            if (absDist < (1000 * 60 * 60 * 24)) { // Anniversary is *today*
-                                pastMessage = `Happy ${this.getOrdinal(nextAnniversaryNumber)} Anniversary!`;
-                            } else { // Anniversary was yesterday or earlier
-                                pastMessage = `Anniversary passed (${this.getOrdinal(nextAnniversaryNumber)})`;
-                            }
-                        } else if (isRemembrance) { // NEW
-                            const absDist = Math.abs(distance);
-                            if (absDist < (1000 * 60 * 60 * 24)) { // Anniversary is *today*
-                                pastMessage = `Happy ${this.getOrdinal(nextDeathAnniversaryNumber)} Anniversary`; // UPDATED
-                            } else { // Anniversary was yesterday or earlier
-                                pastMessage = `${this.getOrdinal(nextDeathAnniversaryNumber)} Anniversary passed`; // UPDATED
-                            }
+                            pastMessage = isToday ? `Happy ${this.getOrdinal(nextAge)} Birthday!` : `Birthday passed (Turned ${nextAge})`;
+                        } else if (isAnniversary) {
+                            pastMessage = isToday ? `Happy ${this.getOrdinal(nextAnniversaryNumber)} Anniversary!` : `Anniversary passed (${this.getOrdinal(nextAnniversaryNumber)})`;
+                        } else if (isRemembrance) {
+                            pastMessage = isToday ? `${this.getOrdinal(nextDeathAnniversaryNumber)} Anniversary` : `${this.getOrdinal(nextDeathAnniversaryNumber)} Anniversary passed`;
                         } else if (daysAgo === 0) {
                             pastMessage = "Today!";
                         } else if (daysAgo === 1) {
@@ -2046,10 +2173,9 @@
                         if (timeContainer) {
                             timeContainer.innerHTML = `<div class="text-xs text-center ${isBirthday || isAnniversary || isRemembrance ? 'font-bold text-accent-light' : 'text-muted'} py-1 px-1 w-full">${pastMessage}</div>`;
                         }
-                        // Clear alerts
-                        if (birthdayMessageEl) birthdayMessageEl.innerHTML = ''; // NEW
-                        if (anniversaryMessageEl) anniversaryMessageEl.innerHTML = ''; // NEW
-                        if (remembranceAnniversaryMessageEl) remembranceAnniversaryMessageEl.innerHTML = ''; // NEW
+                        if (birthdayMessageEl) birthdayMessageEl.innerHTML = '';
+                        if (anniversaryMessageEl) anniversaryMessageEl.innerHTML = '';
+                        if (remembranceAnniversaryMessageEl) remembranceAnniversaryMessageEl.innerHTML = '';
                         if (nonBirthdayAlertContainer) nonBirthdayAlertContainer.innerHTML = '';
                         return;
                     }
@@ -2064,75 +2190,42 @@
                     if (minutesEl) minutesEl.textContent = String(minutes).padStart(2, '0');
                     if (secondsEl) secondsEl.textContent = String(seconds).padStart(2, '0');
                     
-                    // UPDATED: Replaced single fragile 'if' with robust individual checks
                     if (isBirthday) {
-                        // SHOW birthday message in its dedicated slot
-                        if (birthdayMessageEl) {
-                            // UPDATED: Changed text content as requested
-                            birthdayMessageEl.textContent = `Turning ${nextAge} in`;
-                        }
-                        if (anniversaryMessageEl) anniversaryMessageEl.textContent = ''; // NEW: Clear other special
-                        if (remembranceAnniversaryMessageEl) remembranceAnniversaryMessageEl.textContent = ''; // NEW: Clear other special
-                        
-                        // HIDE other alerts
+                        if (birthdayMessageEl) birthdayMessageEl.textContent = `Turning ${nextAge} in`;
+                        if (anniversaryMessageEl) anniversaryMessageEl.textContent = '';
+                        if (remembranceAnniversaryMessageEl) remembranceAnniversaryMessageEl.textContent = '';
                         if (alertEl) alertEl.classList.add('hidden'); 
                         if (nonBirthdayAlertContainer) nonBirthdayAlertContainer.innerHTML = ''; 
-
-                        // SHOW timer segments
                         if (timerSegments) timerSegments.forEach(seg => seg.style.visibility = 'visible');
-                    } else if (isAnniversary) { // NEW: Handle Anniversary
-                        // SHOW anniversary message
-                        if (anniversaryMessageEl) {
-                            anniversaryMessageEl.textContent = `${this.getOrdinal(nextAnniversaryNumber)} Anniversary in`;
-                        }
-                        if (birthdayMessageEl) birthdayMessageEl.textContent = ''; // NEW: Clear other special
-                        if (remembranceAnniversaryMessageEl) remembranceAnniversaryMessageEl.textContent = ''; // NEW: Clear other special
-
-                        // HIDE other alerts
+                    } else if (isAnniversary) {
+                        if (anniversaryMessageEl) anniversaryMessageEl.textContent = `${this.getOrdinal(nextAnniversaryNumber)} Anniversary in`;
+                        if (birthdayMessageEl) birthdayMessageEl.textContent = '';
+                        if (remembranceAnniversaryMessageEl) remembranceAnniversaryMessageEl.textContent = '';
                         if (alertEl) alertEl.classList.add('hidden'); 
                         if (nonBirthdayAlertContainer) nonBirthdayAlertContainer.innerHTML = ''; 
-
-                        // SHOW timer segments
                         if (timerSegments) timerSegments.forEach(seg => seg.style.visibility = 'visible');
-                    } else if (isRemembrance) { // NEW: Handle Remembrance
-                        // SHOW remembrance message
-                        if (remembranceAnniversaryMessageEl) {
-                            remembranceAnniversaryMessageEl.textContent = `${this.getOrdinal(nextDeathAnniversaryNumber)} Anniversary in`; // UPDATED
-                        }
+                    } else if (isRemembrance) {
+                        if (remembranceAnniversaryMessageEl) remembranceAnniversaryMessageEl.textContent = `${this.getOrdinal(nextDeathAnniversaryNumber)} Anniversary in`;
                         if (birthdayMessageEl) birthdayMessageEl.textContent = '';
                         if (anniversaryMessageEl) anniversaryMessageEl.textContent = '';
-                        
-                        // HIDE other alerts
                         if (alertEl) alertEl.classList.add('hidden'); 
                         if (nonBirthdayAlertContainer) nonBirthdayAlertContainer.innerHTML = ''; 
-
-                        // SHOW timer segments
                         if (timerSegments) timerSegments.forEach(seg => seg.style.visibility = 'visible');
                     } else {
-                        // HIDE birthday message
                         if (birthdayMessageEl) birthdayMessageEl.textContent = '';
-                        // HIDE anniversary message
-                        if (anniversaryMessageEl) anniversaryMessageEl.textContent = ''; // NEW
-                        if (remembranceAnniversaryMessageEl) remembranceAnniversaryMessageEl.textContent = ''; // NEW
-                        
-                        // HIDE overlay
+                        if (anniversaryMessageEl) anniversaryMessageEl.textContent = '';
+                        if (remembranceAnniversaryMessageEl) remembranceAnniversaryMessageEl.textContent = '';
                         if (alertEl) {
                             alertEl.textContent = ''; 
                             alertEl.classList.add('hidden'); 
                         }
-
-                        // SHOW timer segments
                         if (timerSegments) timerSegments.forEach(seg => seg.style.visibility = 'visible');
-
-                        // Put non-birthday alert in its own container
                         if (nonBirthdayAlertContainer) {
-                            // UPDATED: Removed the milestone alert text as requested
-                            nonBirthdayAlertContainer.innerHTML = ''; // WAS: `<span class="text-xs font-medium text-accent-light">${this.getMilestoneAlert(distance, days)}</span>`;
+                            nonBirthdayAlertContainer.innerHTML = '';
                         }
                     }
                 },
                 
-                // NEW: Helper function for ordinals (1st, 2nd, 3rd)
                 getOrdinal(n) {
                     if (n === null || n === undefined) return '';
                     const s = ['th', 'st', 'nd', 'rd'];
@@ -2141,36 +2234,14 @@
                 },
 
                 getMilestoneAlert(distance, days) {
-                    const totalYears = Math.floor(days / 365.25);
-                    const totalMonths = Math.floor(days / 30.44);
-
-                    if (days <= 6) {
-                        return "Less than a week left";
-                    } else if (days === 7) {
-                        return "1 week left!";
-                    } else if (days <= 13) {
-                        return "Less than 2 weeks left";
-                    } else if (days === 14) {
-                        return "2 weeks left!";
-                    } else if (days < 30) {
-                        return "Less than a month left";
-                    } else if (totalMonths < 12) {
-                        return totalMonths === 1 ? "1 month left" : `${totalMonths} months left`;
-                    } else if (totalYears < 2) {
-                        return "1 year left";
-                    } else {
-                        const remainingMonths = Math.floor((days % 365.25) / 30.44);
-                        if (remainingMonths > 0) {
-                            return `${totalYears} years & ${remainingMonths} ${remainingMonths === 1 ? 'month' : 'months'} left`;
-                        } else {
-                            return `${totalYears} years left`;
-                        }
-                    }
+                    // ... (This function is no longer used, but kept for posterity)
+                    return '';
                 },
 
                 updateDatalists() {
-                    const categories = [...new Set(this.dates.map(g => g.category).filter(Boolean))];
-                    const groups = [...new Set(this.dates.map(g => g.group).filter(Boolean))];
+                    const dates = this.getDates(); // UPDATED
+                    const categories = [...new Set(dates.map(g => g.category).filter(Boolean))];
+                    const groups = [...new Set(dates.map(g => g.group).filter(Boolean))];
 
                     this.categorySuggestions.innerHTML = categories.map(c => `<option value="${this.escapeHTML(c)}"></option>`).join('');
                     this.groupSuggestions.innerHTML = groups.map(g => `<option value="${this.escapeHTML(g)}"></option>`).join('');
@@ -2188,12 +2259,9 @@
                         .replace(/'/g, '&#039;');
                 },
 
-                // NEW: ADDED HELPER FUNCTION
                 getContrastingTextColor(hexColor) {
                     if (!hexColor) return 'var(--text-primary)';
-                    // Remove the hash at the start if it exists
                     hexColor = hexColor.replace(/^#/, '');
-                    // Parse r, g, b values
                     let r, g, b;
                     if (hexColor.length === 3) {
                         r = parseInt(hexColor.substring(0, 1) + hexColor.substring(0, 1), 16);
@@ -2204,22 +2272,16 @@
                         g = parseInt(hexColor.substring(2, 4), 16);
                         b = parseInt(hexColor.substring(4, 6), 16);
                     } else {
-                        // Fallback for invalid color (e.g., css var)
                         return 'var(--text-primary)';
                     }
-                    // Calculate luminance (per WCAG formula)
                     const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-                    // Return black or white based on luminance
                     return luminance > 0.5 ? '#000000' : '#FFFFFF';
                 },
-
-                // --- End of App Object ---
-            }; // <-- End of app object
-
-            app.init(); // Initialize the app
-
-        }); // <-- End of DOMContentLoaded listener
+            };
+            app.init();
+        });
     </script>
 
 </body>
 </html>
+
