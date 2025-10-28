@@ -2158,21 +2158,36 @@
 
                         if (isBirthday) {
                             pastMessage = isToday ? `Happy ${this.getOrdinal(nextAge)} Birthday!` : `Birthday passed (Turned ${nextAge})`;
+                            if (timeContainer) {
+                                timeContainer.innerHTML = `<div class="text-xs text-center font-bold text-accent-light py-1 px-1 w-full">${pastMessage}</div>`;
+                            }
                         } else if (isAnniversary) {
                             pastMessage = isToday ? `Happy ${this.getOrdinal(nextAnniversaryNumber)} Anniversary!` : `Anniversary passed (${this.getOrdinal(nextAnniversaryNumber)})`;
+                            if (timeContainer) {
+                                timeContainer.innerHTML = `<div class="text-xs text-center font-bold text-accent-light py-1 px-1 w-full">${pastMessage}</div>`;
+                            }
                         } else if (isRemembrance) {
                             pastMessage = isToday ? `${this.getOrdinal(nextDeathAnniversaryNumber)} Anniversary` : `${this.getOrdinal(nextDeathAnniversaryNumber)} Anniversary passed`;
+                            if (timeContainer) {
+                                timeContainer.innerHTML = `<div class="text-xs text-center font-bold text-accent-light py-1 px-1 w-full">${pastMessage}</div>`;
+                            }
                         } else if (daysAgo === 0) {
                             pastMessage = "Today!";
-                        } else if (daysAgo === 1) {
-                            pastMessage = "1 day ago";
-                        } else {
-                            pastMessage = `${daysAgo} days ago`;
+                            if (timeContainer) {
+                                timeContainer.innerHTML = `<div class="text-xs text-center text-muted py-1 px-1 w-full">${pastMessage}</div>`;
+                            }
+                        } else { // This covers 1 day ago and "X days ago"
+                            const daysAgoText = daysAgo === 1 ? 'Day Ago' : 'Days Ago';
+                            if (timeContainer) {
+                                timeContainer.innerHTML = `
+                                    <div class="bg-interactive py-1 px-1 rounded w-full text-center">
+                                        <span class="block text-xl font-bold text-primary">${daysAgo}</span>
+                                        <span class="block text-[0.6rem] font-medium text-muted uppercase">${daysAgoText}</span>
+                                    </div>
+                                `;
+                            }
                         }
                         
-                        if (timeContainer) {
-                            timeContainer.innerHTML = `<div class="text-xs text-center ${isBirthday || isAnniversary || isRemembrance ? 'font-bold text-accent-light' : 'text-muted'} py-1 px-1 w-full">${pastMessage}</div>`;
-                        }
                         if (birthdayMessageEl) birthdayMessageEl.innerHTML = '';
                         if (anniversaryMessageEl) anniversaryMessageEl.innerHTML = '';
                         if (remembranceAnniversaryMessageEl) remembranceAnniversaryMessageEl.innerHTML = '';
@@ -2284,4 +2299,5 @@
 
 </body>
 </html>
+
 
