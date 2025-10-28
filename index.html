@@ -10,6 +10,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.2/Sortable.min.js" xintegrity="sha512-TelkP3PCMJv+viJSvKqrK9dMssE8V+M0fYj/9/pGz/xG8GfC/xX/2GfC/a3fYXzPgl7HAYvT/88z-2u/pYg/A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <!-- Popper.js for positioning the onboarding tour steps -->
     <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.min.js"></script>
+    <!-- NEW: Lucide Icons Library -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
     <style>
         :root { /* Default: Dark Theme */
             --bg-main: #111827;
@@ -403,54 +405,37 @@
             
             <div id="themeSwitcher" class="flex items-center gap-1 bg-interactive-deep p-1 rounded-lg">
                 <button class="theme-btn p-1 rounded-md" data-theme="dark" title="Dark Theme">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                    <i data-lucide="moon" width="20" height="20"></i>
                 </button>
                 <button class="theme-btn p-1 rounded-md" data-theme="light" title="Light Theme">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                    <i data-lucide="sun" width="20" height="20"></i>
                 </button>
                 <button class="theme-btn p-1 rounded-md" data-theme="forest" title="Forest Theme">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 10v.2A3 3 0 0 1 8.9 16v0H5v0a3 3 0 0 1-1-5.8V10a3 3 0 0 1 6 0Z"/><path d="M7 16v6"/><path d="M13 19v3"/><path d="M12 19h8.3a1 1 0 0 0 .7-1.7L18 14h.3a1 1 0 0 0 .7-1.7L16 9h.2a1 1 0 0 0 .7-1.7L13 3l-1.4 1.5"/></svg>
+                    <i data-lucide="trees" width="20" height="20"></i>
                 </button>
                 <button class="theme-btn p-1 rounded-md" data-theme="slate" title="Slate Theme">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><line x1="3" x2="21" y1="9" y2="9"/><line x1="3" x2="21" y1="15" y2="15"/><line x1="9" x2="9" y1="3" y2="21"/><line x1="15" x2="15" y1="3" y2="21"/></svg>
+                    <i data-lucide="layout-grid" width="20" height="20"></i>
                 </button>
             </div>
 
             <div class="flex items-center gap-2">
                 <button id="addDateBtn" class="btn btn-primary font-medium py-2 px-4 rounded-lg text-sm flex items-center gap-1.5">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
-                        <path d="M10.75 4.75a.75.75 0 0 0-1.5 0v4.5h-4.5a.75.75 0 0 0 0 1.5h4.5v4.5a.75.75 0 0 0 1.5 0v-4.5h4.5a.75.75 0 0 0 0-1.5h-4.5v-4.5Z" />
-                    </svg>
+                    <i data-lucide="plus" class="w-5 h-5"></i>
                     Add Date
                 </button>
                 <button id="settingsBtn" class="btn btn-secondary font-medium p-2 rounded-lg text-sm">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
-                        <path d="M12 20a8 8 0 1 0 0-16 8 8 0 0 0 0 16Z"/>
-                        <path d="M12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"/>
-                        <path d="M12 2v2"/>
-                        <path d="M12 20v2"/>
-                        <path d="m4.93 4.93 1.41 1.41"/>
-                        <path d="m17.66 17.66 1.41 1.41"/>
-                        <path d="M2 12h2"/>
-                        <path d="M20 12h2"/>
-                        <path d="m6.34 17.66-1.41 1.41"/>
-                        <path d="m19.07 4.93-1.41 1.41"/>
-                    </svg>
+                    <i data-lucide="settings" class="w-5 h-5"></i>
                 </button>
                 <!-- NEW: Help/Onboarding Button -->
                 <button id="helpBtn" class="btn btn-secondary font-medium p-2 rounded-lg text-sm" title="Show Help">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
-                        <line x1="12" y1="17" x2="12.01" y2="17"></line>
-                    </svg>
+                    <i data-lucide="help-circle" class="w-5 h-5"></i>
                 </button>
             </div>
         </header>
 
         <!-- Countdown Container -->
         <!-- UPDATED: This container now holds groups, which in turn hold cards -->
-        <div id="countdownContainer" class="flex flex-col gap-3">
+        <div id="countdownContainer" class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-3">
             <!-- Widgets and groups will be dynamically inserted here -->
         </div>
     </div>
@@ -462,9 +447,7 @@
             <div class="flex items-center justify-between p-4 border-b border-color">
                 <h2 id="modalTitle" class="text-lg font-semibold text-primary">Add New Date</h2>
                 <button id="closeModalBtn" class="text-muted hover:text-primary">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
-                        <path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" />
-                    </svg>
+                    <i data-lucide="x" class="w-5 h-5"></i>
                 </button>
             </div>
 
@@ -500,6 +483,7 @@
                             <option value="Personal"></option>
                             <option value="Work"></option>
                             <option value="Birthday"></option> <!-- ADDED -->
+                            <option value="Anniversary"></option> <!-- ADDED -->
                             <option value="Health"></option>
                             <option value="Finance"></option>
                             <option value="Learn"></option>
@@ -520,6 +504,8 @@
                             <option value="briefcase"></option>
                             <option value="calendar"></option>
                             <option value="cake"></option> <!-- ADDED -->
+                            <option value="gift"></option> <!-- ADDED -->
+                            <option value="calendar-heart"></option> <!-- ADDED -->
                             <option value="heart"></option>
                             <option value="home"></option>
                             <option value="flag"></option>
@@ -559,9 +545,7 @@
                     <div class="flex items-center gap-2 mt-2">
                         <input type="text" id="newMilestoneInput" class="input-bg flex-1 border border-color-strong rounded-lg px-3 py-2.5 text-sm focus:ring-2 outline-none" placeholder="Add a new milestone...">
                         <button id="addMilestoneBtn" type="button" class="btn btn-secondary p-2.5 rounded-lg text-accent-light hover:text-accent">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
-                                <path d="M10.75 4.75a.75.75 0 0 0-1.5 0v4.5h-4.5a.75.75 0 0 0 0 1.5h4.5v4.5a.75.75 0 0 0 1.5 0v-4.5h4.5a.75.75 0 0 0 0-1.5h-4.5v-4.5Z" />
-                            </svg>
+                            <i data-lucide="plus" class="w-5 h-5"></i>
                         </button>
                     </div>
                     <!-- END UPDATED: Milestone add section -->
@@ -587,27 +571,30 @@
             <div class="flex items-center justify-between p-4 border-b border-color">
                 <h2 class="text-lg font-semibold text-primary">Settings</h2>
                 <button id="closeSettingsBtn" class="text-muted hover:text-primary">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
-                        <path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" />
-                    </svg>
+                    <i data-lucide="x" class="w-5 h-5"></i>
                 </button>
             </div>
             <!-- Modal Body -->
             <div class="p-6 space-y-4">
-                <p class="text-sm text-muted">Export all your dates to a JSON file as a backup, or import them on another device.</p>
+                <!-- NEW: Column Count Setting -->
+                <div>
+                    <label for="columnCountSelect" class="block text-sm font-medium text-color mb-1.5">Columns on Wide Screen</label>
+                    <select id="columnCountSelect" class="select-bg w-full border border-color-strong rounded-lg px-3 py-2.5 text-sm focus:ring-2 outline-none">
+                        <option value="1">1 Column</option>
+                        <option value="2">2 Columns (Default)</option>
+                        <option value="3">3 Columns</option>
+                        <option value="4">4 Columns</option>
+                    </select>
+                </div>
+                <!-- END: Column Count Setting -->
+                <p class="text-sm text-muted pt-2">Export all your dates to a JSON file as a backup, or import them on another device.</p>
                 <button id="exportDataBtn" class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2.5 px-4 rounded-lg text-sm flex items-center justify-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
-                        <path d="M10.75 2.75a.75.75 0 0 0-1.5 0v8.614L6.295 8.23a.75.75 0 0 0-1.09 1.03l4.25 4.5a.75.75 0 0 0 1.09 0l4.25-4.5a.75.75 0 0 0-1.09-1.03l-2.955 3.134V2.75Z" />
-                        <path d="M3.5 12.75a.75.75 0 0 0-1.5 0v2.5A2.75 2.75 0 0 0 4.75 18h10.5A2.75 2.75 0 0 0 18 15.25v-2.5a.75.75 0 0 0-1.5 0v2.5c0 .69-.56 1.25-1.25 1.25H4.75c-.69 0-1.25-.56-1.25-1.25v-2.5Z" />
-                    </svg>
+                    <i data-lucide="download" class="w-5 h-5"></i>
                     Export Dates (.json)
                 </button>
                 <div>
                     <label for="importFile" class="btn btn-primary w-full font-medium py-2.5 px-4 rounded-lg text-sm flex items-center justify-center gap-2 cursor-pointer">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
-                            <path d="M10.75 17.25a.75.75 0 0 0 1.5 0V8.614l2.955 3.134a.75.75 0 1 0 1.09-1.03l-4.25-4.5a.75.75 0 0 0-1.09 0l-4.25 4.5a.75.75 0 1 0 1.09 1.03l2.955-3.134v8.636Z" />
-                            <path d="M3.5 12.75a.75.75 0 0 0-1.5 0v2.5A2.75 2.75 0 0 0 4.75 18h10.5A2.75 2.75 0 0 0 18 15.25v-2.5a.75.75 0 0 0-1.5 0v2.5c0 .69-.56 1.25-1.25 1.25H4.75c-.69 0-1.25-.56-1.25-1.25v-2.5Z" />
-                        </svg>
+                        <i data-lucide="upload" class="w-5 h-5"></i>
                         Import Dates (.json)
                     </label>
                     <input type="file" id="importFile" class="hidden" accept=".json">
@@ -691,6 +678,7 @@
                 closeSettingsBtn: document.getElementById('closeSettingsBtn'),
                 exportDataBtn: document.getElementById('exportDataBtn'),
                 importFile: document.getElementById('importFile'),
+                columnCountSelect: document.getElementById('columnCountSelect'), // NEW
 
                 // Confirm Modal
                 confirmModal: document.getElementById('confirmModal'),
@@ -719,7 +707,8 @@
                 _confirmCallback: null,
                 sortableGroups: null, // NEW: Sortable instance for groups
                 sortableCards: [], // NEW: Array of Sortable instances for cards
-                
+                columnCount: 2, // NEW: Default column count
+
                 // NEW: Onboarding State
                 tourSteps: [],
                 currentTourStep: 0,
@@ -728,6 +717,7 @@
                 init() {
                     this.loadTheme();
                     this.loadDates();
+                    this.loadAndApplyColumnCount(); // NEW
                     this.renderAllDates();
                     this.updateDatalists();
                     // this.startTimers(); // Moved to renderAllDates
@@ -735,6 +725,7 @@
                     this.initThemes();
                     this.initTourSteps(); // NEW
                     this.startTour(); // NEW
+                    lucide.createIcons(); // NEW: Initial icon render
                 },
 
                 attachEventListeners() {
@@ -772,6 +763,7 @@
                     this.closeSettingsBtn.addEventListener('click', () => this.closeSettings());
                     this.exportDataBtn.addEventListener('click', () => this.exportData());
                     this.importFile.addEventListener('change', (e) => this.importData(e));
+                    this.columnCountSelect.addEventListener('change', (e) => this.setColumnCount(e.target.value)); // NEW
 
                     // Confirm Modal
                     this.confirmCancel.addEventListener('click', () => this.closeConfirm());
@@ -872,6 +864,7 @@
                     this.renderMilestones();
                     this.updateModalForCategory(); // NEW: Update UI based on category
                     this.dateModal.classList.add('flex');
+                    lucide.createIcons(); // NEW: Render icons in modal
                 },
 
                 closeModal() {
@@ -898,14 +891,18 @@
                 // NEW: Show/hide date/datetime input based on category
                 updateModalForCategory() {
                     const categoryLabel = document.querySelector('label[for="dateTarget"]');
-                    const isBirthday = this.dateCategory.value.trim().toLowerCase() === 'birthday';
+                    // NEW: Check for birthday or anniversary
+                    const categoryLower = this.dateCategory.value.trim().toLowerCase();
+                    const isBirthday = categoryLower === 'birthday';
+                    const isAnniversary = categoryLower === 'anniversary';
+                    const isSpecialDate = isBirthday || isAnniversary;
                     
                     // NEW: Find the milestone section title
                     const milestoneTitle = this.milestoneSection.querySelector('h3'); // Target the h3
 
                     // NEW: Show milestone section for all, but change title
                     this.milestoneSection.style.display = 'block'; // Always show
-                    if (isBirthday) {
+                    if (isSpecialDate) { // UPDATED: Use isSpecialDate
                         if (milestoneTitle) milestoneTitle.textContent = 'Checklist'; // Change title
                     } else {
                         if (milestoneTitle) milestoneTitle.textContent = 'Key Results (Milestones)'; // Reset title
@@ -913,15 +910,15 @@
 
                     // REMOVED logic that hid the milestone section
                     /*
-                    if (isBirthday) {
-                        this.milestoneSection.style.display = 'none';
-                    } else {
-                        this.milestoneSection.style.display = 'block';
-                    }
                     */
 
-                    if (isBirthday) {
-                        categoryLabel.textContent = 'Birthday (Date of Birth)';
+                    if (isSpecialDate) { // UPDATED: Use isSpecialDate
+                        // NEW: Set label based on type
+                        if (isBirthday) {
+                            categoryLabel.textContent = 'Birthday (Date of Birth)';
+                        } else if (isAnniversary) {
+                            categoryLabel.textContent = 'Anniversary Date';
+                        }
                         this.dateTarget.type = 'date';
                         // If it was a datetime, strip the time part
                         if (this.dateTarget.value.includes('T')) {
@@ -1038,14 +1035,16 @@
                             <span class="text-sm ${textClass}">${this.escapeHTML(milestone.text)}</span>
                         </div>
                         <button type="button" class="delete-milestone text-muted-light hover-text-danger p-1">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
-                                <path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" />
-                            </svg>
+                            <i data-lucide="x" class="w-5 h-5"></i>
                         </button>
                     `;
                     return div;
+                    this.currentMilestones.forEach(milestone => {
+                        this.milestonesContainer.appendChild(this.createMilestoneElement(milestone));
+                    });
+                    lucide.createIcons(); // NEW: Render milestone icons
                 },
-
+                
                 addMilestone() {
                     const text = this.newMilestoneInput.value.trim();
                     if (text) {
@@ -1074,6 +1073,7 @@
 
                 openSettings() {
                     this.settingsModal.classList.add('flex');
+                    lucide.createIcons(); // NEW: Render icons in modal
                 },
 
                 closeSettings() {
@@ -1294,14 +1294,10 @@
 
                     if (type === 'error') {
                         classes = 'bg-red-600 text-white';
-                        icon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
-                                  <path fill-rule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm-1-5.03a1 1 0 0 1 2 0v.015a1 1 0 0 1-2 0V12.97Zm1-6.015a1 1 0 0 1 1 1v3.015a1 1 0 0 1-2 0V7.97a1 1 0 0 1 1-1Z" clip-rule="evenodd" />
-                                </svg>`;
+                        icon = `<i data-lucide="alert-circle" class="w-5 h-5"></i>`;
                     } else { // 'success' or default
                         classes = 'bg-green-600 text-white';
-                        icon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
-                                  <path fill-rule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm3.857-9.809a.75.75 0 0 0-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 1 0-1.06 1.061l2.5 2.5a.75.75 0 0 0 1.137-.089l4-5.5Z" clip-rule="evenodd" />
-                                </svg>`;
+                        icon = `<i data-lucide="check-circle" class="w-5 h-5"></i>`;
                     }
 
                     toast.className = `flex items-center gap-3 w-full p-4 rounded-lg shadow-lg ${classes}`;
@@ -1312,12 +1308,65 @@
                     `;
                     
                     this.toastContainer.appendChild(toast);
+                    lucide.createIcons(); // NEW: Render toast icon
 
                     setTimeout(() => {
                         toast.classList.add('animate-fadeOut');
                         setTimeout(() => toast.remove(), 500);
                     }, 3000);
                 },
+
+                // --- NEW: Column Count Functions ---
+                loadAndApplyColumnCount() {
+                    const savedCount = localStorage.getItem('tymrColumnCount') || 2;
+                    this.columnCount = parseInt(savedCount, 10);
+                    this.columnCountSelect.value = this.columnCount;
+                    this.applyColumnClasses(this.columnCount);
+                },
+
+                setColumnCount(count) {
+                    this.columnCount = parseInt(count, 10);
+                    localStorage.setItem('tymrColumnCount', this.columnCount);
+                    this.applyColumnClasses(this.columnCount);
+                    // Re-render to fix empty state colspan if visible
+                    if (this.dates.length === 0) {
+                        this.renderAllDates();
+                    }
+                },
+
+                applyColumnClasses(count) {
+                    const container = this.countdownContainer;
+                    // Remove all possible column classes first
+                    container.classList.remove('md:grid-cols-2', 'lg:grid-cols-3', 'xl:grid-cols-4');
+
+                    // Add classes based on selection
+                    switch (count) {
+                        case 1: 
+                            // 'grid-cols-1' is already the base class
+                            break;
+                        case 2: 
+                            container.classList.add('md:grid-cols-2'); 
+                            break;
+                        case 3: 
+                            container.classList.add('md:grid-cols-2', 'lg:grid-cols-3'); 
+                            break;
+                        case 4: 
+                            container.classList.add('md:grid-cols-2', 'lg:grid-cols-3', 'xl:grid-cols-4'); 
+                            break;
+                    }
+                },
+                
+                getColumnColspanClasses(count) {
+                    switch (count) {
+                        case 1: return '';
+                        case 2: return 'md:col-span-2';
+                        case 3: return 'md:col-span-2 lg:col-span-3';
+                        case 4: return 'md:col-span-2 lg:col-span-3 xl:col-span-4';
+                        default: return 'md:col-span-2';
+                    }
+                },
+                // --- END: Column Count Functions ---
+
 
                 // UPDATED: Major rewrite for new grouped structure and SortableJS
                 renderAllDates() {
@@ -1333,11 +1382,11 @@
                     this.countdownContainer.innerHTML = '';
 
                     if (this.dates.length === 0) {
+                        // NEW: Get dynamic colspan classes for empty state
+                        const colspanClasses = this.getColumnColspanClasses(this.columnCount);
                         this.countdownContainer.innerHTML = `
-                            <div class="text-center text-muted mt-12 w-full">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-16 h-16 mx-auto mb-4">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5m-9-6h.008v.008H12v-.008ZM12 15h.008v.008H12v-.008Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75v-.008Zm0 2.25h.008v.008H9.75v-.008Zm-2.25 0h.008v.008H7.5v-.008Zm0-2.25h.008v.008H7.5v-.008Zm6.75-2.25h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008v-.008Zm2.25-2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Z" />
-                                </svg>
+                            <div data-empty-state class="${colspanClasses} text-center text-muted mt-12 w-full">
+                                <i data-lucide="calendar-days" class="w-16 h-16 mx-auto mb-4" stroke-width="1.5"></i>
                                 <h3 class="text-xl font-semibold text-primary">No Dates Yet</h3>
                                 <p class="text-muted">Click "Add Date" to get started.</p>
                             </div>
@@ -1389,9 +1438,7 @@
                         const groupHeader = document.createElement('h2');
                         groupHeader.className = 'group-header text-xl font-semibold text-primary w-full mb-3 mt-5 border-b border-color pb-2 flex items-center gap-2';
                         groupHeader.innerHTML = `
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="w-4 h-4 text-muted shrink-0" viewBox="0 0 16 16">
-                                <path d="M7 2a1 1 0 1 1-2 0 1 1 0 0 1 2 0m3 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0M7 5a1 1 0 1 1-2 0 1 1 0 0 1 2 0m3 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0M7 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0m3 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0m-3 3a1 1 0 1 1-2 0 1 1 0 0 1 2 0m3 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0m-3 3a1 1 0 1 1-2 0 1 1 0 0 1 2 0m3 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
-                            </svg>
+                            <i data-lucide="grip-vertical" class="w-4 h-4 text-muted shrink-0"></i>
                             ${this.escapeHTML(groupName)}
                         `;
                         
@@ -1410,6 +1457,7 @@
                     
                     this.initSortable(); // NEW
                     this.startTimers(); // MOVED
+                    lucide.createIcons(); // NEW: Render all card icons
                 },
 
                 // NEW: Initialize all SortableJS instances
@@ -1462,121 +1510,90 @@
                     this.saveGroupOrderData(); // Save new order, do not re-render
                 },
 
-                // UPDATED: Added color parameter
-                getIconSVG(iconName, category, color = 'currentColor') {
-                    const name = String(iconName).trim().toLowerCase() || String(category).trim().toLowerCase();
-                    // UPDATED: Removed text-muted and stroke="currentColor" from commonProps
-                    const commonProps = `xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5 shrink-0"`;
+                // DELETED: getIconSVG function
+                // (Removed lines 2011-2073)
 
-                    // UPDATED: Added stroke="${color}" to every svg tag
-                    switch (name) {
-                        case 'rocket': return `<svg ${commonProps} stroke="${color}"><path d="M4.5 16.5c-1.5 1.5-3 1.5-4.5 0s-1.5-3 0-4.5L13.5 4.5c1.5-1.5 3-1.5 4.5 0s1.5 3 0 4.5L6.5 21.5c-1.5 1.5-3 1.5-4.5 0s-1.5-3 0-4.5L13.5 10.5"/></svg>`;
-                        case 'award': return `<svg ${commonProps} stroke="${color}"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>`;
-                        case 'book-open': return `<svg ${commonProps} stroke="${color}"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>`;
-                        case 'work':
-                        case 'briefcase':
-                            return `<svg ${commonProps} stroke="${color}"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>`;
-                        case 'personal':
-                        case 'user':
-                            return `<svg ${commonProps} stroke="${color}"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`;
-                        case 'health':
-                        case 'heart':
-                            return `<svg ${commonProps} stroke="${color}"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>`;
-                        case 'learn':
-                        case 'graduation-cap':
-                             return `<svg ${commonProps} stroke="${color}"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 1.66 4 3 6 3s6-1.34 6-3v-5"/></svg>`;
-                        case 'finance':
-                        case 'dollar-sign':
-                            return `<svg ${commonProps} stroke="${color}"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>`;
-                        case 'travel':
-                        case 'globe-2':
-                            return `<svg ${commonProps} stroke="${color}"><path d="M15 21v-4a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v4"/><path d="M12 21a9 9 0 1 0-9-9c0 1.48.38 2.87.98 4"/><path d="M12 12a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>`;
-                        // NEW: Birthday/Cake icon
-                        case 'birthday':
-                        case 'cake':
-                            return `<svg ${commonProps} stroke="${color}"><path d="M20 21v-8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8"/><path d="M4 16s.5-1 2-1 2.5 2 4 2 2.5-2 4-2 2.5 2 4 2 2-1 2-1"/><path d="M2 21h20"/><path d="M7 8v3"/><path d="M12 8v3"/><path d="M17 8v3"/><path d="M7 4h.01"/><path d="M12 4h.01"/><path d="M17 4h.01"/></svg>`;
-                        case 'home':
-                            return `<svg ${commonProps} stroke="${color}"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`;
-                        case 'flag':
-                        default:
-                            return `<svg ${commonProps} stroke="${color}"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>`;
-                    }
-                },
-
-                // NEW: Calculates contrast for category tag
-                getContrastingTextColor(hex) {
-                    if (!hex) return 'var(--text-on-accent)'; // Default to light text
-                    
-                    // Sanitize hex
-                    hex = hex.replace('#', '');
-
-                    let r = 0, g = 0, b = 0;
-                    if (hex.length === 3) { // #RGB
-                        r = parseInt(hex[0] + hex[0], 16);
-                        g = parseInt(hex[1] + hex[1], 16);
-                        b = parseInt(hex[2] + hex[2], 16);
-                    } else if (hex.length === 6) { // #RRGGBB
-                        r = parseInt(hex.substring(0, 2), 16);
-                        g = parseInt(hex.substring(2, 4), 16);
-                        b = parseInt(hex.substring(4, 6), 16);
-                    } else {
-                        return 'var(--text-on-accent)'; // Fallback for invalid hex
-                    }
-
-                    // Calculate luminance (YIQ formula)
-                    const yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
-                    
-                    // Use theme variables for light/dark text
-                    // 128 is the midpoint. Dark backgrounds (yiq < 128) get light text.
-                    return (yiq < 128) ? 'var(--text-on-accent)' : 'var(--bg-main)';
-                },
-                
-                // NEW: Helper function to calculate next birthday
-                calculateNextBirthday(birthdateString) {
+                // NEW: ADDED HELPER FUNCTION
+                calculateNextBirthday(dobString) {
                     try {
                         const now = new Date();
                         const today = new Date(now.getFullYear(), now.getMonth(), now.getDate()); // 00:00 today
-                        const birthdate = new Date(birthdateString);
+                        const birthDate = new Date(dobString);
                         
                         // Handle invalid date string from input
-                        if (isNaN(birthdate.getTime())) throw new Error('Invalid date');
+                        if (isNaN(birthDate.getTime())) throw new Error('Invalid date');
 
-                        const birthMonth = birthdate.getMonth();
-                        const birthDay = birthdate.getDate();
-                        const birthYear = birthdate.getFullYear();
+                        const birthMonth = birthDate.getMonth();
+                        const birthDay = birthDate.getDate();
+                        const birthYear = birthDate.getFullYear();
                         const currentYear = now.getFullYear();
 
                         // Set birthday for this year
                         let nextBirthdayDate = new Date(currentYear, birthMonth, birthDay); // 00:00 this year
                         let nextAge = currentYear - birthYear;
+                        let currentAge = nextAge;
 
                         // If this year's birthday date is *before* today's date, set for next year
                         if (nextBirthdayDate < today) {
                             nextBirthdayDate.setFullYear(currentYear + 1);
                             nextAge = nextBirthdayDate.getFullYear() - birthYear;
+                        } else {
+                            // If birthday is later this year, current age is one less
+                            currentAge = nextAge - 1;
                         }
                         
-                        // Calculate current age
-                        let currentAge = now.getFullYear() - birthYear;
-                        if (now.getMonth() < birthMonth || (now.getMonth() === birthMonth && now.getDate() < birthDay)) {
-                            currentAge--; // Haven't had their birthday this year yet
+                        // Handle case where birthday is today
+                        if (nextBirthdayDate.getTime() === today.getTime()) {
+                            currentAge = nextAge;
                         }
-
-                        // Calculate days remaining
-                        const timeDiff = nextBirthdayDate.getTime() - today.getTime(); // Diff from start of today
-                        const daysUntilBirthday = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
 
                         return { 
                             nextBirthdayDate: nextBirthdayDate, 
-                            nextAge: nextAge, // The age they will be
-                            currentAge: currentAge, // The age they are now
-                            daysUntilBirthday: daysUntilBirthday // Days remaining
+                            nextAge: nextAge, // The age they will be turning
+                            currentAge: currentAge // The age they are right now
                         };
                     
                     } catch (e) {
-                        console.error("Error calculating birthday:", e, birthdateString);
+                        console.error("Error calculating birthday:", e, dobString);
                         // Return a fallback to prevent crashes
-                        return { nextBirthdayDate: new Date(), nextAge: 0, currentAge: 0, daysUntilBirthday: 0 };
+                        return { nextBirthdayDate: new Date(), nextAge: 0, currentAge: 0 };
+                    }
+                },
+
+                // NEW: Helper function to calculate next anniversary
+                calculateNextAnniversary(anniversaryDateString) {
+                    try {
+                        const now = new Date();
+                        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate()); // 00:00 today
+                        const anniversaryDate = new Date(anniversaryDateString);
+                        
+                        // Handle invalid date string from input
+                        if (isNaN(anniversaryDate.getTime())) throw new Error('Invalid date');
+
+                        const annivMonth = anniversaryDate.getMonth();
+                        const annivDay = anniversaryDate.getDate();
+                        const annivYear = anniversaryDate.getFullYear();
+                        const currentYear = now.getFullYear();
+
+                        // Set anniversary for this year
+                        let nextAnniversaryDate = new Date(currentYear, annivMonth, annivDay); // 00:00 this year
+                        let nextAnniversaryNumber = currentYear - annivYear;
+
+                        // If this year's anniversary date is *before* today's date, set for next year
+                        if (nextAnniversaryDate < today) {
+                            nextAnniversaryDate.setFullYear(currentYear + 1);
+                            nextAnniversaryNumber = nextAnniversaryDate.getFullYear() - annivYear;
+                        }
+
+                        return { 
+                            nextAnniversaryDate: nextAnniversaryDate, 
+                            nextAnniversaryNumber: nextAnniversaryNumber // The number it will be (e.g., 5th)
+                        };
+                    
+                    } catch (e) {
+                        console.error("Error calculating anniversary:", e, anniversaryDateString);
+                        // Return a fallback to prevent crashes
+                        return { nextAnniversaryDate: new Date(), nextAnniversaryNumber: 0 };
                     }
                 },
 
@@ -1588,9 +1605,11 @@
                     // REVERTED: Removed inline styles for bg and CSS vars
 
                     
-                    // --- NEW Birthday Logic ---
-                    let targetDate, formattedDate, timerDateString, nextAge = 0, currentAge = 0; // UPDATED
-                    let isBirthday = dateData.category.trim().toLowerCase() === 'birthday';
+                    // --- NEW Birthday & Anniversary Logic ---
+                    let targetDate, formattedDate, timerDateString, nextAge = 0, currentAge = 0, nextAnniversaryNumber = 0; // UPDATED
+                    const categoryLower = dateData.category.trim().toLowerCase();
+                    let isBirthday = categoryLower === 'birthday';
+                    let isAnniversary = categoryLower === 'anniversary';
                     
                     if (isBirthday && dateData.date) {
                         const bdayInfo = this.calculateNextBirthday(dateData.date);
@@ -1604,8 +1623,20 @@
                         });
                         nextAge = bdayInfo.nextAge; // UPDATED
                         currentAge = bdayInfo.currentAge; // UPDATED
+                    } else if (isAnniversary && dateData.date) { // NEW: Anniversary logic
+                        const annivInfo = this.calculateNextAnniversary(dateData.date);
+                        targetDate = annivInfo.nextAnniversaryDate;
+                        timerDateString = targetDate.toISOString();
+                        const originalAnnivDate = new Date(dateData.date);
+                        formattedDate = originalAnnivDate.toLocaleDateString(undefined, {
+                            month: 'short',
+                            day: 'numeric',
+                            year: 'numeric'
+                        });
+                        nextAnniversaryNumber = annivInfo.nextAnniversaryNumber;
                     } else {
                         isBirthday = false; // Ensure it's false if date is missing
+                        isAnniversary = false; // NEW
                         targetDate = new Date(dateData.date);
                         timerDateString = dateData.date;
                         formattedDate = targetDate.toLocaleDateString(undefined, {
@@ -1636,42 +1667,60 @@
                     const categoryTextColor = this.getContrastingTextColor(categoryBGColor);
                     const iconColor = this.escapeHTML(dateData.categoryColor || 'var(--text-muted)');
                     
-                    // UPDATED: Pass color to icon function
-                    // Use 'birthday' as iconName if category is birthday and no icon is set
-                    const iconName = isBirthday && !dateData.iconName ? 'birthday' : dateData.iconName;
-                    const iconSVG = this.getIconSVG(iconName, dateData.category, iconColor);
+                    // UPDATED: Use Lucide data attributes instead of inline SVG
+                    let lucideIconName = this.escapeHTML(dateData.iconName?.trim().toLowerCase());
+                    if (!lucideIconName) {
+                        if (isBirthday) {
+                            lucideIconName = 'cake';
+                        } else if (isAnniversary) {
+                            lucideIconName = 'gift';
+                        } else {
+                            // Fallback for general categories if no icon is specified
+                            const categoryName = dateData.category.trim().toLowerCase();
+                            const categoryIconMap = {
+                                'work': 'briefcase',
+                                'personal': 'user',
+                                'health': 'heart',
+                                'learn': 'graduation-cap',
+                                'finance': 'dollar-sign',
+                                'travel': 'globe-2',
+                                'home': 'home'
+                            };
+                            lucideIconName = categoryIconMap[categoryName] || 'flag'; // Default to 'flag'
+                        }
+                    }
+                    const iconSVG = `<i data-lucide="${lucideIconName}" class="w-3.5 h-3.5 shrink-0" style="stroke: ${iconColor};"></i>`;
 
-                    // NEW: Conditionally render date or birthday message
-                    let dateOrBirthdayMessageHTML = '';
+                    // NEW: Conditionally render date or birthday/anniversary message
+                    let dateOrSpecialMessageHTML = '';
                     if (isBirthday) {
                         // Show the birthday message placeholder INSTEAD of the date
-                        dateOrBirthdayMessageHTML = `
+                        dateOrSpecialMessageHTML = `
                             <div class="flex items-center gap-1.5 text-accent-light ${completeClass}">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5 shrink-0" stroke="currentColor">
-                                    <path d="M20 21v-8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8"/>
-                                    <path d="M4 16s.5-1 2-1 2.5 2 4 2 2.5-2 4-2 2.5 2 4 2 2-1 2-1"/>
-                                    <path d="M2 21h20"/>
-                                    <path d="M7 8v3"/><path d="M12 8v3"/><path d="M17 8v3"/>
-                                    <path d="M7 4h.01"/><path d="M12 4h.01"/><path d="M17 4h.01"/>
-                                </svg>
+                                <i data-lucide="cake" class="w-3.5 h-3.5 shrink-0" stroke="currentColor"></i>
                                 <span class="text-xs font-medium" data-birthday-message></span> <!-- New placeholder location -->
+                            </div>
+                        `;
+                    } else if (isAnniversary) { // NEW: Anniversary message
+                        dateOrSpecialMessageHTML = `
+                            <div class="flex items-center gap-1.5 text-accent-light ${completeClass}">
+                                <i data-lucide="gift" class="w-3.5 h-3.5 shrink-0" stroke="currentColor"></i>
+                                <span class="text-xs font-medium" data-anniversary-message></span> <!-- New placeholder location -->
                             </div>
                         `;
                     } else {
                         // Show the date as normal
-                        dateOrBirthdayMessageHTML = `
+                        dateOrSpecialMessageHTML = `
                             <div class="flex items-center gap-1.5 text-muted ${completeClass}">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-3.5 h-3.5 shrink-0">
-                                    <path fill-rule="evenodd" d="M4 2a.75.75 0 0 1 .75.75V3h6.5V2.75a.75.75 0 0 1 1.5 0V3h.5A1.75 1.75 0 0 1 15 4.75v8.5A1.75 1.75 0 0 1 13.25 15H2.75A1.75 1.75 0 0 1 1 13.25v-8.5A1.75 1.75 0 0 1 2.75 3H3v-.25A.75.75 0 0 1 4 2ZM2.5 4.75v8.5c0 .138.112.25.25.25h10.5a.25.25 0 0 0 .25-.25v-8.5a.25.25 0 0 0-.25-.25H2.75a.25.25 0 0 0-.25.25Z" clip-rule="evenodd" />
-                                    <path d="M6.5 7.5a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3Zm-3 0a.5.5 0 0 0 0 1h.5a.5.5 0 0 0 0-1h-.5Zm6.5 2a.5.5 0 0 0 0 1h.5a.5.5 0 0 0 0-1h-.5Zm-3 0a.5.5 0 0 0 0 1h.5a.5.5 0 0 0 0-1h-.5Zm-3.5 0a.5.5 0 0 0 0 1h.5a.5.5 0 0 0 0-1h-.5Zm3.5 2a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3Zm-3 0a.5.5 0 0 0 0 1h.5a.5.5 0 0 0 0-1h-.5Z" />
-                                </svg>
+                                <i data-lucide="calendar" class="w-3.5 h-3.5 shrink-0" stroke="currentColor"></i>
                                 <span class="text-xs">${formattedDate}</span>
                             </div>
                         `;
                     }
                     
                     // NEW: Milestone section HTML
-                    const milestoneHTML = isBirthday ? '' : `
+                    const isSpecialDate = isBirthday || isAnniversary; // NEW
+                    const milestoneHTML = `
                         <div class="pt-0.5 ${completeClass}">
                             <div class="flex items-center justify-between">
                                 <span class="text-xs text-muted">Milestones</span>
@@ -1698,14 +1747,14 @@
                         <!-- DELETED: Placeholder for birthday message was here -->
 
                         <!-- NEW: Show Date or Birthday "Turning X in" message -->
-                        ${dateOrBirthdayMessageHTML}
+                        ${dateOrSpecialMessageHTML}
                         
                         <!-- NEW: Milestone section HTML -->
                         <!-- UPDATED: Show checklist/milestones for birthdays as well -->
                         <div class="pt-0.5 ${completeClass}">
                             <div class="flex items-center justify-between">
-                                <!-- UPDATED: Show "Checklist" for birthday, "Milestones" otherwise -->
-                                <span class="text-xs text-muted">${isBirthday ? 'Checklist' : 'Milestones'}</span>
+                                <!-- UPDATED: Show "Checklist" for special dates, "Milestones" otherwise -->
+                                <span class="text-xs text-muted">${isSpecialDate ? 'Checklist' : 'Milestones'}</span>
                                 <span class="text-xs font-medium text-color">${completedMilestones} / ${totalMilestones}</span>
                             </div>
                             <div class="flex items-center gap-1 mt-1.5 h-1.5">
@@ -1716,7 +1765,11 @@
                         <!-- REVERTED: Timer elements use theme classes -->
                         <!-- UPDATED: data-age renamed to data-next-age -->
                         <!-- UPDATED: Added relative class -->
-                        <div class="relative flex justify-between gap-0.5 text-center ${completeClass}" data-date="${timerDateString}" data-id="${dateData.id}" data-time-container data-is-birthday="${isBirthday}" data-next-age="${nextAge}">
+                        <div class="relative flex justify-between gap-0.5 text-center ${completeClass}" data-date="${timerDateString}" data-id="${dateData.id}" data-time-container 
+                             data-is-birthday="${isBirthday}" 
+                             data-is-anniversary="${isAnniversary}" 
+                             data-next-age="${nextAge}" 
+                             data-next-anniversary-number="${nextAnniversaryNumber}">
                             <div class="bg-interactive py-1 px-1 rounded w-auto min-w-[1.75rem]" data-timer-segment>
                                 <span class="block text-sm font-bold text-primary" data-days>0</span>
                                 <span class="block text-[0.6rem] font-medium text-muted uppercase">Days</span>
@@ -1754,24 +1807,13 @@
                             </div>
                             <div class="flex items-center gap-0.5 shrink-0">
                                 <button class="complete-card p-1 text-muted-light hover-text-success rounded ${completeIconClass}" title="Toggle Complete">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-3.5 h-3.5">
-                                        <path fill-rule="evenodd" d="M12.416 3.376a.75.75 0 0 1 .208 1.04l-5 7.5a.75.75 0 0 1-1.154.114l-3-3a.75.75 0 0 1 1.06-1.06l2.35 2.35 4.493-6.74a.75.75 0 0 1 1.04-.208Z" clip-rule="evenodd" />
-                                    </svg>
+                                    <i data-lucide="check" class="w-3.5 h-3.5"></i>
                                 </button>
                                 <button class="edit-card p-1 text-muted-light hover-text-accent-light rounded" title="Edit">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5">
-                                        <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/>
-                                        <path d="m15 5 4 4"/>
-                                    </svg>
+                                    <i data-lucide="pencil" class="w-3.5 h-3.5"></i>
                                 </button>
                                 <button class="delete-card p-1 text-muted-light hover-text-danger rounded" title="Delete">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5">
-                                        <path d="M3 6h18"/>
-                                        <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/>
-                                        <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>
-                                        <path d="M10 11v6"/>
-                                        <path d="M14 11v6"/>
-                                    </svg>
+                                    <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
                                 </button>
                             </div>
                         </div>
@@ -1795,9 +1837,11 @@
                     const now = new Date().getTime();
                     const distance = targetDate - now;
 
-                    // NEW: Get birthday data
+                    // NEW: Get birthday & anniversary data
                     const isBirthday = el.dataset.isBirthday === 'true';
+                    const isAnniversary = el.dataset.isAnniversary === 'true';
                     const nextAge = el.dataset.nextAge; // UPDATED from data-age
+                    const nextAnniversaryNumber = el.dataset.nextAnniversaryNumber;
 
                     const daysEl = el.querySelector('[data-days]');
                     const hoursEl = el.querySelector('[data-hours]');
@@ -1807,6 +1851,7 @@
                     // UPDATED: Selectors
                     // FIX: Use .card-bg to select the *parent* card, not the timer element itself.
                     const birthdayMessageEl = el.closest('.card-bg[data-id]').querySelector('[data-birthday-message]'); // FIXED
+                    const anniversaryMessageEl = el.closest('.card-bg[data-id]').querySelector('[data-anniversary-message]'); // NEW
                     const alertEl = el.querySelector('[data-milestone-alert]'); // Overlay alert (for non-birthday)
                     const nonBirthdayAlertContainer = el.closest('.card-bg[data-id]').querySelector('[data-non-birthday-alert-container]'); // FIXED
                     const timeContainer = el;
@@ -1817,13 +1862,20 @@
                         const daysAgo = Math.floor(Math.abs(distance) / (1000 * 60 * 60 * 24));
                         let pastMessage;
                         
-                        // NEW: Birthday logic for past dates
+                        // NEW: Birthday & Anniversary logic for past dates
                         if (isBirthday) {
                             const absDist = Math.abs(distance);
                             if (absDist < (1000 * 60 * 60 * 24)) { // Birthday is *today*
                                 pastMessage = `Happy ${this.getOrdinal(nextAge)} Birthday!`; // UPDATED
                             } else { // Birthday was yesterday or earlier
                                 pastMessage = `Birthday passed (Turned ${nextAge})`;
+                            }
+                        } else if (isAnniversary) { // NEW
+                            const absDist = Math.abs(distance);
+                            if (absDist < (1000 * 60 * 60 * 24)) { // Anniversary is *today*
+                                pastMessage = `Happy ${this.getOrdinal(nextAnniversaryNumber)} Anniversary!`;
+                            } else { // Anniversary was yesterday or earlier
+                                pastMessage = `Anniversary passed (${this.getOrdinal(nextAnniversaryNumber)})`;
                             }
                         } else if (daysAgo === 0) {
                             pastMessage = "Today!";
@@ -1834,10 +1886,11 @@
                         }
                         
                         if (timeContainer) {
-                            timeContainer.innerHTML = `<div class="text-xs text-center ${isBirthday && daysAgo === 0 ? 'font-bold text-accent-light' : 'text-muted'} py-1 px-1 w-full">${pastMessage}</div>`;
+                            timeContainer.innerHTML = `<div class="text-xs text-center ${isBirthday || isAnniversary ? 'font-bold text-accent-light' : 'text-muted'} py-1 px-1 w-full">${pastMessage}</div>`;
                         }
                         // Clear alerts
                         if (birthdayMessageEl) birthdayMessageEl.innerHTML = ''; // NEW
+                        if (anniversaryMessageEl) anniversaryMessageEl.innerHTML = ''; // NEW
                         if (nonBirthdayAlertContainer) nonBirthdayAlertContainer.innerHTML = '';
                         return;
                     }
@@ -1859,7 +1912,21 @@
                             // UPDATED: Changed text content as requested
                             birthdayMessageEl.textContent = `Turning ${nextAge} in`;
                         }
+                        if (anniversaryMessageEl) anniversaryMessageEl.textContent = ''; // NEW: Clear other special
                         
+                        // HIDE other alerts
+                        if (alertEl) alertEl.classList.add('hidden'); 
+                        if (nonBirthdayAlertContainer) nonBirthdayAlertContainer.innerHTML = ''; 
+
+                        // SHOW timer segments
+                        if (timerSegments) timerSegments.forEach(seg => seg.style.visibility = 'visible');
+                    } else if (isAnniversary) { // NEW: Handle Anniversary
+                        // SHOW anniversary message
+                        if (anniversaryMessageEl) {
+                            anniversaryMessageEl.textContent = `${this.getOrdinal(nextAnniversaryNumber)} Anniversary in`;
+                        }
+                        if (birthdayMessageEl) birthdayMessageEl.textContent = ''; // NEW: Clear other special
+
                         // HIDE other alerts
                         if (alertEl) alertEl.classList.add('hidden'); 
                         if (nonBirthdayAlertContainer) nonBirthdayAlertContainer.innerHTML = ''; 
@@ -1869,6 +1936,8 @@
                     } else {
                         // HIDE birthday message
                         if (birthdayMessageEl) birthdayMessageEl.textContent = '';
+                        // HIDE anniversary message
+                        if (anniversaryMessageEl) anniversaryMessageEl.textContent = ''; // NEW
                         
                         // HIDE overlay
                         if (alertEl) {
@@ -1941,6 +2010,31 @@
                         .replace(/>/g, '&gt;')
                         .replace(/"/g, '&quot;')
                         .replace(/'/g, '&#039;');
+                },
+
+                // NEW: ADDED HELPER FUNCTION
+                getContrastingTextColor(hexColor) {
+                    if (!hexColor) return 'var(--text-primary)';
+                    // Remove the hash at the start if it exists
+                    hexColor = hexColor.replace(/^#/, '');
+                    // Parse r, g, b values
+                    let r, g, b;
+                    if (hexColor.length === 3) {
+                        r = parseInt(hexColor.substring(0, 1) + hexColor.substring(0, 1), 16);
+                        g = parseInt(hexColor.substring(1, 2) + hexColor.substring(1, 2), 16);
+                        b = parseInt(hexColor.substring(2, 3) + hexColor.substring(2, 3), 16);
+                    } else if (hexColor.length === 6) {
+                        r = parseInt(hexColor.substring(0, 2), 16);
+                        g = parseInt(hexColor.substring(2, 4), 16);
+                        b = parseInt(hexColor.substring(4, 6), 16);
+                    } else {
+                        // Fallback for invalid color (e.g., css var)
+                        return 'var(--text-primary)';
+                    }
+                    // Calculate luminance (per WCAG formula)
+                    const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+                    // Return black or white based on luminance
+                    return luminance > 0.5 ? '#000000' : '#FFFFFF';
                 },
 
                 // --- End of App Object ---
