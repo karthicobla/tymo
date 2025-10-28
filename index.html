@@ -491,6 +491,20 @@
                             <option value="Home"></option>
                         </datalist>
                     </div>
+
+                    <!-- NEW: Remembrance Checkbox -->
+                    <div id="remembranceCheckboxContainer" class="hidden md:col-span-1 flex items-end pb-2.5">
+                        <div class="flex items-center">
+                            <input id="isRemembrance" type="checkbox" class="h-4 w-4 rounded border-color-strong bg-interactive text-accent-light focus:ring-accent-light">
+                            <label for="isRemembrance" class="ml-2 block text-sm font-medium text-color">In Remembrance</label>
+                        </div>
+                    </div>
+        
+                    <!-- NEW: Date of Death -->
+                    <div id="dateOfDeathContainer" class="hidden md:col-span-1">
+                        <label for="dateOfDeath" class="block text-sm font-medium text-color mb-1.5">Date of Passing</label>
+                        <input type="date" id="dateOfDeath" class="input-bg w-full border border-color-strong rounded-lg px-3 py-2.5 text-sm focus:ring-2 outline-none">
+                    </div>
                     
                     <!-- Icon Name -->
                     <div>
@@ -537,7 +551,15 @@
 
                 <!-- Milestones (Subtasks) -->
                 <div id="milestoneSection"> <!-- ADDED ID -->
-                    <h3 class="text-sm font-medium text-color mb-2">Key Results (Milestones)</h3>
+                    <!-- UPDATED: Moved h3 and added checkbox -->
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="text-sm font-medium text-color">Key Results (Milestones)</h3>
+                        <!-- NEW: Show Milestones Checkbox -->
+                        <div class="flex items-center">
+                            <input id="dateShowMilestones" type="checkbox" class="h-4 w-4 rounded border-color-strong bg-interactive text-accent-light focus:ring-accent-light">
+                            <label for="dateShowMilestones" class="ml-2 block text-sm font-medium text-color">Show on Card</label>
+                        </div>
+                    </div>
                     <div id="milestonesContainer" class="space-y-2">
                         <!-- Milestones will be dynamically inserted here -->
                     </div>
@@ -667,11 +689,18 @@
                 categorySuggestions: document.getElementById('categorySuggestions'),
                 groupSuggestions: document.getElementById('groupSuggestions'),
 
+                // NEW: Remembrance Fields
+                remembranceCheckboxContainer: document.getElementById('remembranceCheckboxContainer'),
+                isRemembrance: document.getElementById('isRemembrance'),
+                dateOfDeathContainer: document.getElementById('dateOfDeathContainer'),
+                dateOfDeath: document.getElementById('dateOfDeath'),
+
                 // Milestones
                 milestonesContainer: document.getElementById('milestonesContainer'),
                 newMilestoneInput: document.getElementById('newMilestoneInput'),
                 addMilestoneBtn: document.getElementById('addMilestoneBtn'),
                 milestoneSection: document.getElementById('milestoneSection'), // NEW
+                dateShowMilestones: document.getElementById('dateShowMilestones'), // NEW
 
                 // Settings Modal
                 settingsModal: document.getElementById('settingsModal'),
@@ -740,6 +769,7 @@
                     this.deleteDateBtn.addEventListener('click', () => this.handleDeleteDate());
                     // NEW: Listen for category changes to update the modal UI
                     this.dateCategory.addEventListener('input', () => this.updateModalForCategory());
+                    this.isRemembrance.addEventListener('change', () => this.updateModalForCategory()); // NEW
 
                     // Milestones
                     this.addMilestoneBtn.addEventListener('click', () => this.addMilestone());
@@ -782,6 +812,8 @@
                             this.handleDeleteCard(id);
                         } else if (e.target.closest('.complete-card')) {
                             this.toggleComplete(id);
+                        } else if (e.target.closest('.toggle-milestones')) { // NEW
+                            this.toggleMilestonesDisplay(id);
                         }
                     });
 
@@ -856,6 +888,11 @@
                             this.dateGroup.value = date.group || '';
                             this.currentMilestones = JSON.parse(JSON.stringify(date.milestones || []));
                             this.deleteDateBtn.style.display = 'block';
+
+                            // NEW: Populate remembrance and milestone display fields
+                            this.isRemembrance.checked = date.isRemembrance || false;
+                            this.dateOfDeath.value = date.dateOfDeath || '';
+                            this.dateShowMilestones.checked = date.showMilestones ?? true;
                         }
                     } else {
                         this.modalTitle.textContent = 'Add New Date';
@@ -886,6 +923,12 @@
                     this.currentMilestones = [];
                     this.milestonesContainer.innerHTML = '';
                     this.newMilestoneInput.value = '';
+                    this.dateShowMilestones.checked = true; // NEW
+                    // NEW: Reset remembrance fields
+                    this.remembranceCheckboxContainer.classList.add('hidden');
+                    this.isRemembrance.checked = false;
+                    this.dateOfDeathContainer.classList.add('hidden');
+                    this.dateOfDeath.value = '';
                 },
 
                 // NEW: Show/hide date/datetime input based on category
@@ -896,6 +939,7 @@
                     const isBirthday = categoryLower === 'birthday';
                     const isAnniversary = categoryLower === 'anniversary';
                     const isSpecialDate = isBirthday || isAnniversary;
+                    const remembranceChecked = this.isRemembrance.checked; // NEW
                     
                     // NEW: Find the milestone section title
                     const milestoneTitle = this.milestoneSection.querySelector('h3'); // Target the h3
@@ -911,6 +955,20 @@
                     // REMOVED logic that hid the milestone section
                     /*
                     */
+
+                    // NEW: Show/Hide Remembrance Fields
+                    if (isBirthday) {
+                        this.remembranceCheckboxContainer.classList.remove('hidden');
+                    } else {
+                        this.remembranceCheckboxContainer.classList.add('hidden');
+                    }
+        
+                    if (isBirthday && remembranceChecked) {
+                        this.dateOfDeathContainer.classList.remove('hidden');
+                    } else {
+                        this.dateOfDeathContainer.classList.add('hidden');
+                    }
+                    // END NEW
 
                     if (isSpecialDate) { // UPDATED: Use isSpecialDate
                         // NEW: Set label based on type
@@ -943,6 +1001,11 @@
                         this.showToast('Please fill in both Date Title and Target Date.', 'error');
                         return;
                     }
+                    // NEW: Validation for remembrance
+                    if (this.isRemembrance.checked && !this.dateOfDeath.value) {
+                        this.showToast('Please add a Date of Passing for remembrance.', 'error');
+                        return;
+                    }
 
                     const dateData = {
                         title: title,
@@ -954,7 +1017,10 @@
                         iconName: this.dateIconName.value.trim(),
                         group: this.dateGroup.value.trim() || 'General',
                         milestones: this.currentMilestones,
-                        status: this.dates.find(g => g.id === id)?.status || 'Pending'
+                        status: this.dates.find(g => g.id === id)?.status || 'Pending',
+                        showMilestones: this.dateShowMilestones.checked, // UPDATED
+                        isRemembrance: this.isRemembrance.checked, // NEW
+                        dateOfDeath: this.isRemembrance.checked ? this.dateOfDeath.value : '', // NEW
                     };
 
                     if (id) {
@@ -988,18 +1054,17 @@
                     );
                 },
 
-                handleDeleteCard(id) {
-                    if (!id) return;
-                    
-                    this.showConfirm(
-                        'Delete Date?',
-                        'Are you sure you want to delete this date? This action cannot be undone.',
-                        () => {
-                            this.dates = this.dates.filter(g => g.id !== id);
-                            this.saveAndRender(); // UPDATED
-                        }
-                    );
+                // DELETED: toggleMilestonesDisplay function
+                /*
+                // NEW: Toggle milestone/checklist visibility on the card
+                toggleMilestonesDisplay(id) {
+                    const date = this.dates.find(g => g.id === id);
+                    if (date) {
+                        date.showMilestones = !(date.showMilestones ?? true); // Toggle, defaulting to true
+                        this.saveAndRender();
+                    }
                 },
+                */
 
                 toggleComplete(id) {
                     const date = this.dates.find(g => g.id === id);
@@ -1597,6 +1662,45 @@
                     }
                 },
 
+                // NEW: Helper function to calculate remembrance info
+                calculateRemembranceInfo(dobString, dodString) {
+                    try {
+                        const dob = new Date(dobString);
+                        const dod = new Date(dodString);
+                        if (isNaN(dob.getTime()) || isNaN(dod.getTime())) throw new Error('Invalid date');
+        
+                        // Calculate "Lived for"
+                        let livedForYears = dod.getFullYear() - dob.getFullYear();
+                        const m = dod.getMonth() - dob.getMonth();
+                        if (m < 0 || (m === 0 && dod.getDate() < dob.getDate())) {
+                            livedForYears--;
+                        }
+        
+                        // Calculate next death anniversary
+                        const now = new Date();
+                        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                        const dodMonth = dod.getMonth();
+                        const dodDay = dod.getDate();
+                        const currentYear = now.getFullYear();
+                        const dodYear = dod.getFullYear(); // NEW
+        
+                        let nextDeathAnniversary = new Date(currentYear, dodMonth, dodDay);
+                        if (nextDeathAnniversary < today) {
+                            nextDeathAnniversary.setFullYear(currentYear + 1);
+                        }
+                        
+                        return {
+                            livedForYears: livedForYears,
+                            nextDeathAnniversary: nextDeathAnniversary,
+                            nextAnniversaryNumber: nextDeathAnniversary.getFullYear() - dodYear // NEW
+                        };
+        
+                    } catch (e) {
+                        console.error("Error calculating remembrance:", e, dobString, dodString);
+                        return { livedForYears: 0, nextDeathAnniversary: new Date() };
+                    }
+                },
+
                 createDateCard(dateData) {
                     // REVERTED: Card element uses class
                     const card = document.createElement('div');
@@ -1606,9 +1710,10 @@
 
                     
                     // --- NEW Birthday & Anniversary Logic ---
-                    let targetDate, formattedDate, timerDateString, nextAge = 0, currentAge = 0, nextAnniversaryNumber = 0; // UPDATED
+                    let targetDate, formattedDate, timerDateString, nextAge = 0, currentAge = 0, nextAnniversaryNumber = 0, livedForYears = 0, nextDeathAnniversaryNumber = 0; // UPDATED
                     const categoryLower = dateData.category.trim().toLowerCase();
-                    let isBirthday = categoryLower === 'birthday';
+                    const isRemembrance = dateData.isRemembrance && categoryLower === 'birthday'; // NEW
+                    let isBirthday = categoryLower === 'birthday' && !isRemembrance; // UPDATED
                     let isAnniversary = categoryLower === 'anniversary';
                     
                     if (isBirthday && dateData.date) {
@@ -1634,6 +1739,19 @@
                             year: 'numeric'
                         });
                         nextAnniversaryNumber = annivInfo.nextAnniversaryNumber;
+                    } else if (isRemembrance && dateData.date && dateData.dateOfDeath) { // NEW
+                        const remInfo = this.calculateRemembranceInfo(dateData.date, dateData.dateOfDeath);
+                        targetDate = remInfo.nextDeathAnniversary;
+                        timerDateString = targetDate.toISOString();
+                        livedForYears = remInfo.livedForYears;
+                        nextDeathAnniversaryNumber = remInfo.nextAnniversaryNumber; // NEW
+                        // formattedDate for DOB
+                        const originalBirthdate = new Date(dateData.date);
+                        formattedDate = originalBirthdate.toLocaleDateString(undefined, {
+                            month: 'short',
+                            day: 'numeric',
+                            year: 'numeric'
+                        });
                     } else {
                         isBirthday = false; // Ensure it's false if date is missing
                         isAnniversary = false; // NEW
@@ -1667,10 +1785,22 @@
                     const categoryTextColor = this.getContrastingTextColor(categoryBGColor);
                     const iconColor = this.escapeHTML(dateData.categoryColor || 'var(--text-muted)');
                     
+                    // NEW: Set category display text
+                    let categoryDisplay, categoryTitle;
+                    if (isRemembrance) {
+                        categoryDisplay = "Remembrance";
+                        categoryTitle = "Category: Remembrance";
+                    } else {
+                        categoryDisplay = this.escapeHTML(dateData.category) || 'Misc';
+                        categoryTitle = `Category: ${this.escapeHTML(dateData.category) || 'Misc'}`;
+                    }
+
                     // UPDATED: Use Lucide data attributes instead of inline SVG
                     let lucideIconName = this.escapeHTML(dateData.iconName?.trim().toLowerCase());
                     if (!lucideIconName) {
-                        if (isBirthday) {
+                        if (isRemembrance) { // NEW: Check this first
+                            lucideIconName = 'flower-2';
+                        } else if (isBirthday) {
                             lucideIconName = 'cake';
                         } else if (isAnniversary) {
                             lucideIconName = 'gift';
@@ -1708,6 +1838,17 @@
                                 <span class="text-xs font-medium" data-anniversary-message></span> <!-- New placeholder location -->
                             </div>
                         `;
+                    } else if (isRemembrance) { // NEW
+                        dateOrSpecialMessageHTML = `
+                            <div class="flex items-center gap-1.5 text-muted ${completeClass}">
+                                <i data-lucide="user" class="w-3.5 h-3.5 shrink-0" stroke="currentColor"></i>
+                                <span class="text-xs font-medium">Lived for ${livedForYears} years</span>
+                            </div>
+                            <div class="flex items-center gap-1.5 text-accent-light ${completeClass}">
+                                <i data-lucide="flower-2" class="w-3.5 h-3.5 shrink-0" stroke="currentColor"></i>
+                                <span class="text-xs font-medium" data-remembrance-anniversary-message></span>
+                            </div>
+                        `;
                     } else {
                         // Show the date as normal
                         dateOrSpecialMessageHTML = `
@@ -1719,11 +1860,13 @@
                     }
                     
                     // NEW: Milestone section HTML
-                    const isSpecialDate = isBirthday || isAnniversary; // NEW
-                    const milestoneHTML = `
+                    const isSpecialDate = isBirthday || isAnniversary || isRemembrance; // NEW
+                    const showMilestones = dateData.showMilestones ?? true; // NEW: Check visibility
+                    const milestoneSectionHTML = `
                         <div class="pt-0.5 ${completeClass}">
                             <div class="flex items-center justify-between">
-                                <span class="text-xs text-muted">Milestones</span>
+                                <!-- UPDATED: Show "Checklist" for special dates, "Milestones" otherwise -->
+                                <span class="text-xs text-muted">${isSpecialDate ? 'Checklist' : 'Milestones'}</span>
                                 <span class="text-xs font-medium text-color">${completedMilestones} / ${totalMilestones}</span>
                             </div>
                             <div class="flex items-center gap-1 mt-1.5 h-1.5">
@@ -1741,7 +1884,10 @@
                                 </div>
                                 <!-- DELETED: Birthday message placeholder was here -->
                             </div>
-                            <div class="shrink-0 rounded-full ${isComplete ? 'bg-green-500' : 'border border-color-strong'} w-2.5 h-2.5 mt-0.5" title="Status: ${dateData.status}"></div>
+                            <!-- UPDATED: Conditionally hide status dot for special dates -->
+                            ${!isSpecialDate ? `
+                                <div class="shrink-0 rounded-full ${isComplete ? 'bg-green-500' : 'border border-color-strong'} w-2.5 h-2.5 mt-0.5" title="Status: ${dateData.status}"></div>
+                            ` : ''}
                         </div>
 
                         <!-- DELETED: Placeholder for birthday message was here -->
@@ -1750,17 +1896,8 @@
                         ${dateOrSpecialMessageHTML}
                         
                         <!-- NEW: Milestone section HTML -->
-                        <!-- UPDATED: Show checklist/milestones for birthdays as well -->
-                        <div class="pt-0.5 ${completeClass}">
-                            <div class="flex items-center justify-between">
-                                <!-- UPDATED: Show "Checklist" for special dates, "Milestones" otherwise -->
-                                <span class="text-xs text-muted">${isSpecialDate ? 'Checklist' : 'Milestones'}</span>
-                                <span class="text-xs font-medium text-color">${completedMilestones} / ${totalMilestones}</span>
-                            </div>
-                            <div class="flex items-center gap-1 mt-1.5 h-1.5">
-                                ${milestoneDots}
-                            </div>
-                        </div> <!-- UPDATED -->
+                        <!-- UPDATED: Conditionally render milestone section -->
+                        ${showMilestones ? milestoneSectionHTML : ''}
 
                         <!-- REVERTED: Timer elements use theme classes -->
                         <!-- UPDATED: data-age renamed to data-next-age -->
@@ -1768,8 +1905,10 @@
                         <div class="relative flex justify-between gap-0.5 text-center ${completeClass}" data-date="${timerDateString}" data-id="${dateData.id}" data-time-container 
                              data-is-birthday="${isBirthday}" 
                              data-is-anniversary="${isAnniversary}" 
+                             data-is-remembrance="${isRemembrance}" 
                              data-next-age="${nextAge}" 
-                             data-next-anniversary-number="${nextAnniversaryNumber}">
+                             data-next-anniversary-number="${nextAnniversaryNumber}"
+                             data-next-death-anniversary-number="${nextDeathAnniversaryNumber}"> <!-- NEW -->
                             <div class="bg-interactive py-1 px-1 rounded w-auto min-w-[1.75rem]" data-timer-segment>
                                 <span class="block text-sm font-bold text-primary" data-days>0</span>
                                 <span class="block text-[0.6rem] font-medium text-muted uppercase">Days</span>
@@ -1801,14 +1940,23 @@
                             <div class="min-w-0"> 
                                 <span class="inline-flex items-center rounded-full px-2 py-0.5 text-[0.65rem] font-medium ${completeClass} truncate" 
                                       style="background-color: ${tagBGColor}; color: ${categoryTextColor};" 
-                                      title="Category: ${this.escapeHTML(dateData.category)}">
-                                    ${this.escapeHTML(dateData.category) || 'Misc'}
+                                      title="${categoryTitle}"> <!-- UPDATED -->
+                                    ${categoryDisplay} <!-- UPDATED -->
                                 </span>
                             </div>
                             <div class="flex items-center gap-0.5 shrink-0">
-                                <button class="complete-card p-1 text-muted-light hover-text-success rounded ${completeIconClass}" title="Toggle Complete">
-                                    <i data-lucide="check" class="w-3.5 h-3.5"></i>
+                                <!-- DELETED: Toggle Milestones Button -->
+                                <!--
+                                <button class="toggle-milestones p-1 text-muted-light hover-text-accent-light rounded" title="Toggle Milestones/Checklist">
+                                    <i data-lucide="${showMilestones ? 'list-x' : 'list'}" class="w-3.5 h-3.5"></i>
                                 </button>
+                                -->
+                                <!-- UPDATED: Conditionally hide complete button for special dates -->
+                                ${!isSpecialDate ? `
+                                    <button class="complete-card p-1 text-muted-light hover-text-success rounded ${completeIconClass}" title="Toggle Complete">
+                                        <i data-lucide="check" class="w-3.5 h-3.5"></i>
+                                    </button>
+                                ` : ''}
                                 <button class="edit-card p-1 text-muted-light hover-text-accent-light rounded" title="Edit">
                                     <i data-lucide="pencil" class="w-3.5 h-3.5"></i>
                                 </button>
@@ -1840,8 +1988,10 @@
                     // NEW: Get birthday & anniversary data
                     const isBirthday = el.dataset.isBirthday === 'true';
                     const isAnniversary = el.dataset.isAnniversary === 'true';
+                    const isRemembrance = el.dataset.isRemembrance === 'true'; // NEW
                     const nextAge = el.dataset.nextAge; // UPDATED from data-age
                     const nextAnniversaryNumber = el.dataset.nextAnniversaryNumber;
+                    const nextDeathAnniversaryNumber = el.dataset.nextDeathAnniversaryNumber; // NEW
 
                     const daysEl = el.querySelector('[data-days]');
                     const hoursEl = el.querySelector('[data-hours]');
@@ -1852,6 +2002,7 @@
                     // FIX: Use .card-bg to select the *parent* card, not the timer element itself.
                     const birthdayMessageEl = el.closest('.card-bg[data-id]').querySelector('[data-birthday-message]'); // FIXED
                     const anniversaryMessageEl = el.closest('.card-bg[data-id]').querySelector('[data-anniversary-message]'); // NEW
+                    const remembranceAnniversaryMessageEl = el.closest('.card-bg[data-id]').querySelector('[data-remembrance-anniversary-message]'); // NEW
                     const alertEl = el.querySelector('[data-milestone-alert]'); // Overlay alert (for non-birthday)
                     const nonBirthdayAlertContainer = el.closest('.card-bg[data-id]').querySelector('[data-non-birthday-alert-container]'); // FIXED
                     const timeContainer = el;
@@ -1877,6 +2028,13 @@
                             } else { // Anniversary was yesterday or earlier
                                 pastMessage = `Anniversary passed (${this.getOrdinal(nextAnniversaryNumber)})`;
                             }
+                        } else if (isRemembrance) { // NEW
+                            const absDist = Math.abs(distance);
+                            if (absDist < (1000 * 60 * 60 * 24)) { // Anniversary is *today*
+                                pastMessage = `Happy ${this.getOrdinal(nextDeathAnniversaryNumber)} Anniversary`; // UPDATED
+                            } else { // Anniversary was yesterday or earlier
+                                pastMessage = `${this.getOrdinal(nextDeathAnniversaryNumber)} Anniversary passed`; // UPDATED
+                            }
                         } else if (daysAgo === 0) {
                             pastMessage = "Today!";
                         } else if (daysAgo === 1) {
@@ -1886,11 +2044,12 @@
                         }
                         
                         if (timeContainer) {
-                            timeContainer.innerHTML = `<div class="text-xs text-center ${isBirthday || isAnniversary ? 'font-bold text-accent-light' : 'text-muted'} py-1 px-1 w-full">${pastMessage}</div>`;
+                            timeContainer.innerHTML = `<div class="text-xs text-center ${isBirthday || isAnniversary || isRemembrance ? 'font-bold text-accent-light' : 'text-muted'} py-1 px-1 w-full">${pastMessage}</div>`;
                         }
                         // Clear alerts
                         if (birthdayMessageEl) birthdayMessageEl.innerHTML = ''; // NEW
                         if (anniversaryMessageEl) anniversaryMessageEl.innerHTML = ''; // NEW
+                        if (remembranceAnniversaryMessageEl) remembranceAnniversaryMessageEl.innerHTML = ''; // NEW
                         if (nonBirthdayAlertContainer) nonBirthdayAlertContainer.innerHTML = '';
                         return;
                     }
@@ -1913,6 +2072,7 @@
                             birthdayMessageEl.textContent = `Turning ${nextAge} in`;
                         }
                         if (anniversaryMessageEl) anniversaryMessageEl.textContent = ''; // NEW: Clear other special
+                        if (remembranceAnniversaryMessageEl) remembranceAnniversaryMessageEl.textContent = ''; // NEW: Clear other special
                         
                         // HIDE other alerts
                         if (alertEl) alertEl.classList.add('hidden'); 
@@ -1926,7 +2086,22 @@
                             anniversaryMessageEl.textContent = `${this.getOrdinal(nextAnniversaryNumber)} Anniversary in`;
                         }
                         if (birthdayMessageEl) birthdayMessageEl.textContent = ''; // NEW: Clear other special
+                        if (remembranceAnniversaryMessageEl) remembranceAnniversaryMessageEl.textContent = ''; // NEW: Clear other special
 
+                        // HIDE other alerts
+                        if (alertEl) alertEl.classList.add('hidden'); 
+                        if (nonBirthdayAlertContainer) nonBirthdayAlertContainer.innerHTML = ''; 
+
+                        // SHOW timer segments
+                        if (timerSegments) timerSegments.forEach(seg => seg.style.visibility = 'visible');
+                    } else if (isRemembrance) { // NEW: Handle Remembrance
+                        // SHOW remembrance message
+                        if (remembranceAnniversaryMessageEl) {
+                            remembranceAnniversaryMessageEl.textContent = `${this.getOrdinal(nextDeathAnniversaryNumber)} Anniversary in`; // UPDATED
+                        }
+                        if (birthdayMessageEl) birthdayMessageEl.textContent = '';
+                        if (anniversaryMessageEl) anniversaryMessageEl.textContent = '';
+                        
                         // HIDE other alerts
                         if (alertEl) alertEl.classList.add('hidden'); 
                         if (nonBirthdayAlertContainer) nonBirthdayAlertContainer.innerHTML = ''; 
@@ -1938,6 +2113,7 @@
                         if (birthdayMessageEl) birthdayMessageEl.textContent = '';
                         // HIDE anniversary message
                         if (anniversaryMessageEl) anniversaryMessageEl.textContent = ''; // NEW
+                        if (remembranceAnniversaryMessageEl) remembranceAnniversaryMessageEl.textContent = ''; // NEW
                         
                         // HIDE overlay
                         if (alertEl) {
