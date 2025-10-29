@@ -696,8 +696,8 @@
 
     <!-- Onboarding Tour -->
     <div id="onboardingOverlay" class="modal fixed inset-0 z-[190] bg-black bg-opacity-75"></div>
-    <div id="onboardingStep" class="modal absolute z-[200] modal-bg rounded-lg shadow-xl w-full max-w-xs p-4" data-step-index="0">
-        <p id="onboardingText" class="text-sm text-color mb-4">Welcome to Tymr!</p>
+    <div id="onboardingStep" class="modal absolute z-[200] modal-bg rounded-lg shadow-xl w-full max-w-xs p-4 flex flex-col" data-step-index="0">
+        <div id="onboardingText" class="text-sm text-color mb-4">Welcome to Tymr!</div>
         <div class="flex items-center justify-between">
             <button id="onboardingSkip" class="text-sm text-muted hover:text-primary px-3 py-1.5 rounded-lg">Skip</button>
             <div class="flex gap-3">
@@ -854,6 +854,247 @@
                         columnCount: 2,
                         hasSeenTour: false
                     };
+                },
+                
+                // NEW: Demo Data Generator
+                getDemoDates() {
+                    // Use a fixed "today" for consistent demo data
+                    const today = new Date('2025-10-29T18:30:00'); 
+                    
+                    const addDays = (date, days) => {
+                        const newDate = new Date(date);
+                        newDate.setDate(newDate.getDate() + days);
+                        return newDate.toISOString().substring(0, 16); // 'YYYY-MM-DDTHH:mm'
+                    };
+                    
+                    const addMonths = (date, months) => {
+                        const newDate = new Date(date);
+                        newDate.setMonth(newDate.getMonth() + months);
+                        return newDate.toISOString().substring(0, 16);
+                    };
+                    
+                    const addYears = (date, years) => {
+                        const newDate = new Date(date);
+                        newDate.setFullYear(newDate.getFullYear() + years);
+                        return newDate.toISOString().substring(0, 16);
+                    };
+
+                    return [
+                        {
+                            id: 'demo_project_1',
+                            title: 'Project Phoenix Launch',
+                            notes: 'Final push for the new platform launch.',
+                            date: addMonths(today, 2), // ~2 months from now
+                            category: 'Work',
+                            categoryColor: '#f97316', // Orange
+                            iconName: 'rocket',
+                            group: 'Projects',
+                            milestones: [
+                                { id: 'ms_demo_1', text: 'Finalize UI', completed: true },
+                                { id: 'ms_demo_2', text: 'Deploy to Staging', completed: true },
+                                { id: 'ms_demo_3', text: 'Run final QA', completed: false },
+                                { id: 'ms_demo_4', text: 'Go-Live!', completed: false }
+                            ],
+                            status: 'Pending',
+                            showMilestones: true,
+                            isRemembrance: false,
+                            dateOfDeath: '',
+                        },
+                        {
+                            id: 'demo_birthday_1',
+                            title: 'My Birthday',
+                            notes: 'Time to celebrate!',
+                            date: '1990-11-15', // DOB
+                            category: 'Birthday',
+                            categoryColor: '#ec4899', // Pink
+                            iconName: 'cake',
+                            group: 'Personal',
+                            milestones: [
+                                { id: 'ms_demo_5', text: 'Send out invites', completed: true },
+                                { id: 'ms_demo_6', text: 'Order cake', completed: false }
+                            ],
+                            status: 'Pending',
+                            showMilestones: true,
+                            isRemembrance: false,
+                            dateOfDeath: '',
+                        },
+                        {
+                            id: 'demo_travel_1',
+                            title: 'Trip to Japan',
+                            notes: 'Cherry blossom season!',
+                            date: '2026-04-10T09:00', // Far future
+                            category: 'Travel',
+                            categoryColor: '#14b8a6', // Teal
+                            iconName: 'globe-2',
+                            group: 'Travel',
+                            milestones: [
+                                { id: 'ms_demo_7', text: 'Book flights', completed: false },
+                                { id: 'ms_demo_8', text: 'Book hotels', completed: false }
+                            ],
+                            status: 'Pending',
+                            showMilestones: true,
+                            isRemembrance: false,
+                            dateOfDeath: '',
+                        },
+                        {
+                            id: 'demo_anniv_1',
+                            title: 'Work Anniversary',
+                            notes: 'Started at Tymr Inc.',
+                            date: '2022-03-01', // Anniversary date
+                            category: 'Anniversary',
+                            categoryColor: '#6366f1', // Indigo
+                            iconName: 'award',
+                            group: 'Work',
+                            milestones: [],
+                            status: 'Pending',
+                            showMilestones: false,
+                            isRemembrance: false,
+                            dateOfDeath: '',
+                        },
+                        {
+                            id: 'demo_remembrance_1',
+                            title: 'Grandma\'s Birthday',
+                            notes: 'Always in our hearts.',
+                            date: '1940-07-10', // DOB
+                            category: 'Birthday',
+                            categoryColor: '#a855f7', // Purple
+                            iconName: 'flower-2',
+                            group: 'Personal',
+                            milestones: [],
+                            status: 'Pending',
+                            showMilestones: false,
+                            isRemembrance: true,
+                            dateOfDeath: '2021-05-20', // DOD
+                        },
+                        {
+                            id: 'demo_completed_1',
+                            title: 'Finish Q3 Report',
+                            notes: 'Submitted to management.',
+                            date: '2025-09-30T17:00', // In the past
+                            category: 'Work',
+                            categoryColor: '#84cc16', // Lime
+                            iconName: 'check-square',
+                            group: 'Work',
+                            milestones: [
+                                { id: 'ms_demo_9', text: 'Gather data', completed: true },
+                                { id: 'ms_demo_10', text: 'Submit draft', completed: true }
+                            ],
+                            status: 'Completed', // <-- This is key
+                            showMilestones: true,
+                            isRemembrance: false,
+                            dateOfDeath: '',
+                        },
+                        // --- NEW DEMO ITEMS ---
+                        {
+                            id: 'demo_fitness_1',
+                            title: 'Run a 10k',
+                            notes: 'Training for the city marathon.',
+                            date: addMonths(today, 3), // ~3 months from now
+                            category: 'Health',
+                            categoryColor: '#22c55e', // Green
+                            iconName: 'activity',
+                            group: 'Personal',
+                            milestones: [
+                                { id: 'ms_demo_11', text: 'Run 5k', completed: true },
+                                { id: 'ms_demo_12', text: 'Run 7k', completed: false },
+                                { id: 'ms_demo_13', text: 'Register for race', completed: false }
+                            ],
+                            status: 'Pending',
+                            showMilestones: true,
+                            isRemembrance: false,
+                            dateOfDeath: '',
+                        },
+                        {
+                            id: 'demo_learn_1',
+                            title: 'Complete JS Course',
+                            notes: 'Finish the advanced JavaScript module.',
+                            date: addDays(today, 45), // 1.5 months
+                            category: 'Learn',
+                            categoryColor: '#3b82f6', // Blue
+                            iconName: 'graduation-cap',
+                            group: 'Personal',
+                            milestones: [
+                                { id: 'ms_demo_14', text: 'Async/Await', completed: true },
+                                { id: 'ms_demo_15', text: 'Data Structures', completed: true },
+                                { id: 'ms_demo_16', text: 'Final Project', completed: false }
+                            ],
+                            status: 'Pending',
+                            showMilestones: true,
+                            isRemembrance: false,
+                            dateOfDeath: '',
+                        },
+                        {
+                            id: 'demo_finance_1',
+                            title: 'House Deposit Goal',
+                            notes: 'Target $50,000.',
+                            date: addYears(today, 3), // 3 years from now
+                            category: 'Finance',
+                            categoryColor: '#10b981', // Emerald
+                            iconName: 'piggy-bank',
+                            group: 'Finance',
+                            milestones: [
+                                { id: 'ms_demo_17', text: '$10k', completed: true },
+                                { id: 'ms_demo_18', text: '$25k', completed: true },
+                                { id: 'ms_demo_19', text: '$40k', completed: false },
+                                { id: 'ms_demo_20', text: '$50k!', completed: false }
+                            ],
+                            status: 'Pending',
+                            showMilestones: true,
+                            isRemembrance: false,
+                            dateOfDeath: '',
+                        },
+                        {
+                            id: 'demo_read_1',
+                            title: 'Finish "Dune"',
+                            notes: 'The spice must flow...',
+                            date: addDays(today, 10), // 10 days
+                            category: 'Personal',
+                            categoryColor: '#a855f7', // Purple
+                            iconName: 'book-open',
+                            group: 'Personal',
+                            milestones: [],
+                            status: 'Pending',
+                            showMilestones: false,
+                            isRemembrance: false,
+                            dateOfDeath: '',
+                        },
+                        {
+                            id: 'demo_travel_2',
+                            title: 'Weekend Camping',
+                            notes: 'At Big Bear Lake.',
+                            date: addDays(today, 3), // This weekend!
+                            category: 'Travel',
+                            categoryColor: '#14b8a6', // Teal
+                            iconName: 'tent',
+                            group: 'Travel',
+                            milestones: [
+                                { id: 'ms_demo_21', text: 'Buy supplies', completed: false },
+                                { id: 'ms_demo_22', text: 'Pack car', completed: false }
+                            ],
+                            status: 'Pending',
+                            showMilestones: true,
+                            isRemembrance: false,
+                            dateOfDeath: '',
+                        },
+                        {
+                            id: 'demo_work_2',
+                            title: 'Q4 Presentation',
+                            notes: 'Summary for the board.',
+                            date: addDays(today, 20), // ~3 weeks
+                            category: 'Work',
+                            categoryColor: '#f97316', // Orange
+                            iconName: 'presentation',
+                            group: 'Projects',
+                            milestones: [
+                                { id: 'ms_demo_23', text: 'Draft slides', completed: false },
+                                { id: 'ms_demo_24', text: 'Review with team', completed: false }
+                            ],
+                            status: 'Pending',
+                            showMilestones: true,
+                            isRemembrance: false,
+                            dateOfDeath: '',
+                        }
+                    ];
                 },
                 // --- END: App State Getters ---
 
@@ -1014,12 +1255,12 @@
                     this.appState = {
                         currentProfileId: defaultProfileId,
                         profiles: {
-                            [defaultProfileId]: { id: defaultProfileId, name: 'Personal' }
+                            [defaultProfileId]: { id: defaultProfileId, name: 'Demo Profile' } // MODIFIED
                         },
                         profileData: {
                             [defaultProfileId]: {
-                                dates: [],
-                                groupOrder: [],
+                                dates: this.getDemoDates(), // MODIFIED
+                                groupOrder: ['Projects', 'Work', 'Personal', 'Travel', 'Finance'], // MODIFIED
                                 settings: this.getDefaultSettings()
                             }
                         }
@@ -1566,8 +1807,90 @@
                     this.tourSteps = [
                         {
                             selector: 'h1',
-                            text: "Welcome to Tymr! This is your personal countdown dashboard.",
+                            text: `
+                                <div class='flex items-center gap-2 mb-3'>
+                                    <span class='text-2xl font-bold text-primary'>tymr</span>
+                                </div>
+                                <p class='text-sm text-color mb-3'>
+                                    Tymr is a real-time countdown and milestone tracking dashboard. It’s a sleek, highly customizable app to keep your priorities visible.
+                                </p>
+                                <p class='text-sm text-color mb-2 font-medium'>
+                                    Use it to track:
+                                </p>
+                                <ul class='list-none space-y-1.5 text-sm text-color mb-3'>
+                                    <li class='flex items-start gap-2'>
+                                        <i data-lucide='rocket' class='w-4 h-4 text-accent-light shrink-0 mt-0.5'></i>
+                                        <span>Product launches & critical deadlines</span>
+                                    </li>
+                                    <li class='flex items-start gap-2'>
+                                        <i data-lucide='plane' class='w-4 h-4 text-accent-light shrink-0 mt-0.5'></i>
+                                        <span>Upcoming trips & vacations</span>
+                                    </li>
+                                    <li class='flex items-start gap-2'>
+                                        <i data-lucide='cake' class='w-4 h-4 text-accent-light shrink-0 mt-0.5'></i>
+                                        <span>Birthdays, anniversaries & events</span>
+                                    </li>
+                                    <li class='flex items-start gap-2'>
+                                        <i data-lucide='target' class='w-4 h-4 text-accent-light shrink-0 mt-0.5'></i>
+                                        <span>Personal goals & habits</span>
+                                    </li>
+                                </ul>
+                                <p class='text-sm text-muted'>
+                                    This is your demo dashboard. Once you’re onboarded, you can delete this and create your own profiles.
+                                </p>
+                            `,
                             placement: 'bottom-start'
+                        },
+                        // MODIFIED: Point to demo project
+                        {
+                            selector: '[data-id="demo_project_1"]',
+                            text: "This is a countdown for a project. You can add milestones, notes, and an icon.",
+                            placement: 'bottom',
+                            fallbackSelector: '[data-id="demo_birthday_1"]',
+                            fallbackText: "This is a countdown widget. You can add milestones, notes, and an icon."
+                        },
+                        // MODIFIED: Point to birthday
+                        {
+                            selector: '[data-id="demo_birthday_1"]',
+                            text: "Tymr handles special dates, like birthdays and anniversaries, automatically.",
+                            placement: 'bottom',
+                            fallbackSelector: '[data-id="demo_remembrance_1"]',
+                            fallbackText: "Tymr handles special dates, like birthdays and anniversaries."
+                        },
+                        // NEW: Point to remembrance
+                        {
+                            selector: '[data-id="demo_remembrance_1"]',
+                            text: "It can also track remembrance dates to honor loved ones.",
+                            placement: 'bottom',
+                            fallbackSelector: '[data-id="demo_travel_1"]',
+                            fallbackText: "It can also track special dates."
+                        },
+                        // NEW: Point to completed
+                        {
+                            selector: '[data-id="demo_completed_1"]',
+                            text: "Completed items are grayed out, keeping your dashboard clean.",
+                            placement: 'top',
+                            fallbackSelector: '[data-id="demo_travel_1"]'
+                        },
+                        // NEW: Point to group header
+                        {
+                            selector: '[data-group-name="Projects"]',
+                            text: "Drag groups or individual cards to re-order your dashboard.",
+                            placement: 'bottom',
+                            fallbackSelector: '#countdownContainer'
+                        },
+                        // MODIFIED: Updated text
+                        {
+                            selector: '#profileBtn',
+                            text: "This is your profile switcher! Create separate profiles for 'Work', 'Home', etc.",
+                            placement: 'bottom-end',
+                            finalFallbackSelector: '#addDateBtn',
+                            finalFallbackText: "Click 'Add Date' to create your own countdown!"
+                        },
+                        {
+                            selector: '#addDateBtn',
+                            text: "Click 'Add Date' to create your own countdowns in this profile!",
+                            placement: 'bottom-end'
                         },
                         {
                             selector: '#themeSwitcher',
@@ -1575,19 +1898,8 @@
                             placement: 'bottom'
                         },
                         {
-                            selector: '#addDateBtn',
-                            text: "Click here to add your first countdown for this profile.",
-                            placement: 'bottom-end'
-                        },
-                        // NEW: Profile button step
-                        {
-                            selector: '#profileBtn',
-                            text: "This is your new profile switcher! Create separate profiles for 'Work', 'Personal', etc.",
-                            placement: 'bottom-end'
-                        },
-                        {
                             selector: '#settingsBtn',
-                            text: "Here you can export a backup of your *current profile's* dates or import data into it.",
+                            text: "Here you can change column counts or export/import all your data.",
                             placement: 'bottom-end'
                         },
                         {
@@ -1635,6 +1947,7 @@
                     let text = step.text;
                     let placement = step.placement;
 
+                    // NEW: Added fallback logic
                     if (!targetElement && step.fallbackSelector) {
                         targetElement = document.querySelector(step.fallbackSelector);
                         if (targetElement) {
@@ -1650,7 +1963,17 @@
                         }
                     }
                     
-                    this.onboardingText.textContent = text;
+                    // NEW: Adjust modal width
+                    const stepElement = this.onboardingStep;
+                    stepElement.classList.remove('max-w-xs', 'max-w-md');
+                    if (index === 0) {
+                        stepElement.classList.add('max-w-md'); // Wider for the intro text
+                    } else {
+                        stepElement.classList.add('max-w-xs'); // Default width
+                    }
+                    
+                    this.onboardingText.innerHTML = text; // <-- CHANGED from textContent
+                    lucide.createIcons(); // NEW: Render icons in tour step
                     this.onboardingStep.classList.add('flex');
                     this.onboardingOverlay.classList.add('flex');
 
