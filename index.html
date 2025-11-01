@@ -13,127 +13,129 @@
     <!-- NEW: Lucide Icons Library -->
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
     <style>
-        :root { /* Default: Dark Theme */
-            --bg-main: #111827;
-            --bg-card: #1f2937;
-            --bg-modal: #1f2937; /* Use card bg for modal */
-            --bg-interactive: #374151;
-            --bg-interactive-deep: #111827;
-            --bg-interactive-hover: #4b5563;
-            --bg-accent: #2563eb;
-            --bg-accent-hover: #1d4ed8;
-            --text-primary: #f9fafb;
-            --text-secondary: #e5e7eb;
-            --text-color: #d1d5db;
-            --text-muted: #9ca3af;
-            --text-muted-light: #6b7280;
-            --text-on-accent: #ffffff;
-            --border-color: #374151;
-            --border-color-strong: #4b5563;
-            --accent-color: #3b82f6;
-            --accent-color-light: #60a5fa;
+        :root { /* Default: Dark Theme (Updated to Dark Blue) */
+            --bg-main: #0f172a; /* Dark Blue (Slate 900) */
+            --bg-card: #1e293b; /* Dark Blue (Slate 800) */
+            --bg-modal: #1e293b; /* Dark Blue (Slate 800) */
+            --bg-interactive: #334155; /* Dark Blue (Slate 700) */
+            --bg-interactive-deep: #0f172a; /* Dark Blue (Slate 900) */
+            --bg-interactive-hover: #475569; /* Dark Blue (Slate 600) */
+            --bg-accent: #32ff8a; /* Vibrant Green */
+            --bg-accent-hover: #1fdd73; /* Vibrant Green */
+            --text-primary: #f8fafc; /* Brighter text (Slate 50) */
+            --text-secondary: #e2e8f0; /* Brighter text (Slate 200) */
+            --text-color: #cbd5e1; /* Brighter text (Slate 300) */
+            --text-muted: #94a3b8; /* Blueish Gray (Slate 400) */
+            --text-muted-light: #64748b; /* Blueish Gray (Slate 500) */
+            --text-on-accent: #000000; /* Black text for bright accent */
+            --border-color: #334155; /* Dark Blue (Slate 700) */
+            --border-color-strong: #475569; /* Dark Blue (Slate 600) */
+            --accent-color: #32ff8a; /* Vibrant Green */
+            --accent-color-light: #6affb3; /* Vibrant Green */
             --color-success: #22c55e;
             --color-danger: #ef4444;
             --color-danger-hover: #dc2626;
             --color-scheme: dark;
-            --body-bg-image: none;
-            --modal-backdrop-filter: none;
-            --card-backdrop-filter: none;
+            --body-bg-image: none; /* Solid background */
+            --modal-backdrop-filter: none; /* No blur */
+            --card-backdrop-filter: none; /* No blur */
         }
 
+        /* --- NEW: Charcoal Theme --- */
+        html[data-theme="charcoal"] {
+            --bg-main: #121212; /* Darker cement */
+            --bg-card: rgba(39, 39, 42, 0.7); /* Lighter cement (Zinc 800) */
+            --bg-modal: rgba(39, 39, 42, 0.85); /* Lighter cement (Zinc 800) */
+            --bg-interactive: #3f3f46; /* Lighter cement (Zinc 700) */
+            --bg-interactive-deep: #121212; /* Darker cement */
+            --bg-interactive-hover: #52525b; /* Lighter cement (Zinc 600) */
+            --bg-accent: #facc15; /* Accent color (Amber 400) */
+            --bg-accent-hover: #fde047; /* Accent color hover (Amber 300) */
+            --text-primary: #f4f4f5; /* Light text (Zinc 100) */
+            --text-secondary: #e4e4e7; /* Light text (Zinc 200) */
+            --text-color: #d4d4d8; /* Light text (Zinc 300) */
+            --text-muted: #a1a1aa; /* Muted text (Zinc 400) */
+            --text-muted-light: #71717a; /* Muted text (Zinc 500) */
+            --text-on-accent: #18181b; /* Dark text on accent */
+            --border-color: #3f3f46; /* Zinc 700 */
+            --border-color-strong: #52525b; /* Zinc 600 */
+            --accent-color: #facc15;
+            --accent-color-light: #fde047;
+            --color-success: #22c55e;
+            --color-danger: #ef4444;
+            --color-danger-hover: #dc2626;
+            --color-scheme: dark;
+            --body-bg-image: linear-gradient(170deg, #121212 0%, #18181b 70%, #121212 100%); /* Darker Zinc gradient */
+            --modal-backdrop-filter: blur(12px) saturate(150%);
+            --card-backdrop-filter: blur(12px) saturate(150%);
+        }
+
+        /* --- REMOVED: Cyberpunk Theme --- */
         html[data-theme="light"] {
-            --bg-main: #f3f4f6;
-            --bg-card: #ffffff;
-            --bg-modal: #ffffff;
-            --bg-interactive: #e5e7eb;
-            --bg-interactive-deep: #f9fafb; /* Lighter column bg */
-            --bg-interactive-hover: #d1d5db;
-            --bg-accent: #2563eb;
-            --bg-accent-hover: #1d4ed8;
-            --text-primary: #111827;
-            --text-secondary: #1f2937;
-            --text-color: #374151;
-            --text-muted: #6b7280;
-            --text-muted-light: #9ca3af;
-            --text-on-accent: #ffffff;
-            --border-color: #e5e7eb;
-            --border-color-strong: #d1d5db;
-            --accent-color: #2563eb;
-            --accent-color-light: #3b82f6;
-            --color-success: #16a34a;
-            --color-danger: #dc2626;
-            --color-danger-hover: #b91c1c;
+            --bg-main: #f8fafc; /* Slate 50 */
+            --bg-card: #ffffff; /* White */
+            --bg-modal: #ffffff; /* White */
+            --bg-interactive: #e2e8f0; /* Slate 200 */
+            --bg-interactive-deep: #f1f5f9; /* Slate 100 */
+            --bg-interactive-hover: #cbd5e1; /* Slate 300 */
+            --bg-accent: #32ff8a; /* Same vibrant green */
+            --bg-accent-hover: #1fdd73;
+            --text-primary: #0f172a; /* Slate 900 */
+            --text-secondary: #334155; /* Slate 700 */
+            --text-color: #475569; /* Slate 600 */
+            --text-muted: #64748b; /* Slate 500 */
+            --text-muted-light: #94a3b8; /* Slate 400 */
+            --text-on-accent: #000000;
+            --border-color: #e2e8f0; /* Slate 200 */
+            --border-color-strong: #cbd5e1; /* Slate 300 */
+            --accent-color: #32ff8a;
+            --accent-color-light: #1fdd73;
+            --color-success: #16a34a; /* Green 600 */
+            --color-danger: #dc2626; /* Red 600 */
+            --color-danger-hover: #b91c1c; /* Red 700 */
             --color-scheme: light;
             --body-bg-image: none;
             --modal-backdrop-filter: none;
             --card-backdrop-filter: none;
         }
 
-        html[data-theme="forest"] {
-            --bg-main: #1a2e27;
-            --bg-card: #2a403a;
-            --bg-modal: #2a403a;
-            --bg-interactive: #3a594f;
-            --bg-interactive-deep: #1f3a31; /* Darker column bg */
-            --bg-interactive-hover: #4c7365;
-            --bg-accent: #34d399;
-            --bg-accent-hover: #10b981;
-            --text-primary: #f0fdf4;
-            --text-secondary: #d1fae5;
-            --text-color: #a7f3d0;
-            --text-muted: #6ee7b7;
-            --text-muted-light: #34d399;
-            --text-on-accent: #064e3b;
-            --border-color: #3a594f;
-            --border-color-strong: #4c7365;
-            --accent-color: #34d399;
-            --accent-color-light: #6ee7b7;
+        html[data-theme="dusk"] {
+            --bg-main: #1d1b2e; /* Dark purple */
+            --bg-card: rgba(30, 27, 48, 0.7); /* Lighter purple, transparent */
+            --bg-modal: rgba(30, 27, 48, 0.85);
+            --bg-interactive: #3b355e; /* Lighter purple */
+            --bg-interactive-deep: #1d1b2e;
+            --bg-interactive-hover: #4d467a;
+            --bg-accent: #f9a826; /* Warm orange */
+            --bg-accent-hover: #fbbf24; /* Amber 400 */
+            --text-primary: #f5f3ff; /* Lavender 100 */
+            --text-secondary: #e0dfff; /* Lavender 200 */
+            --text-color: #c7d2fe; /* Indigo 200 */
+            --text-muted: #a5b4fc; /* Indigo 300 */
+            --text-muted-light: #818cf8; /* Indigo 400 */
+            --text-on-accent: #1d1b2e; /* Dark purple on accent */
+            --border-color: #3b355e;
+            --border-color-strong: #4d467a;
+            --accent-color: #f9a826;
+            --accent-color-light: #fbbf24;
             --color-success: #22c55e;
             --color-danger: #ef4444;
             --color-danger-hover: #dc2626;
             --color-scheme: dark;
-            --body-bg-image: none;
-            --modal-backdrop-filter: none;
-            --card-backdrop-filter: none;
-        }
-
-        html[data-theme="slate"] {
-            --bg-main: #262626; /* neutral-800 */
-            --bg-card: #404040; /* neutral-700 */
-            --bg-modal: #404040;
-            --bg-interactive: #525252; /* neutral-600 */
-            --bg-interactive-deep: #171717; /* neutral-900 */
-            --bg-interactive-hover: #737373; /* neutral-500 */
-            --bg-accent: #a3a3a3; /* neutral-400 */
-            --bg-accent-hover: #d4d4d4; /* neutral-300 */
-            --text-primary: #f5f5f5; /* neutral-100 */
-            --text-secondary: #e5e5e5; /* neutral-200 */
-            --text-color: #d4d4d4; /* neutral-300 */
-            --text-muted: #a3a3a3; /* neutral-400 */
-            --text-muted-light: #737373; /* neutral-500 */
-            --text-on-accent: #171717; /* neutral-900 */
-            --border-color: #525252; /* neutral-600 */
-            --border-color-strong: #737373; /* neutral-500 */
-            --accent-color: #a3a3a3; /* neutral-400 */
-            --accent-color-light: #d4d4d4; /* neutral-300 */
-            --color-success: #22c55e;
-            --color-danger: #ef4444;
-            --color-danger-hover: #dc2626;
-            --color-scheme: dark;
-            --body-bg-image: none;
-            --modal-backdrop-filter: none;
-            --card-backdrop-filter: none;
+            --body-bg-image: linear-gradient(170deg, #1d1b2e 0%, #3b355e 70%, #1d1b2e 100%);
+            --modal-backdrop-filter: blur(12px) saturate(150%);
+            --card-backdrop-filter: blur(12px) saturate(150%);
         }
 
 
         body {
             font-family: 'Inter', sans-serif;
-            transition: background-color 0.3s, color 0.3s, background-image 0.3s;
+            transition: background-color 0.3s, color 0.3s, background-image 0.3s; /* UPDATED */
             background-color: var(--bg-main);
             color: var(--text-color);
-            background-image: var(--body-bg-image);
-            background-size: cover;
-            background-attachment: fixed;
+            background-image: var(--body-bg-image); /* UPDATED */
+            background-size: cover; /* UPDATED */
+            background-attachment: fixed; /* UPDATED */
         }
 
         /* --- Semantic Color Classes --- */
@@ -147,15 +149,15 @@
         
         .card-bg { 
             background-color: var(--bg-card); 
-            backdrop-filter: var(--card-backdrop-filter);
-            -webkit-backdrop-filter: var(--card-backdrop-filter);
-            transition: background-color 0.3s;
+            backdrop-filter: var(--card-backdrop-filter); /* UPDATED */
+            -webkit-backdrop-filter: var(--card-backdrop-filter); /* UPDATED */
+            transition: background-color 0.3s; /* UPDATED */
         }
         .modal-bg { 
             background-color: var(--bg-modal); 
-            backdrop-filter: var(--modal-backdrop-filter);
-            -webkit-backdrop-filter: var(--modal-backdrop-filter);
-            transition: background-color 0.3s;
+            backdrop-filter: var(--modal-backdrop-filter); /* UPDATED */
+            -webkit-backdrop-filter: var(--modal-backdrop-filter); /* UPDATED */
+            transition: background-color 0.3s; /* UPDATED */
         }
         .input-bg { background-color: var(--bg-interactive); color: var(--text-primary); }
         .input-bg:focus {
@@ -431,7 +433,8 @@
     <div id="app" class="min-h-screen p-4 sm:p-6 lg:p-8">
         <!-- Header -->
         <header class="mb-6 flex items-center justify-between">
-            <h1 class="text-6xl font-bold text-primary">tymo</h1>
+            <!-- UX POLISH: Reduced title size and made it responsive -->
+            <h1 class="text-4xl sm:text-5xl font-bold text-primary">tymo</h1>
             
             <div id="themeSwitcher" class="flex items-center gap-1 bg-interactive-deep p-1 rounded-lg">
                 <button class="theme-btn p-1 rounded-md" data-theme="dark" title="Dark Theme">
@@ -440,18 +443,24 @@
                 <button class="theme-btn p-1 rounded-md" data-theme="light" title="Light Theme">
                     <i data-lucide="sun" width="20" height="20"></i>
                 </button>
-                <button class="theme-btn p-1 rounded-md" data-theme="forest" title="Forest Theme">
-                    <i data-lucide="trees" width="20" height="20"></i>
+                <!-- REMOVED: Forest Theme Button -->
+                <!-- REMOVED: Slate Theme Button -->
+                <!-- REMOVED: Cyberpunk Theme Button -->
+                <!-- NEW: Dusk Theme Button -->
+                <button class="theme-btn p-1 rounded-md" data-theme="dusk" title="Dusk Theme">
+                    <i data-lucide="sunset" width="20" height="20"></i>
                 </button>
-                <button class="theme-btn p-1 rounded-md" data-theme="slate" title="Slate Theme">
-                    <i data-lucide="layout-grid" width="20" height="20"></i>
+                <!-- NEW: Charcoal Theme Button -->
+                <button class="theme-btn p-1 rounded-md" data-theme="charcoal" title="Charcoal Theme">
+                    <i data-lucide="layers" width="20" height="20"></i>
                 </button>
             </div>
 
             <div class="flex items-center gap-2">
-                <button id="addDateBtn" class="btn btn-primary font-medium py-2 px-4 rounded-lg text-sm flex items-center gap-1.5">
+                <!-- UX POLISH: Made button icon-only on small screens, added text on sm+ -->
+                <button id="addDateBtn" class="btn btn-primary font-medium py-2 px-2.5 sm:px-4 rounded-lg text-sm flex items-center gap-1.5">
                     <i data-lucide="plus" class="w-5 h-5"></i>
-                    Add Date
+                    <span class="hidden sm:inline">Add Date</span>
                 </button>
                 
                 <!-- NEW: Profile Switcher -->
@@ -566,7 +575,8 @@
                     <!-- Icon Name -->
                     <div>
                         <label for="dateIconName" class="block text-sm font-medium text-color mb-1.5">Icon Name (from lucide.dev)</label>
-                        <input type="text" id="dateIconName" class="input-bg w-full border border-color-strong rounded-lg px-3 py-2.5 text-sm focus:ring-2 outline-none" placeholder="e.g., rocket, award" list="iconSuggestions">
+                        <!-- UX POLISH: Updated placeholder text for clarity -->
+                        <input type="text" id="dateIconName" class="input-bg w-full border border-color-strong rounded-lg px-3 py-2.5 text-sm focus:ring-2 outline-none" placeholder="e.g., rocket (or leave blank)" list="iconSuggestions">
                         <datalist id="iconSuggestions">
                             <!-- Common icon suggestions (truncated for brevity) -->
                             <option value="rocket"></option>
@@ -634,8 +644,9 @@
                     </div>
                     <div class="flex items-center gap-2 mt-2">
                         <input type="text" id="newMilestoneInput" class="input-bg flex-1 border border-color-strong rounded-lg px-3 py-2.5 text-sm focus:ring-2 outline-none" placeholder="Add a new milestone...">
-                        <button id="addMilestoneBtn" type="button" class="btn btn-secondary p-2.5 rounded-lg text-accent-light hover:text-accent">
-                            <i data-lucide="plus" class="w-5 h-5"></i>
+                        <!-- UX POLISH: Changed icon button to text button for clarity -->
+                        <button id="addMilestoneBtn" type="button" class="btn btn-secondary py-2.5 px-4 rounded-lg text-sm font-medium">
+                            Add
                         </button>
                     </div>
                 </div>
@@ -2386,7 +2397,8 @@
                 createDateCard(dateData) {
                     const card = document.createElement('div');
                     // Add 'group' class to enable group-hover states and 'cursor-pointer'
-                    card.className = 'card-bg group p-2.5 rounded-lg shadow-lg flex flex-col space-y-2 w-40 cursor-pointer'; 
+                    // UX POLISH: Increased width from w-40 to w-48 for more space
+                    card.className = 'card-bg group p-2.5 rounded-lg shadow-lg flex flex-col space-y-2 w-48 cursor-pointer'; 
                     card.dataset.id = dateData.id;
                     
                     let targetDate, formattedDate, timerDateString, nextAge = 0, currentAge = 0, nextAnniversaryNumber = 0, livedForYears = 0, nextDeathAnniversaryNumber = 0;
@@ -2527,8 +2539,8 @@
 
                         ${dateOrSpecialMessageHTML}
                         
-                        <!-- NEW LOGIC: Only add placeholder if NOT a special date -->
-                        ${showMilestones ? milestoneSectionHTML : (isSpecialDate ? '' : '<div class="h-[2.375rem]"></div>')}
+                        <!-- UX POLISH: Removed placeholder div that caused wasted space -->
+                        ${showMilestones ? milestoneSectionHTML : ''}
 
                         <div class="relative flex justify-between gap-0.5 text-center ${completeClass}" data-date="${timerDateString}" data-id="${dateData.id}" data-time-container 
                              data-is-birthday="${isBirthday}" 
@@ -2537,19 +2549,20 @@
                              data-next-age="${nextAge}" 
                              data-next-anniversary-number="${nextAnniversaryNumber}"
                              data-next-death-anniversary-number="${nextDeathAnniversaryNumber}">
-                            <div class="bg-interactive py-1 px-1 rounded w-auto min-w-[1.75rem]" data-timer-segment>
+                            <!-- UX POLISH: Widened timer segments for readability -->
+                            <div class="bg-interactive py-1 px-1 rounded w-auto min-w-[2.25rem]" data-timer-segment>
                                 <span class="block text-sm font-bold text-primary" data-days>0</span>
                                 <span class="block text-[0.6rem] font-medium text-muted uppercase">Days</span>
                             </div>
-                            <div class="bg-interactive py-1 px-1 rounded w-7" data-timer-segment>
+                            <div class="bg-interactive py-1 px-1 rounded w-9" data-timer-segment>
                                 <span class="block text-sm font-bold text-primary" data-hours>0</span>
                                 <span class="block text-[0.6rem] font-medium text-muted uppercase">Hrs</span>
                             </div>
-                            <div class="bg-interactive py-1 px-1 rounded w-7" data-timer-segment>
+                            <div class="bg-interactive py-1 px-1 rounded w-9" data-timer-segment>
                                 <span class="block text-sm font-bold text-primary" data-minutes>0</span>
                                 <span class="block text-[0.6rem] font-medium text-muted uppercase">Min</span>
                             </div>
-                            <div class="bg-interactive py-1 px-1 rounded w-7" data-timer-segment>
+                            <div class="bg-interactive py-1 px-1 rounded w-9" data-timer-segment>
                                 <span class="block text-sm font-bold text-primary" data-seconds>0</span>
                                 <span class="block text-[0.6rem] font-medium text-muted uppercase">Sec</span>
                             </div>
@@ -2576,17 +2589,18 @@
                                 <!-- Action Buttons: MODIFIED: Always visible now -->
                                 <div class="flex items-center gap-0.5"> <!-- REMOVED visibility classes -->
                                     ${!isSpecialDate ? `
-                                        <button class="complete-card p-1 text-muted-light hover-text-success rounded ${completeIconClass}" title="Toggle Complete">
-                                            <i data-lucide="check" class="w-3.5 h-3.5"></i>
+                                        <!-- UX POLISH: Increased button padding and icon size for better tappability -->
+                                        <button class="complete-card p-1.5 text-muted-light hover-text-success rounded ${completeIconClass}" title="Toggle Complete">
+                                            <i data-lucide="check" class="w-4 h-4"></i>
                                         </button>
                                     ` : ''}
                                     <!-- REMOVED Edit and Delete buttons -->
                                 </div>
 
                                 <!-- Status Circle (Visible when not a special date) -->
-                                <!-- MODIFIED: Moved to be after the checkmark button -->
+                                <!-- UX POLISH: Removed redundant status circle -->
                                 ${!isSpecialDate ? `
-                                    <div class="shrink-0 rounded-full ${isComplete ? 'bg-green-500' : 'border border-color-strong'} w-2.5 h-2.5" title="Status: ${dateData.status}"></div>
+                                    <!-- <div class="shrink-0 rounded-full ${isComplete ? 'bg-green-500' : 'border border-color-strong'} w-2.5 h-2.5" title="Status: ${dateData.status}"></div> -->
                                 ` : ''}
                             </div>
                         </div>
