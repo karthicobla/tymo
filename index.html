@@ -509,28 +509,25 @@
             <div class="p-6 overflow-y-auto space-y-6">
                 <input type="hidden" id="dateId">
 
-                <!-- Date Title -->
-                <div>
-                    <label for="dateTitle" class="block text-sm font-medium text-color mb-1.5">Date Title</label>
-                    <input type="text" id="dateTitle" class="input-bg w-full border border-color-strong rounded-lg px-3 py-2.5 text-sm focus:ring-2 outline-none" placeholder="e.g., Launch Project Orion">
-                </div>
-
-                <!-- Notes / Description -->
-                <div>
-                    <label for="dateNotes" class="block text-sm font-medium text-color mb-1.5">Notes / Description</label>
-                    <textarea id="dateNotes" rows="3" class="input-bg w-full border border-color-strong rounded-lg px-3 py-2.5 text-sm focus:ring-2 outline-none" placeholder="Add more details about this goal..."></textarea>
-                </div>
-
+                <!-- Section 1: Essential Info -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Date Title -->
+                    <div>
+                        <label for="dateTitle" class="block text-sm font-medium text-color mb-1.5">Date Title</label>
+                        <input type="text" id="dateTitle" class="input-bg w-full border border-color-strong rounded-lg px-3 py-2.5 text-sm focus:ring-2 outline-none" placeholder="e.g., Launch Project Orion">
+                    </div>
                     <!-- Target Date -->
                     <div>
-                        <label for="dateTarget" class="block text-sm font-medium text-color mb-1.5">Target Date & Time</label>
-                        <input type="datetime-local" id="dateTarget" class="input-bg w-full border border-color-strong rounded-lg px-3 py-2.5 text-sm focus:ring-2 outline-none">
+                        <label for="dateTarget" class="block text-sm font-medium text-color mb-1.5">Target Date</label>
+                        <input type="date" id="dateTarget" class="input-bg w-full border border-color-strong rounded-lg px-3 py-2.5 text-sm focus:ring-2 outline-none">
                     </div>
+                </div>
 
+                <!-- Section 2: Organization -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <!-- Category -->
                     <div>
-                        <label for="goalCategory" class="block text-sm font-medium text-color mb-1.5">Category</label>
+                        <label for="dateCategory" class="block text-sm font-medium text-color mb-1.5">Category</label>
                         <input type="text" id="dateCategory" class="input-bg w-full border border-color-strong rounded-lg px-3 py-2.5 text-sm focus:ring-2 outline-none" placeholder="e.g., Personal, Work" list="categorySuggestions">
                         <datalist id="categorySuggestions">
                             <!-- Dynamically populated. Add common suggestions. -->
@@ -545,21 +542,27 @@
                             <option value="Home"></option>
                         </datalist>
                     </div>
-
-                    <!-- Remembrance Checkbox -->
-                    <div id="remembranceCheckboxContainer" class="hidden md:col-span-1 flex items-end pb-2.5">
-                        <div class="flex items-center">
-                            <input id="isRemembrance" type="checkbox" class="h-4 w-4 rounded border-color-strong bg-interactive text-accent-light focus:ring-accent-light">
-                            <label for="isRemembrance" class="ml-2 block text-sm font-medium text-color">In Remembrance</label>
-                        </div>
-                    </div>
-        
-                    <!-- Date of Death -->
-                    <div id="dateOfDeathContainer" class="hidden md:col-span-1">
-                        <label for="dateOfDeath" class="block text-sm font-medium text-color mb-1.5">Date of Passing</label>
-                        <input type="date" id="dateOfDeath" class="input-bg w-full border border-color-strong rounded-lg px-3 py-2.5 text-sm focus:ring-2 outline-none">
+                    <!-- Group -->
+                    <div>
+                        <label for="dateGroup" class="block text-sm font-medium text-color mb-1.5">Group</label>
+                        <input type="text" id="dateGroup" class="input-bg w-full border border-color-strong rounded-lg px-3 py-2.5 text-sm focus:ring-2 outline-none" placeholder="e.g., Q4 Projects" list="groupSuggestions">
+                        <datalist id="groupSuggestions">
+                            <!-- Dynamically populated -->
+                        </datalist>
                     </div>
                     
+                    <!-- NEW: Status -->
+                    <div id="dateStatusContainer">
+                        <label for="dateStatus" class="block text-sm font-medium text-color mb-1.5">Status</label>
+                        <select id="dateStatus" class="select-bg w-full border border-color-strong rounded-lg px-3 py-2.5 text-sm focus:ring-2 outline-none">
+                            <option value="Pending">Pending</option>
+                            <option value="Completed">Completed</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Section 3: Customization -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <!-- Icon Name -->
                     <div>
                         <label for="dateIconName" class="block text-sm font-medium text-color mb-1.5">Icon Name (from lucide.dev)</label>
@@ -586,16 +589,6 @@
                             <option value="trending-up"></option>
                         </datalist>
                     </div>
-
-                    <!-- Group -->
-                    <div>
-                        <label for="dateGroup" class="block text-sm font-medium text-color mb-1.5">Group</label>
-                        <input type="text" id="dateGroup" class="input-bg w-full border border-color-strong rounded-lg px-3 py-2.5 text-sm focus:ring-2 outline-none" placeholder="e.g., Q4 Projects" list="groupSuggestions">
-                        <datalist id="groupSuggestions">
-                            <!-- Dynamically populated -->
-                        </datalist>
-                    </div>
-
                     <!-- Category Color -->
                     <div>
                         <label for="dateCategoryColor" class="block text-sm font-medium text-color mb-1.5">Icon & Category Color</label>
@@ -603,7 +596,31 @@
                     </div>
                 </div>
 
-                <!-- Milestones (Subtasks) -->
+                <!-- Section 4: Details -->
+                <!-- Notes / Description -->
+                <div>
+                    <label for="dateNotes" class="block text-sm font-medium text-color mb-1.5">Notes / Description</label>
+                    <textarea id="dateNotes" rows="3" class="input-bg w-full border border-color-strong rounded-lg px-3 py-2.5 text-sm focus:ring-2 outline-none" placeholder="Add more details about this goal..."></textarea>
+                </div>
+
+                <!-- Section 5: Special Date Options -->
+                <!-- This container is hidden by default, and shown by JS if category is 'Birthday' -->
+                <div id="remembranceCheckboxContainer" class="hidden p-4 bg-interactive rounded-lg border border-color-strong">
+                    <div class="flex items-start">
+                        <input id="isRemembrance" type="checkbox" class="h-4 w-4 rounded border-color-strong bg-interactive text-accent-light focus:ring-accent-light mt-1">
+                        <div class="ml-3">
+                            <label for="isRemembrance" class="block text-sm font-medium text-primary">In Remembrance</label>
+                            <p class="text-xs text-muted mt-0.5">Check this to honor a birthday for someone who has passed.</p>
+                        </div>
+                    </div>
+                    <!-- This container is hidden by default, and shown by JS if 'In Remembrance' is checked -->
+                    <div id="dateOfDeathContainer" class="hidden mt-4">
+                        <label for="dateOfDeath" class="block text-sm font-medium text-color mb-1.5">Date of Passing</label>
+                        <input type="date" id="dateOfDeath" class="input-bg w-full border border-color-strong rounded-lg px-3 py-2.5 text-sm focus:ring-2 outline-none">
+                    </div>
+                </div>
+
+                <!-- Section 6: Milestones (Subtasks) -->
                 <div id="milestoneSection">
                     <div class="flex items-center justify-between mb-2">
                         <h3 class="text-sm font-medium text-color">Key Results (Milestones)</h3>
@@ -1117,6 +1134,16 @@
                     lucide.createIcons();
                 },
 
+                // NEW: Helper to parse YYYY-MM-DD as local date
+                parseLocalDate(dateString) {
+                    if (!dateString) return new Date();
+                    const [datePart] = dateString.split('T');
+                    const [year, month, day] = datePart.split('-').map(Number);
+                    if (!year || !month || !day) return new Date();
+                    // Creates a date at midnight in the user's local timezone
+                    return new Date(year, month - 1, day); 
+                },
+
                 attachEventListeners() {
                     this.addDateBtn.addEventListener('click', () => this.openModal());
                     this.settingsBtn.addEventListener('click', () => this.openSettings());
@@ -1182,9 +1209,14 @@
                         const card = e.target.closest('[data-id]');
                         if (!card) return;
                         const id = card.dataset.id;
-                        if (e.target.closest('.edit-card')) this.openModal(id);
-                        else if (e.target.closest('.delete-card')) this.handleDeleteCard(id); // Fixed: Was calling a non-existent function
-                        else if (e.target.closest('.complete-card')) this.toggleComplete(id);
+                        
+                        // If 'complete' button is clicked, toggle complete and stop.
+                        if (e.target.closest('.complete-card')) {
+                            this.toggleComplete(id);
+                        } else {
+                            // Otherwise, any click on the card opens the modal.
+                            this.openModal(id);
+                        }
                     });
 
                     // Onboarding
@@ -1457,7 +1489,7 @@
                             this.dateId.value = date.id;
                             this.dateTitle.value = date.title;
                             this.dateNotes.value = date.notes || '';
-                            this.dateTarget.value = date.date ? date.date.substring(0, 16) : '';
+                            this.dateTarget.value = date.date ? date.date.split('T')[0] : ''; // UPDATED
                             this.dateCategory.value = date.category || '';
                             this.dateCategoryColor.value = date.categoryColor || '#374151';
                             this.dateIconName.value = date.iconName || '';
@@ -1468,6 +1500,7 @@
                             this.isRemembrance.checked = date.isRemembrance || false;
                             this.dateOfDeath.value = date.dateOfDeath || '';
                             this.dateShowMilestones.checked = date.showMilestones ?? true;
+                            document.getElementById('dateStatus').value = date.status || 'Pending'; // NEW: Populate status
                         }
                     } else {
                         this.modalTitle.textContent = 'Add New Date';
@@ -1502,6 +1535,8 @@
                     this.isRemembrance.checked = false;
                     this.dateOfDeathContainer.classList.add('hidden');
                     this.dateOfDeath.value = '';
+                    document.getElementById('dateStatus').value = 'Pending'; // NEW: Reset status
+                    document.getElementById('dateStatusContainer').classList.remove('hidden'); // NEW: Ensure status is visible on reset
                 },
 
                 updateModalForCategory() {
@@ -1513,6 +1548,13 @@
                     const remembranceChecked = this.isRemembrance.checked;
                     
                     const milestoneTitle = this.milestoneSection.querySelector('h3');
+                    const statusContainer = document.getElementById('dateStatusContainer'); // NEW
+
+                    if (isSpecialDate) {
+                        statusContainer.classList.add('hidden'); // NEW: Hide status for special dates
+                    } else {
+                        statusContainer.classList.remove('hidden'); // NEW: Show status for other dates
+                    }
 
                     this.milestoneSection.style.display = 'block';
                     if (isSpecialDate) {
@@ -1533,22 +1575,19 @@
                         this.dateOfDeathContainer.classList.add('hidden');
                     }
 
+                    // UPDATED: Simplified logic. Type is always 'date'.
                     if (isSpecialDate) {
                         if (isBirthday) {
                             categoryLabel.textContent = 'Birthday (Date of Birth)';
                         } else if (isAnniversary) {
                             categoryLabel.textContent = 'Anniversary Date';
                         }
-                        this.dateTarget.type = 'date';
-                        if (this.dateTarget.value.includes('T')) {
-                            this.dateTarget.value = this.dateTarget.value.split('T')[0];
-                        }
                     } else {
-                        categoryLabel.textContent = 'Target Date & Time';
-                        this.dateTarget.type = 'datetime-local';
-                        if (this.dateTarget.value && !this.dateTarget.value.includes('T')) {
-                            this.dateTarget.value = `${this.dateTarget.value}T12:00`;
-                        }
+                        categoryLabel.textContent = 'Target Date';
+                    }
+                    // Always ensure value is just YYYY-MM-DD
+                    if (this.dateTarget.value.includes('T')) {
+                        this.dateTarget.value = this.dateTarget.value.split('T')[0];
                     }
                 },
 
@@ -1565,6 +1604,12 @@
                         this.showToast('Please add a Date of Passing for remembrance.', 'error');
                         return;
                     }
+                    
+                    // NEW: Check if this is a special date type
+                    const categoryLower = this.dateCategory.value.trim().toLowerCase();
+                    const isBirthday = categoryLower === 'birthday';
+                    const isAnniversary = categoryLower === 'anniversary';
+                    const isNonCompletable = isBirthday || isAnniversary;
 
                     const dates = this.getDates(); // UPDATED
                     const existingDate = dates.find(g => g.id === id);
@@ -1578,7 +1623,7 @@
                         iconName: this.dateIconName.value.trim(),
                         group: this.dateGroup.value.trim() || 'General',
                         milestones: this.currentMilestones,
-                        status: existingDate?.status || 'Pending',
+                        status: isNonCompletable ? 'Pending' : document.getElementById('dateStatus').value, // UPDATED: Save status
                         showMilestones: this.dateShowMilestones.checked,
                         isRemembrance: this.isRemembrance.checked,
                         dateOfDeath: this.isRemembrance.checked ? this.dateOfDeath.value : '',
@@ -1761,7 +1806,7 @@
                     const url = URL.createObjectURL(dataBlob);
                     const a = document.createElement('a');
                     a.href = url;
-                    a.download = `tymr_all_data_${new Date().toISOString().split('T')[0]}.json`; // New filename
+                    a.download = `tymo_all_data_${new Date().toISOString().split('T')[0]}.json`; // New filename
                     document.body.appendChild(a);
                     a.click();
                     document.body.removeChild(a);
@@ -2259,7 +2304,7 @@
                     try {
                         const now = new Date();
                         const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-                        const birthDate = new Date(dobString);
+                        const birthDate = this.parseLocalDate(dobString); // UPDATED
                         if (isNaN(birthDate.getTime())) throw new Error('Invalid date');
                         const birthMonth = birthDate.getMonth();
                         const birthDay = birthDate.getDate();
@@ -2288,7 +2333,7 @@
                     try {
                         const now = new Date();
                         const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-                        const anniversaryDate = new Date(anniversaryDateString);
+                        const anniversaryDate = this.parseLocalDate(anniversaryDateString); // UPDATED
                         if (isNaN(anniversaryDate.getTime())) throw new Error('Invalid date');
                         const annivMonth = anniversaryDate.getMonth();
                         const annivDay = anniversaryDate.getDate();
@@ -2309,8 +2354,8 @@
 
                 calculateRemembranceInfo(dobString, dodString) {
                     try {
-                        const dob = new Date(dobString);
-                        const dod = new Date(dodString);
+                        const dob = this.parseLocalDate(dobString); // UPDATED
+                        const dod = this.parseLocalDate(dodString); // UPDATED
                         if (isNaN(dob.getTime()) || isNaN(dod.getTime())) throw new Error('Invalid date');
                         let livedForYears = dod.getFullYear() - dob.getFullYear();
                         const m = dod.getMonth() - dob.getMonth();
@@ -2340,7 +2385,8 @@
 
                 createDateCard(dateData) {
                     const card = document.createElement('div');
-                    card.className = 'card-bg p-2.5 rounded-lg shadow-lg flex flex-col space-y-2 w-40'; 
+                    // Add 'group' class to enable group-hover states and 'cursor-pointer'
+                    card.className = 'card-bg group p-2.5 rounded-lg shadow-lg flex flex-col space-y-2 w-40 cursor-pointer'; 
                     card.dataset.id = dateData.id;
                     
                     let targetDate, formattedDate, timerDateString, nextAge = 0, currentAge = 0, nextAnniversaryNumber = 0, livedForYears = 0, nextDeathAnniversaryNumber = 0;
@@ -2375,8 +2421,8 @@
                     } else {
                         isBirthday = false;
                         isAnniversary = false;
-                        targetDate = new Date(dateData.date);
-                        timerDateString = dateData.date;
+                        targetDate = this.parseLocalDate(dateData.date); // UPDATED
+                        timerDateString = targetDate.toISOString(); // UPDATED
                         formattedDate = targetDate.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
                     }
                     
@@ -2472,20 +2518,17 @@
 
                     card.innerHTML = `
                         <div class="flex items-start justify-between gap-1.5 ${completeClass}">
-                            <div class="flex-col min-w-0">
-                                <div class="flex items-center gap-1.5 min-w-0">
-                                    ${iconSVG}
-                                    <h3 class="text-sm font-semibold text-primary truncate" title="${this.escapeHTML(dateData.title)}">${this.escapeHTML(dateData.title)}</h3>
-                                </div>
+                            <div class="flex items-center gap-1.5 min-w-0"> <!-- Removed nested flex-col -->
+                                ${iconSVG}
+                                <h3 class="text-sm font-semibold text-primary truncate" title="${this.escapeHTML(dateData.title)}">${this.escapeHTML(dateData.title)}</h3>
                             </div>
-                            ${!isSpecialDate ? `
-                                <div class="shrink-0 rounded-full ${isComplete ? 'bg-green-500' : 'border border-color-strong'} w-2.5 h-2.5 mt-0.5" title="Status: ${dateData.status}"></div>
-                            ` : ''}
+                            <!-- STATUS CIRCLE REMOVED FROM HERE -->
                         </div>
 
                         ${dateOrSpecialMessageHTML}
                         
-                        ${showMilestones ? milestoneSectionHTML : ''}
+                        <!-- NEW LOGIC: Only add placeholder if NOT a special date -->
+                        ${showMilestones ? milestoneSectionHTML : (isSpecialDate ? '' : '<div class="h-[2.375rem]"></div>')}
 
                         <div class="relative flex justify-between gap-0.5 text-center ${completeClass}" data-date="${timerDateString}" data-id="${dateData.id}" data-time-container 
                              data-is-birthday="${isBirthday}" 
@@ -2516,7 +2559,9 @@
                         
                         <div class="text-center" data-non-birthday-alert-container></div>
 
-                        <div class="flex items-center justify-between pt-1 border-t border-color min-w-0">
+                        <!-- NEW FOOTER: Single efficient row -->
+                        <div class="pt-2 mt-1 border-t border-color flex items-center justify-between min-w-0 gap-2">
+                            <!-- Left Side: Category Label -->
                             <div class="min-w-0"> 
                                 <span class="inline-flex items-center rounded-full px-2 py-0.5 text-[0.65rem] font-medium ${completeClass} truncate" 
                                       style="background-color: ${tagBGColor}; color: ${categoryTextColor};" 
@@ -2524,18 +2569,25 @@
                                     ${categoryDisplay}
                                 </span>
                             </div>
-                            <div class="flex items-center gap-0.5 shrink-0">
+                            
+                            <!-- Right Side: Status + Actions -->
+                            <div class="flex items-center gap-1.5 shrink-0"> <!-- MODIFIED: Increased gap -->
+                                
+                                <!-- Action Buttons: MODIFIED: Always visible now -->
+                                <div class="flex items-center gap-0.5"> <!-- REMOVED visibility classes -->
+                                    ${!isSpecialDate ? `
+                                        <button class="complete-card p-1 text-muted-light hover-text-success rounded ${completeIconClass}" title="Toggle Complete">
+                                            <i data-lucide="check" class="w-3.5 h-3.5"></i>
+                                        </button>
+                                    ` : ''}
+                                    <!-- REMOVED Edit and Delete buttons -->
+                                </div>
+
+                                <!-- Status Circle (Visible when not a special date) -->
+                                <!-- MODIFIED: Moved to be after the checkmark button -->
                                 ${!isSpecialDate ? `
-                                    <button class="complete-card p-1 text-muted-light hover-text-success rounded ${completeIconClass}" title="Toggle Complete">
-                                        <i data-lucide="check" class="w-3.5 h-3.5"></i>
-                                    </button>
+                                    <div class="shrink-0 rounded-full ${isComplete ? 'bg-green-500' : 'border border-color-strong'} w-2.5 h-2.5" title="Status: ${dateData.status}"></div>
                                 ` : ''}
-                                <button class="edit-card p-1 text-muted-light hover-text-accent-light rounded" title="Edit">
-                                    <i data-lucide="pencil" class="w-3.5 h-3.5"></i>
-                                </button>
-                                <button class="delete-card p-1 text-muted-light hover-text-danger rounded" title="Delete">
-                                    <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
-                                </button>
                             </div>
                         </div>
                     `;
