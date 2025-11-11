@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark"> <!-- Default theme -->
 <head>
-    <meta charset="UTF-R8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tymo</title>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -534,22 +534,23 @@
 
                 <!-- Section 2: Organization -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Category -->
+                    <!-- Type (formerly Category) - Improved UX with select dropdown -->
                     <div>
-                        <label for="dateCategory" class="block text-sm font-medium text-color mb-1.5">Category</label>
-                        <input type="text" id="dateCategory" class="input-bg w-full border border-color-strong rounded-lg px-3 py-2.5 text-sm focus:ring-2 outline-none" placeholder="e.g., Personal, Work" list="categorySuggestions">
-                        <datalist id="categorySuggestions">
-                            <!-- Dynamically populated. Add common suggestions. -->
-                            <option value="Personal"></option>
-                            <option value="Work"></option>
-                            <option value="Birthday"></option>
-                            <option value="Anniversary"></option>
-                            <option value="Health"></option>
-                            <option value="Finance"></option>
-                            <option value="Learn"></option>
-                            <option value="Travel"></option>
-                            <option value="Home"></option>
-                        </datalist>
+                        <label for="dateType" class="block text-sm font-medium text-color mb-1.5">Type</label>
+                        <select id="dateType" class="select-bg w-full border border-color-strong rounded-lg px-3 py-2.5 text-sm focus:ring-2 outline-none">
+                            <option value="">Select a type...</option>
+                            <option value="Personal">Personal</option>
+                            <option value="Work">Work</option>
+                            <option value="Birthday">Birthday</option>
+                            <option value="Anniversary">Anniversary</option>
+                            <option value="Health">Health</option>
+                            <option value="Finance">Finance</option>
+                            <option value="Learn">Learn</option>
+                            <option value="Travel">Travel</option>
+                            <option value="Home">Home</option>
+                        </select>
+                        <p class="text-xs text-muted mt-1">Or type a custom type below</p>
+                        <input type="text" id="dateTypeCustom" class="input-bg w-full border border-color-strong rounded-lg px-3 py-2 mt-1 text-sm focus:ring-2 outline-none hidden" placeholder="Custom type...">
                     </div>
                     <!-- Group -->
                     <div>
@@ -560,6 +561,24 @@
                         </datalist>
                     </div>
                     
+                    <!-- NEW: Label -->
+                    <div>
+                        <label for="dateLabel" class="block text-sm font-medium text-color mb-1.5">Label</label>
+                        <input type="text" id="dateLabel" class="input-bg w-full border border-color-strong rounded-lg px-3 py-2.5 text-sm focus:ring-2 outline-none" placeholder="e.g., Urgent, P1" list="labelSuggestions">
+                        <datalist id="labelSuggestions">
+                            <!-- Dynamically populated -->
+                            <option value="Urgent"></option>
+                            <option value="Important"></option>
+                            <option value="P1"></option>
+                        </datalist>
+                    </div>
+
+                    <!-- NEW: Show Label Checkbox -->
+                    <div class="flex items-center pt-5"> <!-- pt-5 to align with label -->
+                         <input id="dateShowLabel" type="checkbox" class="h-4 w-4 rounded border-color-strong bg-interactive text-accent-light focus:ring-accent-light">
+                         <label for="dateShowLabel" class="ml-2 block text-sm font-medium text-color">Show Label on Card</label>
+                    </div>
+
                     <!-- NEW: Status -->
                     <div id="dateStatusContainer">
                         <label for="dateStatus" class="block text-sm font-medium text-color mb-1.5">Status</label>
@@ -567,6 +586,17 @@
                             <option value="Pending">Pending</option>
                             <option value="Completed">Completed</option>
                         </select>
+                    </div>
+
+                    <!-- NEW: Timer Mode (only for future dates) -->
+                    <div id="dateTimerModeContainer">
+                        <label for="dateTimerMode" class="block text-sm font-medium text-color mb-1.5">Timer Display</label>
+                        <select id="dateTimerMode" class="select-bg w-full border border-color-strong rounded-lg px-3 py-2.5 text-sm focus:ring-2 outline-none">
+                            <option value="auto">Auto (Days if >24hrs, Hours/Mins/Secs if <24hrs)</option>
+                            <option value="days">Days Only</option>
+                            <option value="full">Full Timer (Days, Hours, Mins, Secs)</option>
+                        </select>
+                        <p class="text-xs text-muted mt-1">Only applies to future dates</p>
                     </div>
                 </div>
                 
@@ -585,7 +615,7 @@
                             <option value="briefcase"></option>
                             <option value="calendar"></option>
                             <option value="cake"></option>
-                            <option value-"gift"></option>
+                            <option value="gift"></option>
                             <option value="calendar-heart"></option>
                             <option value="heart"></option>
                             <option value="home"></option>
@@ -599,10 +629,10 @@
                             <option value="trending-up"></option>
                         </datalist>
                     </div>
-                    <!-- Category Color -->
+                    <!-- Icon & Tag Color (formerly Category Color) -->
                     <div>
-                        <label for="dateCategoryColor" class="block text-sm font-medium text-color mb-1.5">Icon & Category Color</label>
-                        <input type="color" id="dateCategoryColor" value="#374151"> <!-- Default value -->
+                        <label for="dateIconColor" class="block text-sm font-medium text-color mb-1.5">Icon & Tag Color</label>
+                        <input type="color" id="dateIconColor" value="#374151"> <!-- Default value -->
                     </div>
                 </div>
 
@@ -769,12 +799,21 @@
                 dateTitle: document.getElementById('dateTitle'),
                 dateNotes: document.getElementById('dateNotes'),
                 dateTarget: document.getElementById('dateTarget'),
-                dateCategory: document.getElementById('dateCategory'),
-                dateCategoryColor: document.getElementById('dateCategoryColor'),
+                dateType: document.getElementById('dateType'), // MODIFIED
+                dateTypeCustom: document.getElementById('dateTypeCustom'), // NEW
+                dateIconColor: document.getElementById('dateIconColor'), // MODIFIED
                 dateIconName: document.getElementById('dateIconName'),
                 dateGroup: document.getElementById('dateGroup'),
-                categorySuggestions: document.getElementById('categorySuggestions'),
                 groupSuggestions: document.getElementById('groupSuggestions'),
+
+                // NEW: Label UI
+                dateLabel: document.getElementById('dateLabel'),
+                dateShowLabel: document.getElementById('dateShowLabel'),
+                labelSuggestions: document.getElementById('labelSuggestions'),
+
+                // NEW: Status & Timer Mode
+                dateStatus: document.getElementById('dateStatus'),
+                dateTimerMode: document.getElementById('dateTimerMode'),
 
                 // Remembrance Fields
                 remembranceCheckboxContainer: document.getElementById('remembranceCheckboxContainer'),
@@ -913,8 +952,10 @@
                             title: 'Project Phoenix Launch',
                             notes: 'Final push for the new platform launch.',
                             date: addMonths(today, 2), // ~2 months from now
-                            category: 'Work',
-                            categoryColor: '#f97316', // Orange
+                            type: 'Work', // MODIFIED
+                            iconColor: '#f97316', // MODIFIED
+                            label: 'P1', // NEW
+                            showLabel: true, // NEW
                             iconName: 'rocket',
                             group: 'Projects',
                             milestones: [
@@ -933,8 +974,10 @@
                             title: 'My Birthday',
                             notes: 'Time to celebrate!',
                             date: '1990-11-15', // DOB
-                            category: 'Birthday',
-                            categoryColor: '#ec4899', // Pink
+                            type: 'Birthday', // MODIFIED
+                            iconColor: '#ec4899', // MODIFIED
+                            label: '', // NEW
+                            showLabel: true, // NEW
                             iconName: 'cake',
                             group: 'Personal',
                             milestones: [
@@ -951,8 +994,10 @@
                             title: 'Trip to Japan',
                             notes: 'Cherry blossom season!',
                             date: '2026-04-10T09:00', // Far future
-                            category: 'Travel',
-                            categoryColor: '#14b8a6', // Teal
+                            type: 'Travel', // MODIFIED
+                            iconColor: '#14b8a6', // MODIFIED
+                            label: 'Vacation', // NEW
+                            showLabel: true, // NEW
                             iconName: 'globe-2',
                             group: 'Travel',
                             milestones: [
@@ -969,8 +1014,10 @@
                             title: 'Work Anniversary',
                             notes: 'Started at Tymo Inc.',
                             date: '2022-03-01', // Anniversary date
-                            category: 'Anniversary',
-                            categoryColor: '#6366f1', // Indigo
+                            type: 'Anniversary', // MODIFIED
+                            iconColor: '#6366f1', // MODIFIED
+                            label: '', // NEW
+                            showLabel: true, // NEW
                             iconName: 'award',
                             group: 'Work',
                             milestones: [
@@ -987,8 +1034,10 @@
                             title: 'Grandma',
                             notes: 'Always in our hearts.',
                             date: '1940-07-10', // DOB
-                            category: 'Birthday',
-                            categoryColor: '#a855f7', // Purple
+                            type: 'Birthday', // MODIFIED
+                            iconColor: '#a855f7', // MODIFIED
+                            label: '', // NEW
+                            showLabel: true, // NEW
                             iconName: 'flower-2',
                             group: 'Personal',
                             milestones: [],
@@ -1002,8 +1051,10 @@
                             title: 'Q3 Report',
                             notes: 'Submitted to management.',
                             date: '2025-09-30T17:00', // In the past
-                            category: 'Work',
-                            categoryColor: '#84cc16', // Lime
+                            type: 'Work', // MODIFIED
+                            iconColor: '#84cc16', // MODIFIED
+                            label: 'Completed', // NEW
+                            showLabel: true, // NEW
                             iconName: 'check-square',
                             group: 'Work',
                             milestones: [
@@ -1021,8 +1072,10 @@
                             title: 'Run a 10k',
                             notes: 'Training for the city marathon.',
                             date: addMonths(today, 3), // ~3 months from now
-                            category: 'Health',
-                            categoryColor: '#22c55e', // Green
+                            type: 'Health', // MODIFIED
+                            iconColor: '#22c55e', // MODIFIED
+                            label: '', // NEW
+                            showLabel: true, // NEW
                             iconName: 'activity',
                             group: 'Personal',
                             milestones: [
@@ -1040,8 +1093,10 @@
                             title: 'Complete JS Course',
                             notes: 'Finish the advanced JavaScript module.',
                             date: addDays(today, 45), // 1.5 months
-                            category: 'Learn',
-                            categoryColor: '#3b82f6', // Blue
+                            type: 'Learn', // MODIFIED
+                            iconColor: '#3b82f6', // MODIFIED
+                            label: '', // NEW
+                            showLabel: true, // NEW
                             iconName: 'graduation-cap',
                             group: 'Personal',
                             milestones: [
@@ -1059,8 +1114,10 @@
                             title: 'House Deposit Goal',
                             notes: 'Target $50,000.',
                             date: addYears(today, 3), // 3 years from now
-                            category: 'Finance',
-                            categoryColor: '#10b981', // Emerald
+                            type: 'Finance', // MODIFIED
+                            iconColor: '#10b981', // MODIFIED
+                            label: 'Long-Term', // NEW
+                            showLabel: true, // NEW
                             iconName: 'piggy-bank',
                             group: 'Finance',
                             milestones: [
@@ -1079,8 +1136,10 @@
                             title: 'Finish "Dune"',
                             notes: 'The spice must flow...',
                             date: addDays(today, 10), // 10 days
-                            category: 'Personal',
-                            categoryColor: '#a855f7', // Purple
+                            type: 'Personal', // MODIFIED
+                            iconColor: '#a855f7', // MODIFIED
+                            label: '', // NEW
+                            showLabel: true, // NEW
                             iconName: 'book-open',
                             group: 'Personal',
                             milestones: [],
@@ -1094,8 +1153,10 @@
                             title: 'Camping',
                             notes: 'At Big Bear Lake.',
                             date: addDays(today, 3), // This weekend!
-                            category: 'Travel',
-                            categoryColor: '#14b8a6', // Teal
+                            type: 'Travel', // MODIFIED
+                            iconColor: '#14b8a6', // MODIFIED
+                            label: 'Upcoming', // NEW
+                            showLabel: true, // NEW
                             iconName: 'tent',
                             group: 'Travel',
                             milestones: [
@@ -1112,8 +1173,10 @@
                             title: 'Q4 Session',
                             notes: 'Summary for the board.',
                             date: addDays(today, 20), // ~3 weeks
-                            category: 'Work',
-                            categoryColor: '#f97316', // Orange
+                            type: 'Work', // MODIFIED
+                            iconColor: '#f97316', // MODIFIED
+                            label: 'Important', // NEW
+                            showLabel: true, // NEW
                             iconName: 'presentation',
                             group: 'Projects',
                             milestones: [
@@ -1184,8 +1247,26 @@
                     this.cancelModalBtn.addEventListener('click', () => this.closeModal());
                     this.saveDateBtn.addEventListener('click', () => this.saveDate());
                     this.deleteDateBtn.addEventListener('click', () => this.handleDeleteDate());
-                    this.dateCategory.addEventListener('input', () => this.updateModalForCategory());
-                    this.isRemembrance.addEventListener('change', () => this.updateModalForCategory());
+                    this.dateType.addEventListener('change', (e) => {
+                        if (e.target.value === '') {
+                            // Show custom input if empty
+                            this.dateTypeCustom.classList.remove('hidden');
+                            this.dateTypeCustom.value = '';
+                        } else {
+                            // Hide custom input if a type is selected
+                            this.dateTypeCustom.classList.add('hidden');
+                            this.dateTypeCustom.value = '';
+                        }
+                        this.updateModalForType();
+                    }); // MODIFIED
+                    this.dateTypeCustom.addEventListener('input', () => {
+                        // When typing custom type, clear the select
+                        if (this.dateTypeCustom.value.trim()) {
+                            this.dateType.value = '';
+                        }
+                        this.updateModalForType();
+                    });
+                    this.isRemembrance.addEventListener('change', () => this.updateModalForType()); // MODIFIED
 
                     // Milestones
                     this.addMilestoneBtn.addEventListener('click', () => this.addMilestone());
@@ -1501,10 +1582,25 @@
                             this.dateTitle.value = date.title;
                             this.dateNotes.value = date.notes || '';
                             this.dateTarget.value = date.date ? date.date.split('T')[0] : ''; // UPDATED
-                            this.dateCategory.value = date.category || '';
-                            this.dateCategoryColor.value = date.categoryColor || '#374151';
+                            // MODIFIED: Handle type select or custom
+                            const dateType = date.type || '';
+                            const isCustomType = !['Personal', 'Work', 'Birthday', 'Anniversary', 'Health', 'Finance', 'Learn', 'Travel', 'Home'].includes(dateType);
+                            if (isCustomType && dateType) {
+                                this.dateType.value = '';
+                                this.dateTypeCustom.value = dateType;
+                                this.dateTypeCustom.classList.remove('hidden');
+                            } else {
+                                this.dateType.value = dateType;
+                                this.dateTypeCustom.value = '';
+                                this.dateTypeCustom.classList.add('hidden');
+                            }
+                            this.dateIconColor.value = date.iconColor || '#374151'; // MODIFIED
                             this.dateIconName.value = date.iconName || '';
                             this.dateGroup.value = date.group || '';
+                            // NEW: Populate Label
+                            this.dateLabel.value = date.label || '';
+                            this.dateShowLabel.checked = date.showLabel ?? true;
+
                             this.currentMilestones = JSON.parse(JSON.stringify(date.milestones || []));
                             this.deleteDateBtn.style.display = 'block';
 
@@ -1512,13 +1608,14 @@
                             this.dateOfDeath.value = date.dateOfDeath || '';
                             this.dateShowMilestones.checked = date.showMilestones ?? true;
                             document.getElementById('dateStatus').value = date.status || 'Pending'; // NEW: Populate status
+                            this.dateTimerMode.value = date.timerMode || 'auto'; // NEW: Populate timer mode
                         }
                     } else {
                         this.modalTitle.textContent = 'Add New Date';
                         this.deleteDateBtn.style.display = 'none';
                     }
                     this.renderMilestones();
-                    this.updateModalForCategory();
+                    this.updateModalForType(); // MODIFIED
                     this.dateModal.classList.add('flex');
                     lucide.createIcons();
                 },
@@ -1534,10 +1631,16 @@
                     this.dateTitle.value = '';
                     this.dateNotes.value = '';
                     this.dateTarget.value = '';
-                    this.dateCategory.value = '';
-                    this.dateCategoryColor.value = '#374151';
+                    this.dateType.value = ''; // MODIFIED
+                    this.dateTypeCustom.value = ''; // NEW
+                    this.dateTypeCustom.classList.add('hidden'); // NEW
+                    this.dateIconColor.value = '#374151'; // MODIFIED
                     this.dateIconName.value = '';
                     this.dateGroup.value = '';
+                    // NEW: Reset Label
+                    this.dateLabel.value = '';
+                    this.dateShowLabel.checked = true;
+
                     this.currentMilestones = [];
                     this.milestonesContainer.innerHTML = '';
                     this.newMilestoneInput.value = '';
@@ -1548,11 +1651,14 @@
                     this.dateOfDeath.value = '';
                     document.getElementById('dateStatus').value = 'Pending'; // NEW: Reset status
                     document.getElementById('dateStatusContainer').classList.remove('hidden'); // NEW: Ensure status is visible on reset
+                    this.dateTimerMode.value = 'auto'; // NEW: Reset timer mode
                 },
 
-                updateModalForCategory() {
+                updateModalForType() { // MODIFIED: Renamed function
                     const categoryLabel = document.querySelector('label[for="dateTarget"]');
-                    const categoryLower = this.dateCategory.value.trim().toLowerCase();
+                    // Get type from select or custom input
+                    const typeValue = this.dateType.value.trim() || this.dateTypeCustom.value.trim();
+                    const categoryLower = typeValue.toLowerCase(); // MODIFIED
                     const isBirthday = categoryLower === 'birthday';
                     const isAnniversary = categoryLower === 'anniversary';
                     const isSpecialDate = isBirthday || isAnniversary;
@@ -1617,7 +1723,8 @@
                     }
                     
                     // NEW: Check if this is a special date type
-                    const categoryLower = this.dateCategory.value.trim().toLowerCase();
+                    const typeValue = this.dateType.value.trim() || this.dateTypeCustom.value.trim();
+                    const categoryLower = typeValue.toLowerCase(); // MODIFIED
                     const isBirthday = categoryLower === 'birthday';
                     const isAnniversary = categoryLower === 'anniversary';
                     const isNonCompletable = isBirthday || isAnniversary;
@@ -1629,15 +1736,20 @@
                         title: title,
                         notes: this.dateNotes.value.trim(),
                         date: target,
-                        category: this.dateCategory.value.trim(),
-                        categoryColor: this.dateCategoryColor.value,
+                        type: (this.dateType.value.trim() || this.dateTypeCustom.value.trim()), // MODIFIED: Use select or custom
+                        iconColor: this.dateIconColor.value, // MODIFIED
                         iconName: this.dateIconName.value.trim(),
                         group: this.dateGroup.value.trim() || 'General',
+                        // NEW: Save Label
+                        label: this.dateLabel.value.trim(),
+                        showLabel: this.dateShowLabel.checked,
+
                         milestones: this.currentMilestones,
                         status: isNonCompletable ? 'Pending' : document.getElementById('dateStatus').value, // UPDATED: Save status
                         showMilestones: this.dateShowMilestones.checked,
                         isRemembrance: this.isRemembrance.checked,
                         dateOfDeath: this.isRemembrance.checked ? this.dateOfDeath.value : '',
+                        timerMode: this.dateTimerMode.value || 'auto', // NEW: Save timer mode
                     };
 
                     if (id) {
@@ -2402,7 +2514,7 @@
                     card.dataset.id = dateData.id;
                     
                     let targetDate, formattedDate, timerDateString, nextAge = 0, currentAge = 0, nextAnniversaryNumber = 0, livedForYears = 0, nextDeathAnniversaryNumber = 0;
-                    const categoryLower = dateData.category.trim().toLowerCase();
+                    const categoryLower = dateData.type?.trim().toLowerCase() || ''; // MODIFIED
                     const isRemembrance = dateData.isRemembrance && categoryLower === 'birthday';
                     let isBirthday = categoryLower === 'birthday' && !isRemembrance;
                     let isAnniversary = categoryLower === 'anniversary';
@@ -2452,18 +2564,26 @@
                     const completeClass = isComplete ? 'opacity-60' : '';
                     const completeIconClass = isComplete ? 'text-success' : 'text-muted-light';
 
-                    const categoryBGColor = this.escapeHTML(dateData.categoryColor || '#374151');
-                    const tagBGColor = this.escapeHTML(dateData.categoryColor || 'var(--bg-interactive)');
-                    const categoryTextColor = this.getContrastingTextColor(categoryBGColor);
-                    const iconColor = this.escapeHTML(dateData.categoryColor || 'var(--text-muted)');
+                    const tagBGColor = this.escapeHTML(dateData.iconColor || 'var(--bg-interactive)'); // MODIFIED
+                    const categoryTextColor = this.getContrastingTextColor(tagBGColor); // MODIFIED
+                    const iconColor = this.escapeHTML(dateData.iconColor || 'var(--text-muted)'); // MODIFIED
                     
                     let categoryDisplay, categoryTitle;
+                    
+                    // NEW: Label logic
+                    const label = this.escapeHTML(dateData.label);
+                    const showLabel = dateData.showLabel ?? true; // Default to true
+                    const type = this.escapeHTML(dateData.type) || 'Misc';
+
                     if (isRemembrance) {
                         categoryDisplay = "Remembrance";
-                        categoryTitle = "Category: Remembrance";
+                        categoryTitle = "Type: Remembrance";
+                    } else if (showLabel && label) {
+                        categoryDisplay = label;
+                        categoryTitle = `Label: ${label}`;
                     } else {
-                        categoryDisplay = this.escapeHTML(dateData.category) || 'Misc';
-                        categoryTitle = `Category: ${this.escapeHTML(dateData.category) || 'Misc'}`;
+                        categoryDisplay = type;
+                        categoryTitle = `Type: ${type}`;
                     }
 
                     let lucideIconName = this.escapeHTML(dateData.iconName?.trim().toLowerCase());
@@ -2472,7 +2592,7 @@
                         else if (isBirthday) lucideIconName = 'cake';
                         else if (isAnniversary) lucideIconName = 'gift';
                         else {
-                            const categoryName = dateData.category.trim().toLowerCase();
+                            const categoryName = dateData.type?.trim().toLowerCase() || ''; // MODIFIED
                             const categoryIconMap = { 'work': 'briefcase', 'personal': 'user', 'health': 'heart', 'learn': 'graduation-cap', 'finance': 'dollar-sign', 'travel': 'globe-2', 'home': 'home' };
                             lucideIconName = categoryIconMap[categoryName] || 'flag';
                         }
@@ -2482,9 +2602,13 @@
                     let dateOrSpecialMessageHTML = '';
                     if (isBirthday) {
                         dateOrSpecialMessageHTML = `
-                            <div class="flex items-center gap-1.5 text-accent-light ${completeClass}">
-                                <i data-lucide="cake" class="w-3.5 h-3.5 shrink-0" stroke="currentColor"></i>
-                                <span class="text-xs font-medium" data-birthday-message></span>
+                            <div class="flex flex-col gap-0.5"> <!-- FIX 1: Wrapper for alignment -->
+                                <div class="flex items-center gap-1.5 text-accent-light ${completeClass}">
+                                    <i data-lucide="cake" class="w-3.5 h-3.5 shrink-0" stroke="currentColor"></i>
+                                    <span class="text-xs font-medium" data-birthday-message></span>
+                                </div>
+                                <!-- FIX 1: Invisible line to match Remembrance card's 2nd line -->
+                                <span class="text-xs font-medium h-[12px]">&nbsp;</span>
                             </div>
                         `;
                     } else if (isAnniversary) {
@@ -2496,14 +2620,16 @@
                         `;
                     } else if (isRemembrance) {
                         dateOrSpecialMessageHTML = `
-                            <div class="flex items-center gap-1.5 text-muted ${completeClass}">
-                                <i data-lucide="user" class="w-3.5 h-3.5 shrink-0" stroke="currentColor"></i>
-                                <span class="text-xs font-medium">Lived for ${livedForYears} years</span>
-                            </div>
-                            <div class="flex items-center gap-1.5 text-accent-light ${completeClass}">
-                                <i data-lucide="flower-2" class="w-3.5 h-3.5 shrink-0" stroke="currentColor"></i>
-                                <span class="text-xs font-medium" data-remembrance-anniversary-message></span>
-                            </div>
+                            <div class="flex flex-col gap-0.5"> <!-- NEW: Wrapper to group messages -->
+                                <div class="flex items-center gap-1.5 text-muted ${completeClass}">
+                                    <i data-lucide="user" class="w-3.5 h-3.5 shrink-0" stroke="currentColor"></i>
+                                    <span class="text-xs font-medium">Lived for ${livedForYears} years</span>
+                                </div>
+                                <div class="flex items-center gap-1.5 text-accent-light ${completeClass}">
+                                    <i data-lucide="flower-2" class="w-3.5 h-3.5 shrink-0" stroke="currentColor"></i>
+                                    <span class="text-xs font-medium" data-remembrance-anniversary-message></span>
+                                </div>
+                            </div> <!-- END: Wrapper -->
                         `;
                     } else {
                         dateOrSpecialMessageHTML = `
@@ -2540,69 +2666,76 @@
                         ${dateOrSpecialMessageHTML}
                         
                         <!-- UX POLISH: Removed placeholder div that caused wasted space -->
-                        ${showMilestones ? milestoneSectionHTML : ''}
+                        <!-- FIX: Modified placeholder to be structurally identical to the real milestone block for alignment -->
+                        ${showMilestones ? milestoneSectionHTML : `
+                            <div class="pt-0.5 ${completeClass}">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs h-[12px]">&nbsp;</span> <!-- Placeholder for text line (h-3 / text-xs height) -->
+                                    <span class="text-xs h-[12px]">&nbsp;</span> <!-- Placeholder for 1 / 2 -->
+                                </div>
+                                <div class="flex items-center gap-1 mt-1.5 h-1.5">
+                                    <div class="w-1.5 h-1.5 rounded-full opacity-0"></div> <!-- Placeholder for dots -->
+                                </div> <!-- FIX: Removed stray 'V' from here -->
+                            </div>
+                        `}
 
-                        <div class="relative flex justify-between gap-0.5 text-center ${completeClass}" data-date="${timerDateString}" data-id="${dateData.id}" data-time-container 
+                        <!-- FIX: Consistent timer container structure for alignment -->
+                        <div class="relative flex gap-0.5 text-center ${completeClass} min-h-[3.5rem]" data-date="${timerDateString}" data-id="${dateData.id}" data-time-container 
                              data-is-birthday="${isBirthday}" 
                              data-is-anniversary="${isAnniversary}" 
                              data-is-remembrance="${isRemembrance}" 
                              data-next-age="${nextAge}" 
                              data-next-anniversary-number="${nextAnniversaryNumber}"
-                             data-next-death-anniversary-number="${nextDeathAnniversaryNumber}">
-                            <!-- UX POLISH: Widened timer segments for readability -->
-                            <div class="bg-interactive py-1 px-1 rounded w-auto min-w-[2.25rem]" data-timer-segment>
+                             data-next-death-anniversary-number="${nextDeathAnniversaryNumber}"
+                             data-timer-mode="${dateData.timerMode || 'auto'}">
+                            <!-- Each segment is flex-1 to distribute width equally -->
+                            <div class="bg-interactive py-1 px-1 rounded flex-1 flex flex-col justify-center" data-timer-segment>
                                 <span class="block text-sm font-bold text-primary" data-days>0</span>
                                 <span class="block text-[0.6rem] font-medium text-muted uppercase">Days</span>
                             </div>
-                            <div class="bg-interactive py-1 px-1 rounded w-9" data-timer-segment>
-                                <span class="block text-sm font-bold text-primary" data-hours>0</span>
+                            <div class="bg-interactive py-1 px-1 rounded flex-1 flex flex-col justify-center" data-timer-segment>
+                                <span class="block text-sm font-bold text-primary" data-hours>00</span>
                                 <span class="block text-[0.6rem] font-medium text-muted uppercase">Hrs</span>
                             </div>
-                            <div class="bg-interactive py-1 px-1 rounded w-9" data-timer-segment>
-                                <span class="block text-sm font-bold text-primary" data-minutes>0</span>
+                            <div class="bg-interactive py-1 px-1 rounded flex-1 flex flex-col justify-center" data-timer-segment>
+                                <span class="block text-sm font-bold text-primary" data-minutes>00</span>
                                 <span class="block text-[0.6rem] font-medium text-muted uppercase">Min</span>
                             </div>
-                            <div class="bg-interactive py-1 px-1 rounded w-9" data-timer-segment>
-                                <span class="block text-sm font-bold text-primary" data-seconds>0</span>
+                            <div class="bg-interactive py-1 px-1 rounded flex-1 flex flex-col justify-center" data-timer-segment>
+                                <span class="block text-sm font-bold text-primary" data-seconds>00</span>
                                 <span class="block text-[0.6rem] font-medium text-muted uppercase">Sec</span>
                             </div>
                             
                             <span class="absolute inset-0 flex items-center justify-center text-xs font-medium text-accent-light p-1 hidden" data-milestone-alert></span>
                         </div>
                         
+                        <!-- REMOVED: Unused alert container
                         <div class="text-center" data-non-birthday-alert-container></div>
+                        -->
 
                         <!-- NEW FOOTER: Single efficient row -->
-                        <div class="pt-2 mt-1 border-t border-color flex items-center justify-between min-w-0 gap-2">
-                            <!-- Left Side: Category Label -->
-                            <div class="min-w-0"> 
-                                <span class="inline-flex items-center rounded-full px-2 py-0.5 text-[0.65rem] font-medium ${completeClass} truncate" 
-                                      style="background-color: ${tagBGColor}; color: ${categoryTextColor};" 
-                                      title="${categoryTitle}">
-                                    ${categoryDisplay}
-                                </span>
-                            </div>
+                        <!-- MODIFIED: Conditionally center footer if it's a special date -->
+                        <!-- FIX: Removed mt-1, which was redundant with the parent's space-y-2 -->
+                        <!-- FIX 2: Removed conditional justify-center. Will default to justify-between, which pins single item to the left. -->
+                        <div class="pt-2 border-t border-color flex items-center justify-between min-w-0 gap-2">
+                            <!-- Label (centered or on left) -->
+                            <!-- REMOVED: Unnecessary min-w-0 wrapper -->
+                            <span class="inline-flex items-center rounded-md px-1.5 py-0.5 text-[0.65rem] font-medium ${completeClass} truncate" 
+                                  style="background-color: ${tagBGColor}; color: ${categoryTextColor};" 
+                                  title="${categoryTitle}">
+                                ${categoryDisplay}
+                            </span>
                             
-                            <!-- Right Side: Status + Actions -->
-                            <div class="flex items-center gap-1.5 shrink-0"> <!-- MODIFIED: Increased gap -->
-                                
-                                <!-- Action Buttons: MODIFIED: Always visible now -->
-                                <div class="flex items-center gap-0.5"> <!-- REMOVED visibility classes -->
-                                    ${!isSpecialDate ? `
-                                        <!-- UX POLISH: Increased button padding and icon size for better tappability -->
-                                        <button class="complete-card p-1.5 text-muted-light hover-text-success rounded ${completeIconClass}" title="Toggle Complete">
-                                            <i data-lucide="check" class="w-4 h-4"></i>
-                                        </button>
-                                    ` : ''}
-                                    <!-- REMOVED Edit and Delete buttons -->
+                            ${!isSpecialDate ? `
+                            <!-- Right Side: Status + Actions (Only show if not a special date) -->
+                            <div class="flex items-center gap-1.5 shrink-0"> 
+                                <div class="flex items-center gap-0.5"> 
+                                    <button class="complete-card p-1.5 text-muted-light hover-text-success rounded ${completeIconClass}" title="Toggle Complete">
+                                        <i data-lucide="check" class="w-4 h-4"></i>
+                                    </button>
                                 </div>
-
-                                <!-- Status Circle (Visible when not a special date) -->
-                                <!-- UX POLISH: Removed redundant status circle -->
-                                ${!isSpecialDate ? `
-                                    <!-- <div class="shrink-0 rounded-full ${isComplete ? 'bg-green-500' : 'border border-color-strong'} w-2.5 h-2.5" title="Status: ${dateData.status}"></div> -->
-                                ` : ''}
                             </div>
+                            ` : ''}
                         </div>
                     `;
                     return card;
@@ -2643,7 +2776,7 @@
                     const anniversaryMessageEl = card.querySelector('[data-anniversary-message]');
                     const remembranceAnniversaryMessageEl = card.querySelector('[data-remembrance-anniversary-message]');
                     const alertEl = el.querySelector('[data-milestone-alert]');
-                    const nonBirthdayAlertContainer = card.querySelector('[data-non-birthday-alert-container]');
+                    // const nonBirthdayAlertContainer = card.querySelector('[data-non-birthday-alert-container]'); // REMOVED
                     const timeContainer = el;
                     const timerSegments = el.querySelectorAll('[data-timer-segment]');
 
@@ -2658,30 +2791,39 @@
                         if (isBirthday) {
                             pastMessage = isToday ? `Happy ${this.getOrdinal(nextAge)} Birthday!` : `Birthday passed (Turned ${nextAge})`;
                             if (timeContainer) {
-                                timeContainer.innerHTML = `<div class="text-xs text-center font-bold text-accent-light py-1 px-1 w-full">${pastMessage}</div>`;
+                                timeContainer.innerHTML = `<div class="flex gap-0.5 text-center min-h-[3.5rem]"><div class="bg-interactive py-1 px-1 rounded flex-1 flex flex-col justify-center"><span class="block text-xs font-bold text-accent-light">${pastMessage}</span><span class="block text-[0.6rem] font-medium text-muted uppercase">&nbsp;</span></div><div class="bg-interactive py-1 px-1 rounded flex-1 opacity-0"></div><div class="bg-interactive py-1 px-1 rounded flex-1 opacity-0"></div><div class="bg-interactive py-1 px-1 rounded flex-1 opacity-0"></div></div>`;
                             }
                         } else if (isAnniversary) {
                             pastMessage = isToday ? `Happy ${this.getOrdinal(nextAnniversaryNumber)} Anniversary!` : `Anniversary passed (${this.getOrdinal(nextAnniversaryNumber)})`;
                             if (timeContainer) {
-                                timeContainer.innerHTML = `<div class="text-xs text-center font-bold text-accent-light py-1 px-1 w-full">${pastMessage}</div>`;
+                                timeContainer.innerHTML = `<div class="flex gap-0.5 text-center min-h-[3.5rem]"><div class="bg-interactive py-1 px-1 rounded flex-1 flex flex-col justify-center"><span class="block text-xs font-bold text-accent-light">${pastMessage}</span><span class="block text-[0.6rem] font-medium text-muted uppercase">&nbsp;</span></div><div class="bg-interactive py-1 px-1 rounded flex-1 opacity-0"></div><div class="bg-interactive py-1 px-1 rounded flex-1 opacity-0"></div><div class="bg-interactive py-1 px-1 rounded flex-1 opacity-0"></div></div>`;
                             }
                         } else if (isRemembrance) {
                             pastMessage = isToday ? `${this.getOrdinal(nextDeathAnniversaryNumber)} Anniversary` : `${this.getOrdinal(nextDeathAnniversaryNumber)} Anniversary passed`;
                             if (timeContainer) {
-                                timeContainer.innerHTML = `<div class="text-xs text-center font-bold text-accent-light py-1 px-1 w-full">${pastMessage}</div>`;
+                                timeContainer.innerHTML = `<div class="flex gap-0.5 text-center min-h-[3.5rem]"><div class="bg-interactive py-1 px-1 rounded flex-1 flex flex-col justify-center"><span class="block text-xs font-bold text-accent-light">${pastMessage}</span><span class="block text-[0.6rem] font-medium text-muted uppercase">&nbsp;</span></div><div class="bg-interactive py-1 px-1 rounded flex-1 opacity-0"></div><div class="bg-interactive py-1 px-1 rounded flex-1 opacity-0"></div><div class="bg-interactive py-1 px-1 rounded flex-1 opacity-0"></div></div>`;
                             }
                         } else if (daysAgo === 0) {
                             pastMessage = "Today!";
                             if (timeContainer) {
-                                timeContainer.innerHTML = `<div class="text-xs text-center text-muted py-1 px-1 w-full">${pastMessage}</div>`;
+                                timeContainer.className = 'relative flex justify-center items-center text-center min-h-[3.5rem]';
+                                // --- MODIFIED: "Today!" is now a bright accent box ---
+                                timeContainer.innerHTML = `
+                                    <div class="bg-accent py-2 px-3 rounded flex flex-col justify-center shadow-lg">
+                                        <span class="block text-lg font-bold text-on-accent leading-none">Today!</span>
+                                        <span class="block text-[0.6rem] font-medium text-on-accent uppercase mt-1 opacity-90">EVENT DAY</span>
+                                    </div>
+                                `;
                             }
                         } else { // This covers 1 day ago and "X days ago"
-                            const daysAgoText = daysAgo === 1 ? 'Day Ago' : 'Days Ago';
+                            const daysAgoText = daysAgo === 1 ? 'DAY AGO' : 'DAYS AGO';
                             if (timeContainer) {
+                                timeContainer.className = 'relative flex justify-center items-center text-center min-h-[3.5rem]';
+                                // --- MODIFIED: "Days Ago" is now a "sunken" box ---
                                 timeContainer.innerHTML = `
-                                    <div class="bg-interactive py-1 px-1 rounded w-full text-center">
-                                        <span class="block text-xl font-bold text-primary">${daysAgo}</span>
-                                        <span class="block text-[0.6rem] font-medium text-muted uppercase">${daysAgoText}</span>
+                                    <div class="bg-interactive-deep py-2 px-3 rounded flex flex-col justify-center border border-color-strong opacity-90">
+                                        <span class="block text-2xl font-bold text-primary leading-none">${daysAgo}</span>
+                                        <span class="block text-[0.6rem] font-medium text-muted uppercase mt-1">${daysAgoText}</span>
                                     </div>
                                 `;
                             }
@@ -2690,7 +2832,7 @@
                         if (birthdayMessageEl) birthdayMessageEl.innerHTML = '';
                         if (anniversaryMessageEl) anniversaryMessageEl.innerHTML = '';
                         if (remembranceAnniversaryMessageEl) remembranceAnniversaryMessageEl.innerHTML = '';
-                        if (nonBirthdayAlertContainer) nonBirthdayAlertContainer.innerHTML = '';
+                        // if (nonBirthdayAlertContainer) nonBirthdayAlertContainer.innerHTML = ''; // REMOVED
                         return;
                     }
 
@@ -2699,31 +2841,155 @@
                     const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
                     const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-                    if (daysEl) daysEl.textContent = days;
-                    if (hoursEl) hoursEl.textContent = String(hours).padStart(2, '0');
-                    if (minutesEl) minutesEl.textContent = String(minutes).padStart(2, '0');
-                    if (secondsEl) secondsEl.textContent = String(seconds).padStart(2, '0');
+                    const timerMode = el.dataset.timerMode || 'auto';
+                    const hoursInMs = 24 * 60 * 60 * 1000;
+                    
+                    // --- MODIFIED: Logic for timer display modes ---
+                    const showFullTimer = timerMode === 'full';
+                    // Show days only if mode is 'days', OR if mode is 'auto' and distance is > 24h
+                    const showDaysOnly = timerMode === 'days' || (timerMode === 'auto' && distance > hoursInMs);
+                    // Show hrs/mins/secs only if not full, not days, AND distance is <= 24h
+                    // It only shows if timerMode is 'auto' and it's under 24h
+                    const showHoursMinsSecs = !showFullTimer && !showDaysOnly && (timerMode === 'auto' && distance <= hoursInMs);
+                    // --- END MODIFICATION ---
+
+                    // Check current display mode
+                    const currentDaysOnlyEl = timeContainer?.hasAttribute('data-days-only');
+                    const currentHoursMinsSecsEl = timeContainer?.hasAttribute('data-hours-mins-secs');
+
+                    // If showing days only (like "days ago" format)
+                    if (showDaysOnly && !isBirthday && !isAnniversary && !isRemembrance) {
+                        // --- MODIFIED: Render Years/Months/Days in boxes, per screenshot ---
+                        
+                        // Helper function to create the box HTML
+                        const createYMDBox = (value, label) => {
+                           // This HTML structure matches the default timer segments
+                           return `<div class="bg-interactive py-1 px-1 rounded flex-1 flex flex-col justify-center" data-timer-segment>
+                                <span class="block text-lg font-bold text-primary">${value}</span>
+                                <span class="block text-[0.6rem] font-medium text-muted uppercase">${label}</span>
+                           </div>`;
+                        };
+                        
+                        const { years, months, days: preciseDays } = this.getYearsMonthsDays(days);
+                        
+                        let yearsHtml = createYMDBox(years, 'Years');
+                        let monthsHtml = createYMDBox(months, 'Months');
+                        let daysHtml = createYMDBox(preciseDays, 'Days');
+
+                        if (days <= 0) {
+                            // Only show "0 Days"
+                            daysHtml = createYMDBox(0, 'Days');
+                            yearsHtml = `<div class="hidden">${yearsHtml}</div>`; // Hide but keep in DOM for structure
+                            monthsHtml = `<div class="hidden">${monthsHtml}</div>`;
+                        } else if (years === 0 && months > 0) {
+                            // Show "Months" and "Days"
+                            yearsHtml = `<div class="hidden">${yearsHtml}</div>`;
+                        } else if (years === 0 && months === 0) {
+                            // Show "Days" only
+                            yearsHtml = `<div class="hidden">${yearsHtml}</div>`;
+                            monthsHtml = `<div class="hidden">${monthsHtml}</div>`;
+                        }
+                        // If years > 0, all three will be shown by default
+                        
+                        const partsHtml = yearsHtml + monthsHtml + daysHtml;
+
+                        // Always update structure or values, using the same layout as the default timer
+                        if (timeContainer) {
+                            timeContainer.className = 'relative flex gap-0.5 text-center min-h-[3.5rem]';
+                            timeContainer.setAttribute('data-days-only', '');
+                            timeContainer.removeAttribute('data-hours-mins-secs');
+                            timeContainer.innerHTML = partsHtml;
+                        }
+                        // --- END MODIFICATION ---
+
+                    } else if (showHoursMinsSecs && !isBirthday && !isAnniversary && !isRemembrance) {
+                        // Show hours, mins, secs only (no days)
+                        // Only replace if structure doesn't exist or mode changed
+                        if (!currentHoursMinsSecsEl || currentDaysOnlyEl) {
+                            if (timeContainer) {
+                                timeContainer.className = 'relative flex gap-0.5 text-center min-h-[3.5rem]';
+                                timeContainer.setAttribute('data-hours-mins-secs', '');
+                                timeContainer.innerHTML = `
+                                    <div class="bg-interactive py-1 px-1 rounded flex-1 flex flex-col justify-center" data-timer-segment>
+                                        <span class="block text-sm font-bold text-primary" data-hours>${String(hours).padStart(2, '0')}</span>
+                                        <span class="block text-[0.6rem] font-medium text-muted uppercase">Hrs</span>
+                                    </div>
+                                    <div class="bg-interactive py-1 px-1 rounded flex-1 flex flex-col justify-center" data-timer-segment>
+                                        <span class="block text-sm font-bold text-primary" data-minutes>${String(minutes).padStart(2, '0')}</span>
+                                        <span class="block text-[0.6rem] font-medium text-muted uppercase">Min</span>
+                                    </div>
+                                    <div class="bg-interactive py-1 px-1 rounded flex-1 flex flex-col justify-center" data-timer-segment>
+                                        <span class="block text-sm font-bold text-primary" data-seconds>${String(seconds).padStart(2, '0')}</span>
+                                        <span class="block text-[0.6rem] font-medium text-muted uppercase">Sec</span>
+                                    </div>
+                                `;
+                            }
+                        } else {
+                            // Update existing values
+                            const hoursElNew = timeContainer?.querySelector('[data-hours]');
+                            const minutesElNew = timeContainer?.querySelector('[data-minutes]');
+                            const secondsElNew = timeContainer?.querySelector('[data-seconds]');
+                            if (hoursElNew) hoursElNew.textContent = String(hours).padStart(2, '0');
+                            if (minutesElNew) minutesElNew.textContent = String(minutes).padStart(2, '0');
+                            if (secondsElNew) secondsElNew.textContent = String(seconds).padStart(2, '0');
+                        }
+                    } else {
+                        // Show full timer (days, hours, mins, secs) - default for birthdays/anniversaries or when timerMode is "full"
+                        // Only replace if structure doesn't exist or mode changed
+                        if (currentDaysOnlyEl || currentHoursMinsSecsEl || !daysEl) {
+                            // Restore full timer structure
+                            if (timeContainer) {
+                                timeContainer.className = 'relative flex gap-0.5 text-center min-h-[3.5rem]';
+                                timeContainer.removeAttribute('data-hours-mins-secs');
+                                timeContainer.removeAttribute('data-days-only');
+                                timeContainer.innerHTML = `
+                                    <div class="bg-interactive py-1 px-1 rounded flex-1 flex flex-col justify-center" data-timer-segment>
+                                        <span class="block text-sm font-bold text-primary" data-days>${days}</span>
+                                        <span class="block text-[0.6rem] font-medium text-muted uppercase">Days</span>
+                                    </div>
+                                    <div class="bg-interactive py-1 px-1 rounded flex-1 flex flex-col justify-center" data-timer-segment>
+                                        <span class="block text-sm font-bold text-primary" data-hours>${String(hours).padStart(2, '0')}</span>
+                                        <span class="block text-[0.6rem] font-medium text-muted uppercase">Hrs</span>
+                                    </div>
+                                    <div class="bg-interactive py-1 px-1 rounded flex-1 flex flex-col justify-center" data-timer-segment>
+                                        <span class="block text-sm font-bold text-primary" data-minutes>${String(minutes).padStart(2, '0')}</span>
+                                        <span class="block text-[0.6rem] font-medium text-muted uppercase">Min</span>
+                                    </div>
+                                    <div class="bg-interactive py-1 px-1 rounded flex-1 flex flex-col justify-center" data-timer-segment>
+                                        <span class="block text-sm font-bold text-primary" data-seconds>${String(seconds).padStart(2, '0')}</span>
+                                        <span class="block text-[0.6rem] font-medium text-muted uppercase">Sec</span>
+                                    </div>
+                                `;
+                            }
+                        } else {
+                            // Update existing values
+                            if (daysEl) daysEl.textContent = days;
+                            if (hoursEl) hoursEl.textContent = String(hours).padStart(2, '0');
+                            if (minutesEl) minutesEl.textContent = String(minutes).padStart(2, '0');
+                            if (secondsEl) secondsEl.textContent = String(seconds).padStart(2, '0');
+                        }
+                    }
                     
                     if (isBirthday) {
                         if (birthdayMessageEl) birthdayMessageEl.textContent = `Turning ${nextAge} in`;
                         if (anniversaryMessageEl) anniversaryMessageEl.textContent = '';
                         if (remembranceAnniversaryMessageEl) remembranceAnniversaryMessageEl.textContent = '';
                         if (alertEl) alertEl.classList.add('hidden'); 
-                        if (nonBirthdayAlertContainer) nonBirthdayAlertContainer.innerHTML = ''; 
+                        // if (nonBirthdayAlertContainer) nonBirthdayAlertContainer.innerHTML = ''; // REMOVED
                         if (timerSegments) timerSegments.forEach(seg => seg.style.visibility = 'visible');
                     } else if (isAnniversary) {
                         if (anniversaryMessageEl) anniversaryMessageEl.textContent = `${this.getOrdinal(nextAnniversaryNumber)} Anniversary in`;
                         if (birthdayMessageEl) birthdayMessageEl.textContent = '';
                         if (remembranceAnniversaryMessageEl) remembranceAnniversaryMessageEl.textContent = '';
                         if (alertEl) alertEl.classList.add('hidden'); 
-                        if (nonBirthdayAlertContainer) nonBirthdayAlertContainer.innerHTML = ''; 
+                        // if (nonBirthdayAlertContainer) nonBirthdayAlertContainer.innerHTML = ''; // REMOVED
                         if (timerSegments) timerSegments.forEach(seg => seg.style.visibility = 'visible');
                     } else if (isRemembrance) {
                         if (remembranceAnniversaryMessageEl) remembranceAnniversaryMessageEl.textContent = `${this.getOrdinal(nextDeathAnniversaryNumber)} Anniversary in`;
                         if (birthdayMessageEl) birthdayMessageEl.textContent = '';
                         if (anniversaryMessageEl) anniversaryMessageEl.textContent = '';
                         if (alertEl) alertEl.classList.add('hidden'); 
-                        if (nonBirthdayAlertContainer) nonBirthdayAlertContainer.innerHTML = ''; 
+                        // if (nonBirthdayAlertContainer) nonBirthdayAlertContainer.innerHTML = ''; // REMOVED
                         if (timerSegments) timerSegments.forEach(seg => seg.style.visibility = 'visible');
                     } else {
                         if (birthdayMessageEl) birthdayMessageEl.textContent = '';
@@ -2734,9 +3000,11 @@
                             alertEl.classList.add('hidden'); 
                         }
                         if (timerSegments) timerSegments.forEach(seg => seg.style.visibility = 'visible');
+                        /* REMOVED
                         if (nonBirthdayAlertContainer) {
                             nonBirthdayAlertContainer.innerHTML = '';
                         }
+                        */
                     }
                 },
                 
@@ -2747,6 +3015,34 @@
                     return n + (s[(v - 20) % 10] || s[v] || s[0]);
                 },
 
+                // NEW: Helper function to break down days
+                getYearsMonthsDays(totalDays) {
+                    if (totalDays <= 0) {
+                        return { years: 0, months: 0, days: 0 };
+                    }
+                    
+                    // Average days, accounting for leap years
+                    const avgDaysInYear = 365.2425;
+                    const avgDaysInMonth = 30.436875; // avgDaysInYear / 12
+
+                    let remainingDays = totalDays;
+
+                    const years = Math.floor(remainingDays / avgDaysInYear);
+                    remainingDays -= years * avgDaysInYear;
+
+                    const months = Math.floor(remainingDays / avgDaysInMonth);
+                    remainingDays -= months * avgDaysInMonth;
+
+                    const days = Math.round(remainingDays); // Round the final days
+                    
+                    if (days >= 30) {
+                         // This is a rough approximation, handle rounding carry-over
+                         return { years: years, months: months + 1, days: 0 };
+                    }
+
+                    return { years, months, days };
+                },
+
                 getMilestoneAlert(distance, days) {
                     // ... (This function is no longer used, but kept for posterity)
                     return '';
@@ -2754,11 +3050,32 @@
 
                 updateDatalists() {
                     const dates = this.getDates(); // UPDATED
-                    const categories = [...new Set(dates.map(g => g.category).filter(Boolean))];
+                    const types = [...new Set(dates.map(g => g.type).filter(Boolean))]; // MODIFIED
                     const groups = [...new Set(dates.map(g => g.group).filter(Boolean))];
+                    const labels = [...new Set(dates.map(g => g.label).filter(Boolean))]; // NEW
 
-                    this.categorySuggestions.innerHTML = categories.map(c => `<option value="${this.escapeHTML(c)}"></option>`).join('');
+                    // MODIFIED: Add custom types to select dropdown
+                    const standardTypes = ['Personal', 'Work', 'Birthday', 'Anniversary', 'Health', 'Finance', 'Learn', 'Travel', 'Home'];
+                    const customTypes = types.filter(t => !standardTypes.includes(t));
+                    const typeSelect = this.dateType;
+                    
+                    // Remove existing custom options (keep standard ones)
+                    Array.from(typeSelect.options).forEach(opt => {
+                        if (opt.value && !standardTypes.includes(opt.value) && opt.value !== '') {
+                            opt.remove();
+                        }
+                    });
+                    
+                    // Add custom types as options
+                    customTypes.forEach(type => {
+                        const option = document.createElement('option');
+                        option.value = type;
+                        option.textContent = type;
+                        typeSelect.appendChild(option);
+                    });
+
                     this.groupSuggestions.innerHTML = groups.map(g => `<option value="${this.escapeHTML(g)}"></option>`).join('');
+                    this.labelSuggestions.innerHTML = labels.map(l => `<option value="${this.escapeHTML(l)}"></option>`).join(''); // NEW
                 },
                 
                 escapeHTML(str) {
