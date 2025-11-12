@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark"> <!-- Default theme -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tymo</title>
+    <!-- Local dependencies -->
+    <script src="lib/tailwindcss.js"></script>
+    <link href="fonts/inter.css" rel="stylesheet">
+    <script src="lib/sortable.min.js" defer></script>
+    <script src="lib/popper.min.js" defer></script>
+    <script src="lib/lucide.min.js" defer></script>
+    <!-- Local styles -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="antialiased body-bg text-color">
+
+    <div id="app" class="min-h-screen p-4 sm:p-6 lg:p-8">
+        <!-- Header -->
+        <header class="mb-6 flex items-center justify-between">
+            <!-- UX POLISH: Reduced title size and made it responsive -->
+            <h1 class="text-4xl sm:text-5xl font-bold text-primary">tymo</h1>
+            
+            <div id="themeSwitcher" class="flex items-center gap-1 bg-interactive-deep p-1 rounded-lg">
+                <button class="theme-btn p-1 rounded-md" data-theme="dark" title="Dark Theme">
+                    <i data-lucide="moon" width="20" height="20"></i>
+                </button>
+                <button class="theme-btn p-1 rounded-md" data-theme="light" title="Light Theme">
+                    <i data-lucide="sun" width="20" height="20"></i>
+                </button>
+                <!-- REMOVED: Forest Theme Button -->
+                <!-- REMOVED: Slate Theme Button -->
+                <!-- REMOVED: Cyberpunk Theme Button -->
+                <!-- NEW: Dusk Theme Button -->
+                <button class="theme-btn p-1 rounded-md" data-theme="dusk" title="Dusk Theme">
+                    <i data-lucide="sunset" width="20" height="20"></i>
+                </button>
+                <!-- NEW: Charcoal Theme Button -->
+                <button class="theme-btn p-1 rounded-md" data-theme="charcoal" title="Charcoal Theme">
+                    <i data-lucide="layers" width="20" height="20"></i>
+                </button>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <!-- UX POLISH: Made button icon-only on small screens, added text on sm+ -->
+                <button id="addDateBtn" class="btn btn-primary font-medium py-2 px-2.5 sm:px-4 rounded-lg text-sm flex items-center gap-1.5">
+                    <i data-lucide="plus" class="w-5 h-5"></i>
+                    <span class="hidden sm:inline">Add Date</span>
+                </button>
+                
+                <!-- NEW: Profile Switcher -->
+                <div id="profileContainer" class="relative">
+                    <button id="profileBtn" class="btn btn-secondary font-medium py-2 px-4 rounded-lg text-sm flex items-center gap-1.5 w-full">
+                        <i data-lucide="user" class="w-5 h-5"></i>
+                        <span id="currentProfileName" class="truncate max-w-[100px]">Profile</span>
+                        <i data-lucide="chevrons-up-down" class="w-4 h-4 text-muted-light"></i>
+                    </button>
+                    <!-- Profile Popover -->
+                    <div id="profilePopover" class="popover modal-bg border-color">
+                        <div class="p-2 border-b border-color">
+                            <span class="text-xs font-medium text-muted">PROFILES</span>
+                        </div>
+                        <div id="profileList" class="py-1 max-h-48 overflow-y-auto">
+                            <!-- Profile items injected by JS -->
+                        </div>
+                        <div class="p-2 border-t border-color space-y-2">
+                            <input type="text" id="newProfileName" class="input-bg w-full border border-color-strong rounded-lg px-3 py-2 text-sm focus:ring-2 outline-none" placeholder="Create new profile...">
+                            <button id="addProfileBtn" class="btn btn-primary w-full text-sm py-2">
+                                Add Profile
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- END: Profile Switcher -->
+
+                <button id="settingsBtn" class="btn btn-secondary font-medium p-2 rounded-lg text-sm">
+                    <i data-lucide="settings" class="w-5 h-5"></i>
+                </button>
+                <button id="helpBtn" class="btn btn-secondary font-medium p-2 rounded-lg text-sm" title="Show Help">
+                    <i data-lucide="help-circle" class="w-5 h-5"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Countdown Container -->
+        <div id="countdownContainer" class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-3">
+            <!-- Widgets and groups will be dynamically inserted here -->
+        </div>
+    </div>
+
+    <!-- Add/Edit Date Modal -->
+    <div id="dateModal" class="modal fixed inset-0 z-50 items-center justify-center bg-black bg-opacity-75 p-4">
+        <div class="modal-bg rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col">
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between p-4 border-b border-color">
+                <h2 id="modalTitle" class="text-lg font-semibold text-primary">Add New Date</h2>
+                <button id="closeModalBtn" class="text-muted hover:text-primary">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="p-6 overflow-y-auto space-y-6">
+                <input type="hidden" id="dateId">
+
+                <!-- Section 1: Essential Info -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Date Title -->
+                    <div>
+                        <label for="dateTitle" class="block text-sm font-medium text-color mb-1.5">Date Title</label>
+                        <input type="text" id="dateTitle" class="input-bg w-full border border-color-strong rounded-lg px-3 py-2.5 text-sm focus:ring-2 outline-none" placeholder="e.g., Launch Project Orion">
+                    </div>
+                    <!-- Target Date -->
+                    <div>
+                        <label for="dateTarget" class="block text-sm font-medium text-color mb-1.5">Target Date</label>
+                        <input type="date" id="dateTarget" class="input-bg w-full border border-color-strong rounded-lg px-3 py-2.5 text-sm focus:ring-2 outline-none">
+                    </div>
+                </div>
+
+                <!-- Section 2: Organization -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Type (formerly Category) - Improved UX with select dropdown -->
+                    <div>
+                        <label for="dateType" class="block text-sm font-medium text-color mb-1.5">Type</label>
+                        <select id="dateType" class="select-bg w-full border border-color-strong rounded-lg px-3 py-2.5 text-sm focus:ring-2 outline-none">
+                            <option value="">Select a type...</option>
+                            <option value="Personal">Personal</option>
+                            <option value="Work">Work</option>
+                            <option value="Birthday">Birthday</option>
+                            <option value="Anniversary">Anniversary</option>
+                            <option value="Health">Health</option>
+                            <option value="Finance">Finance</option>
+                            <option value="Learn">Learn</option>
+                            <option value="Travel">Travel</option>
+                            <option value="Home">Home</option>
+                        </select>
+                        <p class="text-xs text-muted mt-1">Or type a custom type below</p>
+                        <input type="text" id="dateTypeCustom" class="input-bg w-full border border-color-strong rounded-lg px-3 py-2 mt-1 text-sm focus:ring-2 outline-none hidden" placeholder="Custom type...">
+                    </div>
+                    <!-- Group -->
+                    <div>
+                        <label for="dateGroup" class="block text-sm font-medium text-color mb-1.5">Group</label>
+                        <input type="text" id="dateGroup" class="input-bg w-full border border-color-strong rounded-lg px-3 py-2.5 text-sm focus:ring-2 outline-none" placeholder="e.g., Q4 Projects" list="groupSuggestions">
+                        <datalist id="groupSuggestions">
+                            <!-- Dynamically populated -->
+                        </datalist>
+                    </div>
+                    
+                    <!-- NEW: Label -->
+                    <div>
+                        <label for="dateLabel" class="block text-sm font-medium text-color mb-1.5">Label</label>
+                        <input type="text" id="dateLabel" class="input-bg w-full border border-color-strong rounded-lg px-3 py-2.5 text-sm focus:ring-2 outline-none" placeholder="e.g., Urgent, P1" list="labelSuggestions">
+                        <datalist id="labelSuggestions">
+                            <!-- Dynamically populated -->
+                            <option value="Urgent"></option>
+                            <option value="Important"></option>
+                            <option value="P1"></option>
+                        </datalist>
+                    </div>
+
+                    <!-- NEW: Show Label Checkbox -->
+                    <div class="flex items-center pt-5"> <!-- pt-5 to align with label -->
+                         <input id="dateShowLabel" type="checkbox" class="h-4 w-4 rounded border-color-strong bg-interactive text-accent-light focus:ring-accent-light">
+                         <label for="dateShowLabel" class="ml-2 block text-sm font-medium text-color">Show Label on Card</label>
+                    </div>
+
+                    <!-- NEW: Status -->
+                    <div id="dateStatusContainer">
+                        <label for="dateStatus" class="block text-sm font-medium text-color mb-1.5">Status</label>
+                        <select id="dateStatus" class="select-bg w-full border border-color-strong rounded-lg px-3 py-2.5 text-sm focus:ring-2 outline-none">
+                            <option value="Pending">Pending</option>
+                            <option value="Completed">Completed</option>
+                        </select>
+                    </div>
+
+                    <!-- NEW: Timer Mode (only for future dates) -->
+                    <div id="dateTimerModeContainer">
+                        <label for="dateTimerMode" class="block text-sm font-medium text-color mb-1.5">Timer Display</label>
+                        <select id="dateTimerMode" class="select-bg w-full border border-color-strong rounded-lg px-3 py-2.5 text-sm focus:ring-2 outline-none">
+                            <option value="auto">Auto (Days if >24hrs, Hours/Mins/Secs if <24hrs)</option>
+                            <option value="days">Days Only</option>
+                            <option value="full">Full Timer (Days, Hours, Mins, Secs)</option>
+                        </select>
+                        <p class="text-xs text-muted mt-1">Only applies to future dates</p>
+                    </div>
+                </div>
+                
+                <!-- Section 3: Customization -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Icon Name -->
+                    <div>
+                        <label for="dateIconName" class="block text-sm font-medium text-color mb-1.5">Icon Name (from lucide.dev)</label>
+                        <!-- UX POLISH: Updated placeholder text for clarity -->
+                        <input type="text" id="dateIconName" class="input-bg w-full border border-color-strong rounded-lg px-3 py-2.5 text-sm focus:ring-2 outline-none" placeholder="e.g., rocket (or leave blank)" list="iconSuggestions">
+                        <datalist id="iconSuggestions">
+                            <!-- Common icon suggestions (truncated for brevity) -->
+                            <option value="rocket"></option>
+                            <option value="award"></option>
+                            <option value="book-open"></option>
+                            <option value="briefcase"></option>
+                            <option value="calendar"></option>
+                            <option value="cake"></option>
+                            <option value="gift"></option>
+                            <option value="calendar-heart"></option>
+                            <option value="heart"></option>
+                            <option value="home"></option>
+                            <option value="flag"></option>
+                            <option value="graduation-cap"></option>
+                            <option value="dollar-sign"></option>
+                            <option value="globe-2"></option>
+                            <option value="user"></option>
+                            <option value="star"></option>
+                            <option value="target"></option>
+                            <option value="trending-up"></option>
+                        </datalist>
+                    </div>
+                    <!-- Icon & Tag Color (formerly Category Color) -->
+                    <div>
+                        <label for="dateIconColor" class="block text-sm font-medium text-color mb-1.5">Icon & Tag Color</label>
+                        <input type="color" id="dateIconColor" value="#374151"> <!-- Default value -->
+                    </div>
+                </div>
+
+                <!-- Section 4: Details -->
+                <!-- Notes / Description -->
+                <div>
+                    <label for="dateNotes" class="block text-sm font-medium text-color mb-1.5">Notes / Description</label>
+                    <textarea id="dateNotes" rows="3" class="input-bg w-full border border-color-strong rounded-lg px-3 py-2.5 text-sm focus:ring-2 outline-none" placeholder="Add more details about this goal..."></textarea>
+                </div>
+
+                <!-- Section 5: Special Date Options -->
+                <!-- This container is hidden by default, and shown by JS if category is 'Birthday' -->
+                <div id="remembranceCheckboxContainer" class="hidden p-4 bg-interactive rounded-lg border border-color-strong">
+                    <div class="flex items-start">
+                        <input id="isRemembrance" type="checkbox" class="h-4 w-4 rounded border-color-strong bg-interactive text-accent-light focus:ring-accent-light mt-1">
+                        <div class="ml-3">
+                            <label for="isRemembrance" class="block text-sm font-medium text-primary">In Remembrance</label>
+                            <p class="text-xs text-muted mt-0.5">Check this to honor a birthday for someone who has passed.</p>
+                        </div>
+                    </div>
+                    <!-- This container is hidden by default, and shown by JS if 'In Remembrance' is checked -->
+                    <div id="dateOfDeathContainer" class="hidden mt-4">
+                        <label for="dateOfDeath" class="block text-sm font-medium text-color mb-1.5">Date of Passing</label>
+                        <input type="date" id="dateOfDeath" class="input-bg w-full border border-color-strong rounded-lg px-3 py-2.5 text-sm focus:ring-2 outline-none">
+                    </div>
+                </div>
+
+                <!-- Section 6: Milestones (Subtasks) -->
+                <div id="milestoneSection">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="text-sm font-medium text-color">Key Results (Milestones)</h3>
+                        <div class="flex items-center">
+                            <input id="dateShowMilestones" type="checkbox" class="h-4 w-4 rounded border-color-strong bg-interactive text-accent-light focus:ring-accent-light">
+                            <label for="dateShowMilestones" class="ml-2 block text-sm font-medium text-color">Show on Card</label>
+                        </div>
+                    </div>
+                    <div id="milestonesContainer" class="space-y-2">
+                        <!-- Milestones will be dynamically inserted here -->
+                    </div>
+                    <div class="flex items-center gap-2 mt-2">
+                        <input type="text" id="newMilestoneInput" class="input-bg flex-1 border border-color-strong rounded-lg px-3 py-2.5 text-sm focus:ring-2 outline-none" placeholder="Add a new milestone...">
+                        <!-- UX POLISH: Changed icon button to text button for clarity -->
+                        <button id="addMilestoneBtn" type="button" class="btn btn-secondary py-2.5 px-4 rounded-lg text-sm font-medium">
+                            Add
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="flex items-center justify-between p-4 bg-interactive-deep bg-opacity-50 border-t border-color rounded-b-xl">
+                <button id="deleteDateBtn" type="button" class="btn-danger-text font-medium text-sm px-3 py-2 rounded-lg">Delete Date</button>
+                <div>
+                    <button id="cancelModalBtn" type="button" class="btn btn-neutral font-medium rounded-lg text-sm px-5 py-2.5 mr-2">Cancel</button>
+                    <button id="saveDateBtn" type="button" class="btn btn-primary font-medium rounded-lg text-sm px-5 py-2.5">Save Date</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="modal fixed inset-0 z-50 items-center justify-center bg-black bg-opacity-75 p-4">
+        <div class="modal-bg rounded-xl shadow-2xl w-full max-w-md">
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between p-4 border-b border-color">
+                <h2 class="text-lg font-semibold text-primary">Settings</h2>
+                <button id="closeSettingsBtn" class="text-muted hover:text-primary">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <!-- Modal Body -->
+            <div class="p-6 space-y-4">
+                <!-- Column Count Setting -->
+                <div>
+                    <label for="columnCountSelect" class="block text-sm font-medium text-color mb-1.5">Columns on Wide Screen</label>
+                    <select id="columnCountSelect" class="select-bg w-full border border-color-strong rounded-lg px-3 py-2.5 text-sm focus:ring-2 outline-none">
+                        <option value="1">1 Column</option>
+                        <option value="2">2 Columns (Default)</option>
+                        <option value="3">3 Columns</option>
+                        <option value="4">4 Columns</option>
+                    </select>
+                </div>
+                <!-- Data Management -->
+                <p class="text-sm text-muted pt-2">Export *all* your profiles and data as a single backup file, or import a file to restore your entire application.</p>
+                <button id="exportDataBtn" class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2.5 px-4 rounded-lg text-sm flex items-center justify-center gap-2">
+                    <i data-lucide="download" class="w-5 h-5"></i>
+                    Export All Data (.json)
+                </button>
+                <div>
+                    <label for="importFile" class="btn btn-primary w-full font-medium py-2.5 px-4 rounded-lg text-sm flex items-center justify-center gap-2 cursor-pointer">
+                        <i data-lucide="upload" class="w-5 h-5"></i>
+                        Import All Data (.json)
+                    </label>
+                    <input type="file" id="importFile" class="hidden" accept=".json">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Confirmation Modal -->
+    <div id="confirmModal" class="modal fixed inset-0 z-[100] items-center justify-center bg-black bg-opacity-75 p-4">
+        <div class="modal-bg rounded-xl shadow-2xl w-full max-w-sm">
+            <div class="p-6">
+                <h3 id="confirmTitle" class="text-lg font-semibold text-primary">Are you sure?</h3>
+                <p id="confirmMessage" class="mt-2 text-sm text-muted">This action cannot be undone.</p>
+            </div>
+            <div class="flex justify-end gap-3 p-4 bg-interactive-deep bg-opacity-50 rounded-b-xl border-t border-color">
+                <button id="confirmCancel" class="btn btn-neutral font-medium rounded-lg text-sm px-4 py-2">Cancel</button>
+                <button id="confirmDelete" class="btn btn-danger-solid font-medium rounded-lg text-sm px-4 py-2">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toastContainer" class="fixed bottom-4 right-4 z-[200] w-full max-w-xs space-y-3">
+        <!-- Toasts will be dynamically inserted here -->
+    </div>
+
+    <!-- Onboarding Tour -->
+    <div id="onboardingOverlay" class="modal fixed inset-0 z-[190] bg-black bg-opacity-75"></div>
+    <div id="onboardingStep" class="modal absolute z-[200] modal-bg rounded-lg shadow-xl w-full max-w-xs p-4 flex flex-col" data-step-index="0">
+        <div id="onboardingText" class="text-sm text-color mb-4">Welcome to Tymo!</div>
+        <div class="flex items-center justify-between">
+            <button id="onboardingSkip" class="text-sm text-muted hover:text-primary px-3 py-1.5 rounded-lg">Skip</button>
+            <div class="flex gap-3">
+                <button id="onboardingPrev" class="btn btn-neutral text-sm px-3 py-1.5">Prev</button>
+                <button id="onboardingNext" class="btn btn-primary text-sm px-3 py-1.5">Next</button>
+            </div>
+        </div>
+        <!-- Arrow element for pointing -->
+        <div id="onboardingArrow" data-popper-arrow></div>
+    </div>
+
+
+    <!-- Local JavaScript -->
+    <script src="js/app.js" defer></script>
+</body>
+</html>
